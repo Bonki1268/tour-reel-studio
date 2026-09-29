@@ -15,9 +15,9 @@
 
 | 需求 | 驗收條件 | BDD 場景 | TDD／整合測試 | 實作位置 | 狀態 |
 |---|---|---|---|---|---|
-| R-001 | AC-001 | `S03-01` | `test_r001_placement_order_does_not_matter` | `backend/app/domain/approval.py` | TODO |
-| R-002 | AC-002、AC-003 | `S03-02` | `test_r002_hash_ignores_key_order`、`test_r002_hash_depends_on_list_order`、`test_r002_float_rounded_to_4_places`、`test_r002_int_and_integral_float_equal`、`test_r002_rejects_nan_and_unsupported_types` | `backend/app/domain/approval.py` | TODO |
-| R-003 | AC-004 | `S03-03` | — | `backend/app/domain/approval.py` | TODO |
-| R-004 | AC-005 | `S03-04` | `test_r004_rejected_submit_returns_video_to_plan_ready` | `backend/app/domain/approval.py` | TODO |
-| R-005 | AC-006 | `S03-05` | `test_r005_plan_and_final_cannot_be_auto_approved` | `backend/app/domain/approval.py` | TODO |
-| R-006 | AC-007 | `S03-01` | `test_r006_cost_cap_must_be_positive`、`test_r006_unknown_kind_and_missing_approver_rejected` | `backend/app/domain/approval.py` | TODO |
+| R-001 | AC-001 | `S03-01` | `test_r001_placement_order_does_not_matter` | `backend/app/domain/approval.py` | 完成 |
+| R-002 | AC-002、AC-003 | `S03-02` | `test_r002_hash_ignores_key_order`、`test_r002_hash_depends_on_list_order`、`test_r002_float_rounded_to_4_places`、`test_r002_int_and_integral_float_equal`、`test_r002_rejects_nan_and_unsupported_types` | `backend/app/domain/approval.py` | 完成 |
+| R-003 | AC-004 | `S03-03` | — | `backend/app/domain/approval.py` | 完成 |
+| R-004 | AC-005 | `S03-04` | `test_r004_rejected_submit_returns_video_to_plan_ready` | `backend/app/domain/approval.py` | 完成 |
+| R-005 | AC-006 | `S03-05` | `test_r005_plan_and_final_cannot_be_auto_approved` | `backend/app/domain/approval.py` | 完成 |
+| R-006 | AC-007 | `S03-01` | `test_r006_cost_cap_must_be_positive`、`test_r006_unknown_kind_and_missing_approver_rejected` | `backend/app/domain/approval.py` | 完成 |

@@ -39,7 +39,7 @@ def check_before_submit(video: Video, approval: Approval, current_input: object)
 1. 先正規化：
    - `dict`：鍵必須是字串，否則 `TypeError`；值遞迴正規化
    - `list`、`tuple`：保持順序，遞迴正規化
-   - `float`：NaN／Infinity 拋出 `ValueError`；`round(v, 4)`，結果為整數時轉 `int`；`-0.0` 視為 `0`
+   - `float`：NaN／Infinity 拋出 `ValueError`；以 `Decimal(repr(v)).quantize(0.0001, ROUND_HALF_UP)` 四捨五入到 4 位（實作時修訂：內建 `round()` 對 0.12345 這類二進位無法精確表示的值結果不直觀），結果為整數時轉 `int`；`-0.0` 視為 `0`
    - `bool`、`int`、`str`、`None`：原樣
    - `Decimal`：轉為去掉尾端 0 的字串（例如 `Decimal("1.280")` → `"1.28"`）
    - 其他型別：`TypeError`（避免 `str()` 隱含不穩定的表示）
