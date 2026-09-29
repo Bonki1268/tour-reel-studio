@@ -93,7 +93,8 @@
         "py"
       ],
       "min_unit": 3,
-      "spec": "specs/0004-cost-budget"
+      "spec": "specs/0004-cost-budget",
+      "red_at": "2026-09-30T00:45:51+08:00"
     },
     {
       "id": "S05",
