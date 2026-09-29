@@ -1,6 +1,6 @@
 {
   "$comment": "由 scripts/tdd.py 維護，請勿手動修改。spec 為各步驟對應的 spec package。",
-  "current": "S02",
+  "current": "S03",
   "steps": [
     {
       "id": "S00",
@@ -58,7 +58,14 @@
       ],
       "min_unit": 3,
       "spec": "specs/0002-video-state-machine",
-      "red_at": "2026-09-30T00:21:16+08:00"
+      "red_at": "2026-09-30T00:21:16+08:00",
+      "status": "done",
+      "done_at": "2026-09-30T00:21:42+08:00",
+      "gate": {
+        "tests": 35,
+        "scenarios": 7,
+        "unit_tests": 10
+      }
     },
     {
       "id": "S03",
@@ -257,6 +264,13 @@
       "tests": 11,
       "scenarios": 3,
       "unit_tests": 8
+    },
+    {
+      "step": "S02",
+      "done_at": "2026-09-30T00:21:42+08:00",
+      "tests": 35,
+      "scenarios": 7,
+      "unit_tests": 10
     }
   ]
 }

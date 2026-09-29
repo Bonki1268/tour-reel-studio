@@ -14,7 +14,7 @@
 
 | 需求 | 驗收條件 | BDD 場景 | TDD／整合測試 | 實作位置 | 狀態 |
 |---|---|---|---|---|---|
-| R-001 | AC-001 | `S02-01` | `test_r001_transition_table_matches_spec`、`test_r001_extra_transitions` | `backend/app/domain/video.py` | TODO |
-| R-002 | AC-002、AC-003 | `S02-02` | `test_r002_all_undefined_pairs_rejected` | `backend/app/domain/video.py` | TODO |
-| R-003 | AC-004 | `S02-03` | `test_r003_terminal_states_have_no_exit`、`test_r003_every_non_terminal_state_has_exit` | `backend/app/domain/video.py` | TODO |
-| R-004 | AC-005 | `S02-04` | `test_r004_history_records_event_and_time`、`test_r004_rejected_event_leaves_no_history` | `backend/app/domain/video.py` | TODO |
+| R-001 | AC-001 | `S02-01` | `test_r001_transition_table_matches_spec`、`test_r001_extra_transitions` | `backend/app/domain/video.py` | 完成 |
+| R-002 | AC-002、AC-003 | `S02-02` | `test_r002_all_undefined_pairs_rejected` | `backend/app/domain/video.py` | 完成 |
+| R-003 | AC-004 | `S02-03` | `test_r003_terminal_states_have_no_exit`、`test_r003_every_non_terminal_state_has_exit` | `backend/app/domain/video.py` | 完成 |
+| R-004 | AC-005 | `S02-04` | `test_r004_history_records_event_and_time`、`test_r004_rejected_event_leaves_no_history` | `backend/app/domain/video.py` | 完成 |

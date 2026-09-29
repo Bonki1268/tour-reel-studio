@@ -37,9 +37,29 @@ class VideoEvent(StrEnum):
     APPROVE_FINAL = "approve_final"
 
 
-TRANSITIONS: Mapping[tuple[VideoStatus, VideoEvent], VideoStatus] = MappingProxyType({})
+_S, _E = VideoStatus, VideoEvent
 
-TERMINAL: frozenset[VideoStatus] = frozenset()
+# 轉換表（spec 0002 R-001）；generating → plan_ready 依架構書 §6.3 加入
+TRANSITIONS: Mapping[tuple[VideoStatus, VideoEvent], VideoStatus] = MappingProxyType({
+    (_S.DRAFT, _E.SUBMIT_TOPIC): _S.PLANNING,
+    (_S.PLANNING, _E.PLANS_READY): _S.PLAN_READY,
+    (_S.PLANNING, _E.PLANNING_FAILED): _S.FAILED,
+    (_S.PLAN_READY, _E.REGENERATE_PLANS): _S.PLANNING,
+    (_S.PLAN_READY, _E.APPROVE_PLAN): _S.GENERATING,
+    (_S.GENERATING, _E.ALL_SHOTS_DONE): _S.RENDERING,
+    (_S.GENERATING, _E.SHOT_FAILED_FINAL): _S.NEEDS_ATTENTION,
+    (_S.GENERATING, _E.APPROVAL_INVALIDATED): _S.PLAN_READY,
+    (_S.NEEDS_ATTENTION, _E.CONFIRM_REGENERATE): _S.GENERATING,
+    (_S.NEEDS_ATTENTION, _E.CONFIRM_RERENDER): _S.RENDERING,
+    (_S.RENDERING, _E.RENDER_DONE): _S.REVIEW,
+    (_S.RENDERING, _E.RENDER_RETRY): _S.RENDERING,
+    (_S.RENDERING, _E.RENDER_FAILED_FINAL): _S.NEEDS_ATTENTION,
+    (_S.REVIEW, _E.REGENERATE_SHOT): _S.GENERATING,
+    (_S.REVIEW, _E.APPROVE_FINAL): _S.APPROVED,
+})
+
+# 終止狀態：轉換表中沒有任何出口
+TERMINAL: frozenset[VideoStatus] = frozenset(VideoStatus) - {s for s, _ in TRANSITIONS}
 
 
 class InvalidTransition(Exception):
@@ -68,8 +88,17 @@ class Video:
     clock: Callable[[], datetime] = utc_now
 
     def apply(self, event: VideoEvent) -> VideoStatus:
-        raise NotImplementedError
+        """依轉換表轉換並記錄歷程；不合法時拋出 InvalidTransition，狀態與歷程都不變。"""
+        new_status = TRANSITIONS.get((self.status, event))
+        if new_status is None:
+            raise InvalidTransition(self.status, event)
+        self.history.append(StatusChange(event, self.status, new_status, self.clock()))
+        self.status = new_status
+        return new_status
 
     @property
     def status_trail(self) -> list[VideoStatus]:
-        raise NotImplementedError
+        """起始狀態加上每次轉換後的狀態。"""
+        if not self.history:
+            return [self.status]
+        return [self.history[0].from_status, *(c.to_status for c in self.history)]
