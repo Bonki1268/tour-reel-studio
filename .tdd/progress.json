@@ -75,7 +75,8 @@
         "py"
       ],
       "min_unit": 3,
-      "spec": "specs/0003-approval-invalidation"
+      "spec": "specs/0003-approval-invalidation",
+      "red_at": "2026-09-30T00:27:47+08:00"
     },
     {
       "id": "S04",
