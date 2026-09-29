@@ -1,0 +1,51 @@
+{
+  "_說明": "範例資料（架構書 §5.4 的梅子農場）。複製到 inputs/brand.json 後，依實際店家、角色與實景照修改。",
+  "name": "楠西梅子農場",
+  "tone": "溫馨家庭",
+  "selling_points": ["清晨採梅體驗", "老闆手作梅子醋", "山谷景觀"],
+  "address": "台南市楠西區",
+  "cta": "私訊訂位｜台南市楠西區",
+  "character": {
+    "anchor_zh": "中年男性農場老闆，圓臉、短黑髮、曬黑膚色，穿綠色格子襯衫與卡其工作褲，頭戴草帽，腰繫深藍圍裙。",
+    "anchor_en": "A friendly middle-aged Taiwanese farm owner with a round face, short black hair and tanned skin, wearing a green plaid shirt, khaki work pants, a straw hat and a dark blue apron"
+  },
+  "scenes": [
+    {"id": "ph_01", "file": "scene1.jpg", "description_zh": "清晨果園入口，木製招牌與梅樹", "description_en": "a plum orchard entrance at dawn with a wooden sign and plum trees"},
+    {"id": "ph_02", "file": "scene2.jpg", "description_zh": "梅樹下採收區，枝頭掛滿青梅", "description_en": "under plum trees heavy with green plums in the harvest area"},
+    {"id": "ph_03", "file": "scene3.jpg", "description_zh": "農舍前的木桌，擺著梅子醋與山谷景觀", "description_en": "a wooden table in front of the farmhouse with bottles of plum vinegar and a valley view"}
+  ],
+  "plan": {
+    "title": "晨光裡的第一口梅子",
+    "concept": "老闆角色帶遊客在清晨果園採梅，最後邀請來訂位"
+  },
+  "topic": "清晨採梅體驗",
+  "shots": [
+    {
+      "scene_photo_id": "ph_01",
+      "placement": {"x": 0.62, "y": 0.88, "scale": 0.45, "flip": false},
+      "action_zh": "角色轉身向鏡頭揮手",
+      "action_en": "The character turns toward the camera, smiles and waves warmly",
+      "subtitle": "早安！梅子熟了喔",
+      "camera": "緩慢推進",
+      "camera_en": "slow push-in"
+    },
+    {
+      "scene_photo_id": "ph_02",
+      "placement": {"x": 0.45, "y": 0.9, "scale": 0.5, "flip": true},
+      "action_zh": "角色伸手摘下一顆青梅，拿到鏡頭前展示",
+      "action_en": "The character reaches up, picks a green plum from the branch and holds it up to show the camera",
+      "subtitle": "親手摘，最新鮮",
+      "camera": "固定機位，輕微手持晃動",
+      "camera_en": "static shot with subtle handheld movement"
+    },
+    {
+      "scene_photo_id": "ph_03",
+      "placement": {"x": 0.5, "y": 0.92, "scale": 0.55, "flip": false},
+      "action_zh": "角色舉起一杯梅子醋，向鏡頭招手邀請",
+      "action_en": "The character raises a glass of plum vinegar and beckons the viewer with an inviting gesture",
+      "subtitle": "週末來坐坐吧！",
+      "camera": "緩慢拉遠",
+      "camera_en": "slow pull-back"
+    }
+  ]
+}

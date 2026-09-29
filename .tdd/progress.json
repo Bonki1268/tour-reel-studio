@@ -1,6 +1,6 @@
 {
   "$comment": "由 scripts/tdd.py 維護，請勿手動修改。spec 為各步驟對應的 spec package。",
-  "current": "S00",
+  "current": "S01",
   "steps": [
     {
       "id": "S00",
@@ -24,7 +24,12 @@
             "審核人"
           ]
         }
-      ]
+      ],
+      "status": "done",
+      "done_at": "2026-09-29T23:57:10+08:00",
+      "gate": {
+        "type": "spike"
+      }
     },
     {
       "id": "S01",
@@ -231,5 +236,11 @@
       ]
     }
   ],
-  "history": []
+  "history": [
+    {
+      "step": "S00",
+      "done_at": "2026-09-29T23:57:10+08:00",
+      "type": "spike"
+    }
+  ]
 }

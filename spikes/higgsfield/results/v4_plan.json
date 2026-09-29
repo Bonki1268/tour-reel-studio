@@ -1,0 +1,64 @@
+{
+  "title": "國姓爺回到熱蘭遮城喝咖啡",
+  "concept": "1661 年攻下熱蘭遮城的鄭成功，穿越到今天的安平古堡，手拿古堡拿鐵介紹古堡 1624 咖啡館，邀請觀眾一起來",
+  "tone": "歷史趣味、輕鬆親切",
+  "shots": [
+    {
+      "shot_no": 1,
+      "role": "hook",
+      "duration_s": 4,
+      "generate_duration_s": 4,
+      "scene_photo_id": "ph_01",
+      "placement": {
+        "x": 0.5,
+        "y": 0.9,
+        "scale": 0.5,
+        "flip": false
+      },
+      "action": "鄭成功站在古城牆前的步道上，轉身面向鏡頭，拱手作揖後豪邁一笑",
+      "subtitle": "1661 年，我來過這！",
+      "camera": "緩慢推進",
+      "video_prompt": "Koxinga (Zheng Chenggong), a 17th-century Ming dynasty general with a dignified face, bright eyes, a thin mustache and short goatee, wearing a black Ming official's winged hat, a deep red round-collar Ming official robe with a jade belt, and black boots. Koxinga stands on the brick walkway in front of the old fort wall, turns to face the camera, bows with a traditional fist-and-palm salute, then gives a hearty smile. Setting: the ruined wall of Fort Zeelandia, old red bricks patched with white lime plaster, a lawn and a red-brick paved walkway under a clear blue sky. Camera: slow push-in. Keep the real background, buildings and landmarks exactly as in the first frame; consistent natural lighting and shadows; photorealistic; vertical 9:16; no on-screen text, no subtitles, no logos."
+    },
+    {
+      "shot_no": 2,
+      "role": "feature",
+      "duration_s": 5,
+      "generate_duration_s": 5,
+      "scene_photo_id": "ph_02",
+      "placement": {
+        "x": 0.72,
+        "y": 0.97,
+        "scale": 0.4,
+        "flip": true
+      },
+      "action": "鄭成功在古堡石碑旁舉起一杯拿鐵，喝一口後滿意點頭",
+      "subtitle": "古堡拿鐵，好喝！",
+      "camera": "固定機位，輕微手持晃動",
+      "video_prompt": "Koxinga (Zheng Chenggong), a 17th-century Ming dynasty general with a dignified face, bright eyes, a thin mustache and short goatee, wearing a black Ming official's winged hat, a deep red round-collar Ming official robe with a jade belt, and black boots. Koxinga stands beside the monument holding a paper cup of iced latte, takes a sip and nods with satisfaction. Setting: a tall granite monument engraved with Chinese characters on a stepped stone base, banyan trees and yellow blossoms behind, red antique cannons at the side. Camera: static shot with subtle handheld movement. Keep the real background, buildings and landmarks exactly as in the first frame; consistent natural lighting and shadows; photorealistic; vertical 9:16; no on-screen text, no subtitles, no logos."
+    },
+    {
+      "shot_no": 3,
+      "role": "cta",
+      "duration_s": 3,
+      "generate_duration_s": 4,
+      "scene_photo_id": "ph_03",
+      "placement": {
+        "x": 0.7,
+        "y": 0.98,
+        "scale": 0.42,
+        "flip": false
+      },
+      "action": "鄭成功在瞭望塔下向鏡頭招手，邀請觀眾一起來",
+      "subtitle": "來古堡喝一杯吧！",
+      "camera": "緩慢拉遠",
+      "video_prompt": "Koxinga (Zheng Chenggong), a 17th-century Ming dynasty general with a dignified face, bright eyes, a thin mustache and short goatee, wearing a black Ming official's winged hat, a deep red round-collar Ming official robe with a jade belt, and black boots. Koxinga beckons the viewer with a big welcoming wave and an inviting smile. Setting: low-angle view of the white Anping Fort watchtower above old red-brick and dark stone walls, surrounded by banyan trees. Camera: slow pull-back. Keep the real background, buildings and landmarks exactly as in the first frame; consistent natural lighting and shadows; photorealistic; vertical 9:16; no on-screen text, no subtitles, no logos."
+    }
+  ],
+  "outro": {
+    "duration_s": 3,
+    "shop": "古堡 1624 咖啡館（Zeelandia Cafe）",
+    "address": "台南市安平區 安平古堡園區內"
+  },
+  "cta": "安平古堡園區內｜每日 08:30–17:30"
+}
