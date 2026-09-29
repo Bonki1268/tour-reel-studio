@@ -1,6 +1,6 @@
 {
   "$comment": "由 scripts/tdd.py 維護，請勿手動修改。spec 為各步驟對應的 spec package。",
-  "current": "S01",
+  "current": "S02",
   "steps": [
     {
       "id": "S00",
@@ -40,7 +40,14 @@
       ],
       "min_unit": 2,
       "spec": "specs/0001-project-foundation",
-      "red_at": "2026-09-30T00:11:50+08:00"
+      "red_at": "2026-09-30T00:11:50+08:00",
+      "status": "done",
+      "done_at": "2026-09-30T00:13:06+08:00",
+      "gate": {
+        "tests": 11,
+        "scenarios": 3,
+        "unit_tests": 8
+      }
     },
     {
       "id": "S02",
@@ -242,6 +249,13 @@
       "step": "S00",
       "done_at": "2026-09-29T23:57:10+08:00",
       "type": "spike"
+    },
+    {
+      "step": "S01",
+      "done_at": "2026-09-30T00:13:06+08:00",
+      "tests": 11,
+      "scenarios": 3,
+      "unit_tests": 8
     }
   ]
 }

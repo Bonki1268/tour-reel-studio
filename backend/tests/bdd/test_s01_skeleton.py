@@ -44,7 +44,8 @@ def write_env_file(ctx: dict[str, Any], tmp_path: Path, name: str, value: str) -
 
 @when("呼叫 GET /health", target_fixture="response")
 def call_health(client: TestClient) -> httpx.Response:
-    return client.get("/health")
+    response: httpx.Response = client.get("/health")
+    return response
 
 
 @when("載入系統設定", target_fixture="loaded")

@@ -35,8 +35,27 @@ class ConfigError(Exception):
         super().__init__(f"正式環境缺少必要設定：{', '.join(missing)}")
 
 
+REQUIRED_IN_PRODUCTION = ("anthropic_api_key", "higgsfield_api_key", "hf_image_model", "hf_video_model")
+
 _UNSET: Any = object()
 
 
+def _is_blank(value: SecretStr | str | None) -> bool:
+    if isinstance(value, SecretStr):
+        value = value.get_secret_value()
+    return not value or not value.strip()
+
+
 def load_settings(env_file: Path | None = _UNSET) -> Settings:
-    raise NotImplementedError
+    """載入設定；正式環境一次列出所有缺少的必要設定。
+
+    必要檢查不放在 Pydantic validator：ValidationError 會附帶輸入值，可能洩漏金鑰。
+    """
+    if env_file is _UNSET:
+        env_file = ENV_FILE
+    settings = Settings(_env_file=env_file)
+    if settings.app_env == "production":
+        missing = tuple(n.upper() for n in REQUIRED_IN_PRODUCTION if _is_blank(getattr(settings, n)))
+        if missing:
+            raise ConfigError(missing)
+    return settings

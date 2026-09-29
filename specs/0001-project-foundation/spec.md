@@ -1,6 +1,6 @@
 # 開發骨架與設定載入
 
-狀態：approved
+狀態：implemented
 版本：v1
 關聯開發步驟：S01
 核准者／時間：bonki

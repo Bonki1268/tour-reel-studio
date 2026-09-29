@@ -57,7 +57,8 @@ def load_settings(env_file: Path | None = ..., **overrides) -> Settings
 ### API（`app/api/main.py`）
 
 - `create_app(settings: Settings | None = None) -> FastAPI`：未傳入時呼叫 `load_settings()`，把設定放在 `app.state.settings`。
-- 模組層級 `app = create_app()` 供 `uvicorn app.api.main:app` 使用；正式模式缺金鑰時匯入即失敗，即「拒絕啟動」。
+- 以 factory 啟動：`uvicorn app.api.main:create_app --factory`；正式模式缺金鑰時 `create_app()` 拋出 `ConfigError`，即「拒絕啟動」。
+- 不提供模組層級的 `app = create_app()`（實作時修訂）：模組層級建立會在 pytest 收集階段就讀取開發者的 shell 環境與 `.env`，早於 `conftest.py` 的隔離 fixture，違反「測試不讀取本機 `.env`」。
 
 ## 資料模型／狀態轉換變更
 
