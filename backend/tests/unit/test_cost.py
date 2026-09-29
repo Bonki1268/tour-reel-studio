@@ -35,7 +35,7 @@ def budget(cap: int, spent: int = 0) -> Budget:
 def test_r001_zero_shots_costs_nothing() -> None:
     estimate = estimate_video(table(), 0, "img-model-a", "vid-model-a")
 
-    assert (estimate.total, estimate.reserve, estimate.cap) == (0, 0, 0)
+    assert (estimate.total, estimate.reserve, estimate.cap) == (Decimal(0), Decimal(0), Decimal(0))
 
 
 def test_r001_reserve_shots_configurable() -> None:

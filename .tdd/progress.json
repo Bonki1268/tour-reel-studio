@@ -1,6 +1,6 @@
 {
   "$comment": "由 scripts/tdd.py 維護，請勿手動修改。spec 為各步驟對應的 spec package。",
-  "current": "S04",
+  "current": "S05",
   "steps": [
     {
       "id": "S00",
@@ -94,7 +94,14 @@
       ],
       "min_unit": 3,
       "spec": "specs/0004-cost-budget",
-      "red_at": "2026-09-30T00:45:51+08:00"
+      "red_at": "2026-09-30T00:45:51+08:00",
+      "status": "done",
+      "done_at": "2026-09-30T00:46:52+08:00",
+      "gate": {
+        "tests": 74,
+        "scenarios": 18,
+        "unit_tests": 18
+      }
     },
     {
       "id": "S05",
@@ -287,6 +294,13 @@
       "tests": 50,
       "scenarios": 12,
       "unit_tests": 10
+    },
+    {
+      "step": "S04",
+      "done_at": "2026-09-30T00:46:52+08:00",
+      "tests": 74,
+      "scenarios": 18,
+      "unit_tests": 18
     }
   ]
 }

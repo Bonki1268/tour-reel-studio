@@ -3,7 +3,7 @@
 from pathlib import Path
 from typing import Any, Literal
 
-from pydantic import SecretStr
+from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     hf_video_model: str = ""
     claude_model: str = ""
     cost_table: Path = REPO_ROOT / "config" / "cost_table.json"
-    retry_reserve_ratio: float | None = None
+    retry_reserve_shots: int = Field(default=1, ge=0)  # 成本上限預留幾鏡的完整重生（S04）
     webhook_enabled: bool = True
 
 

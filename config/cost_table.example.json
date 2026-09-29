@@ -1,0 +1,8 @@
+{
+  "_comment": "範例單價表（點數）。複製為 config/cost_table.json 後使用。keyframe 單價為 S00 估價端點回傳值；video 單價 0 是佔位值，S00 只取得美元計價，請從 Higgsfield 控制台確認實際扣點後填入。",
+  "unit": "credits",
+  "prices": [
+    {"kind": "keyframe", "model": "xai/grok-imagine-image-2.0", "credits": "1.28"},
+    {"kind": "video", "model": "bytedance/seedance-2.5/image-to-video", "credits": "0"}
+  ]
+}
