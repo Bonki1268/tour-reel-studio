@@ -39,7 +39,8 @@
         "py"
       ],
       "min_unit": 2,
-      "spec": "specs/0001-project-foundation"
+      "spec": "specs/0001-project-foundation",
+      "red_at": "2026-09-30T00:11:50+08:00"
     },
     {
       "id": "S02",
