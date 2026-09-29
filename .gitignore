@@ -1,0 +1,29 @@
+# 機密：永遠不要 commit
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# Node／前端
+node_modules/
+.next/
+apps/web/.features-gen/
+test-results/
+playwright-report/
+
+# 閘門執行紀錄（progress.json 要 commit）
+.tdd/logs/
+.tdd/unlock.json
+.tdd/hook.log
+
+# 系統
+.DS_Store

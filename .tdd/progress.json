@@ -1,0 +1,235 @@
+{
+  "$comment": "由 scripts/tdd.py 維護，請勿手動修改。spec 為各步驟對應的 spec package。",
+  "current": "S00",
+  "steps": [
+    {
+      "id": "S00",
+      "title": "技術驗證（M0）",
+      "milestone": "M0",
+      "suites": [],
+      "min_unit": 0,
+      "type": "spike",
+      "reports": [
+        {
+          "path": "docx/validation/S00-report.md",
+          "fields": [
+            "HF_IMAGE_MODEL",
+            "HF_VIDEO_MODEL",
+            "關鍵幀單價（點）",
+            "影片單價（點）",
+            "關鍵幀平均耗時（秒）",
+            "影片平均耗時（秒）",
+            "B1 合成結論",
+            "角色一致性結論",
+            "審核人"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S01",
+      "title": "開發骨架與測試閘門",
+      "milestone": "M1",
+      "suites": [
+        "py"
+      ],
+      "min_unit": 2,
+      "spec": "specs/0001-project-foundation"
+    },
+    {
+      "id": "S02",
+      "title": "影片狀態機",
+      "milestone": "M1",
+      "suites": [
+        "py"
+      ],
+      "min_unit": 3,
+      "spec": "specs/0002-video-state-machine"
+    },
+    {
+      "id": "S03",
+      "title": "核准與失效",
+      "milestone": "M1",
+      "suites": [
+        "py"
+      ],
+      "min_unit": 3,
+      "spec": "specs/0003-approval-invalidation"
+    },
+    {
+      "id": "S04",
+      "title": "成本估算與預算控制",
+      "milestone": "M1",
+      "suites": [
+        "py"
+      ],
+      "min_unit": 3,
+      "spec": "specs/0004-cost-budget"
+    },
+    {
+      "id": "S05",
+      "title": "資料持久化",
+      "milestone": "M1",
+      "suites": [
+        "py"
+      ],
+      "min_unit": 2,
+      "spec": "specs/0005-persistence"
+    },
+    {
+      "id": "S06",
+      "title": "生成工作與重試",
+      "milestone": "M1",
+      "suites": [
+        "py"
+      ],
+      "min_unit": 3,
+      "spec": "specs/0006-generation-job"
+    },
+    {
+      "id": "S07",
+      "title": "快速模式工作編排",
+      "milestone": "M1",
+      "suites": [
+        "py"
+      ],
+      "min_unit": 2,
+      "spec": "specs/0007-quick-mode-orchestration"
+    },
+    {
+      "id": "S08",
+      "title": "REST API 與 SSE",
+      "milestone": "M1",
+      "suites": [
+        "py"
+      ],
+      "min_unit": 2,
+      "spec": "specs/0008-rest-api-sse"
+    },
+    {
+      "id": "S09",
+      "title": "物件儲存",
+      "milestone": "M2",
+      "suites": [
+        "py"
+      ],
+      "min_unit": 1,
+      "spec": "specs/0009-object-storage"
+    },
+    {
+      "id": "S10",
+      "title": "企劃產生 PromptEngine",
+      "milestone": "M2",
+      "suites": [
+        "py"
+      ],
+      "min_unit": 3,
+      "spec": "specs/0010-prompt-engine"
+    },
+    {
+      "id": "S11",
+      "title": "B1 照片合成",
+      "milestone": "M2",
+      "suites": [
+        "py"
+      ],
+      "min_unit": 3,
+      "spec": "specs/0011-b1-photo-composite"
+    },
+    {
+      "id": "S12",
+      "title": "Higgsfield adapter",
+      "milestone": "M2",
+      "suites": [
+        "py"
+      ],
+      "min_unit": 3,
+      "spec": "specs/0012-higgsfield-adapter"
+    },
+    {
+      "id": "S13",
+      "title": "時間軸與影片合成",
+      "milestone": "M3",
+      "suites": [
+        "py"
+      ],
+      "min_unit": 2,
+      "spec": "specs/0013-timeline-render"
+    },
+    {
+      "id": "S14",
+      "title": "片尾卡",
+      "milestone": "M3",
+      "suites": [
+        "py"
+      ],
+      "min_unit": 2,
+      "spec": "specs/0014-outro-card"
+    },
+    {
+      "id": "S15",
+      "title": "前端：選題與企劃確認",
+      "milestone": "M3",
+      "suites": [
+        "web",
+        "e2e"
+      ],
+      "min_unit": 2,
+      "spec": "specs/0015-web-plan-confirm"
+    },
+    {
+      "id": "S16",
+      "title": "前端：進度與成品確認",
+      "milestone": "M3",
+      "suites": [
+        "web",
+        "e2e"
+      ],
+      "min_unit": 2,
+      "spec": "specs/0016-web-progress-review"
+    },
+    {
+      "id": "S17",
+      "title": "Demo 種子資料",
+      "milestone": "M4",
+      "suites": [
+        "py"
+      ],
+      "min_unit": 1,
+      "spec": "specs/0017-demo-seed"
+    },
+    {
+      "id": "S18",
+      "title": "Demo 可靠性",
+      "milestone": "M4",
+      "suites": [
+        "py"
+      ],
+      "min_unit": 2,
+      "spec": "specs/0018-demo-reliability"
+    },
+    {
+      "id": "S19",
+      "title": "端對端驗收",
+      "milestone": "M4",
+      "suites": [
+        "e2e"
+      ],
+      "min_unit": 0,
+      "spec": "specs/0019-e2e-acceptance",
+      "reports": [
+        {
+          "path": "docx/validation/S19-report.md",
+          "fields": [
+            "真實生成總耗時（分）",
+            "非技術使用者完成率",
+            "快速模式平均完成時間（分）",
+            "成品檔案",
+            "審核人"
+          ]
+        }
+      ]
+    }
+  ],
+  "history": []
+}
