@@ -111,7 +111,8 @@
         "py"
       ],
       "min_unit": 2,
-      "spec": "specs/0005-persistence"
+      "spec": "specs/0005-persistence",
+      "red_at": "2026-10-01T01:27:49+08:00"
     },
     {
       "id": "S06",

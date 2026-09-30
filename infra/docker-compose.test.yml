@@ -1,0 +1,30 @@
+# 測試用基礎服務（spec 0005；閘門以 `docker compose -f infra/docker-compose.test.yml up -d --wait` 啟動）
+# 帳密僅供本機測試容器使用。S3 相容儲存留到 S09 決定（spec 0005 待決事項 8）。
+name: trs-test
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: trs
+      POSTGRES_PASSWORD: trs
+      POSTGRES_DB: trs
+    ports:
+      - "55432:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U trs -d trs"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  redis:
+    image: redis:7
+    ports:
+      - "56379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
