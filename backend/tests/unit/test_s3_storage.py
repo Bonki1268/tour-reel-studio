@@ -51,7 +51,7 @@ async def test_r005_presign_defaults_to_endpoint() -> None:
 
 
 def test_r005_build_services_uses_s3() -> None:
-    settings = Settings(cost_table=REPO_ROOT / "config" / "cost_table.example.json")
+    settings = Settings(cost_table=REPO_ROOT / "config" / "cost_table.example.json", creative_engine="fake")
 
     services = build_services(settings)
 

@@ -12,6 +12,7 @@ dependencies = [
     "psycopg[binary] (>=3.2,<4.0)",
     "arq (>=0.26,<0.27)",
     "boto3 (>=1.35,<2.0)",
+    "anthropic (>=0.70)",
 ]
 
 [tool.poetry]
@@ -25,6 +26,7 @@ httpx = "^0.28"
 ruff = "^0.8"
 mypy = "^1.13"
 boto3-stubs = {version = "^1.35", extras = ["s3"]}
+respx = "^0.23.1"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

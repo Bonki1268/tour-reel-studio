@@ -1,0 +1,181 @@
+{
+  "plans": [
+    {
+      "title": "阿伯的清晨採梅課",
+      "concept": "梅農阿伯在晨光中帶遊客走進梅園，親手示範採梅，邀大家週末來體驗",
+      "tone": "親切台味",
+      "shots": [
+        {
+          "shot_no": 1,
+          "role": "hook",
+          "duration_s": 4,
+          "scene_photo_id": "ph_01",
+          "placement": {
+            "x": 0.5,
+            "y": 0.9,
+            "scale": 0.5,
+            "flip": false
+          },
+          "action": "阿伯在梅園入口轉身向鏡頭揮手",
+          "action_en": "a 60-year-old plum farmer turns to the camera at the orchard gate and waves warmly",
+          "subtitle": "早安！梅子熟囉",
+          "camera": "緩慢推進",
+          "camera_en": "slow, gentle push-in, moderate distance"
+        },
+        {
+          "shot_no": 2,
+          "role": "feature",
+          "duration_s": 5,
+          "scene_photo_id": "ph_02",
+          "placement": {
+            "x": 0.62,
+            "y": 0.92,
+            "scale": 0.45,
+            "flip": true
+          },
+          "action": "阿伯在步道旁伸手採下青梅，放進竹籃",
+          "action_en": "he reaches up, picks a green plum and drops it into a bamboo basket",
+          "subtitle": "親手採最新鮮",
+          "camera": "跟拍，輕微手持",
+          "camera_en": "slow tracking shot with subtle handheld movement"
+        },
+        {
+          "shot_no": 3,
+          "role": "cta",
+          "duration_s": 3,
+          "scene_photo_id": "ph_03",
+          "placement": {
+            "x": 0.7,
+            "y": 0.95,
+            "scale": 0.42,
+            "flip": false
+          },
+          "action": "阿伯舉起梅子醋向鏡頭邀請",
+          "action_en": "he raises a bottle of plum vinegar toward the camera with an inviting smile",
+          "subtitle": "週末來採梅！",
+          "camera": "固定鏡頭",
+          "camera_en": "static shot, no camera movement"
+        }
+      ],
+      "cta": "私訊預約採梅"
+    },
+    {
+      "title": "一顆梅子的旅程",
+      "concept": "從枝頭到梅子醋，阿伯帶你看見一顆梅子的旅程",
+      "tone": "親切台味",
+      "shots": [
+        {
+          "shot_no": 1,
+          "role": "hook",
+          "duration_s": 3.5,
+          "scene_photo_id": "ph_02",
+          "placement": {
+            "x": 0.55,
+            "y": 0.9,
+            "scale": 0.48,
+            "flip": false
+          },
+          "action": "阿伯從梅樹後探出頭",
+          "action_en": "he peeks out from behind a plum tree with a playful grin",
+          "subtitle": "梅子在叫你喔",
+          "camera": "快速推進",
+          "camera_en": "quick push-in, small amplitude"
+        },
+        {
+          "shot_no": 2,
+          "role": "feature",
+          "duration_s": 5.5,
+          "scene_photo_id": "ph_03",
+          "placement": {
+            "x": 0.6,
+            "y": 0.93,
+            "scale": 0.44,
+            "flip": false
+          },
+          "action": "阿伯在工坊攪拌梅子醋",
+          "action_en": "he stirs a large jar of plum vinegar in the workshop",
+          "subtitle": "古法釀三年",
+          "camera": "緩慢橫移",
+          "camera_en": "slow lateral pan left to right"
+        },
+        {
+          "shot_no": 3,
+          "role": "cta",
+          "duration_s": 3,
+          "scene_photo_id": "ph_01",
+          "placement": {
+            "x": 0.5,
+            "y": 0.95,
+            "scale": 0.46,
+            "flip": true
+          },
+          "action": "阿伯在入口比讚",
+          "action_en": "he gives a thumbs-up at the orchard gate",
+          "subtitle": "來梅園找阿伯",
+          "camera": "固定鏡頭",
+          "camera_en": "static shot, no camera movement"
+        }
+      ],
+      "cta": "週末 09:00 開園"
+    },
+    {
+      "title": "親子採梅初體驗",
+      "concept": "阿伯陪孩子第一次採梅，傳遞在地人情味",
+      "tone": "親切台味",
+      "shots": [
+        {
+          "shot_no": 1,
+          "role": "hook",
+          "duration_s": 4,
+          "scene_photo_id": "ph_01",
+          "placement": {
+            "x": 0.45,
+            "y": 0.9,
+            "scale": 0.5,
+            "flip": false
+          },
+          "action": "阿伯蹲下向鏡頭招手",
+          "action_en": "he crouches down and beckons toward the camera",
+          "subtitle": "小朋友來採梅",
+          "camera": "緩慢拉遠",
+          "camera_en": "slow pull-back, moderate distance"
+        },
+        {
+          "shot_no": 2,
+          "role": "feature",
+          "duration_s": 4.5,
+          "scene_photo_id": "ph_02",
+          "placement": {
+            "x": 0.6,
+            "y": 0.92,
+            "scale": 0.45,
+            "flip": false
+          },
+          "action": "阿伯示範如何挑選好梅子",
+          "action_en": "he holds up a plum and shows how to choose a ripe one",
+          "subtitle": "挑梅有撇步",
+          "camera": "固定鏡頭，輕微推進",
+          "camera_en": "static shot with a slight push-in"
+        },
+        {
+          "shot_no": 3,
+          "role": "cta",
+          "duration_s": 3.5,
+          "scene_photo_id": "ph_03",
+          "placement": {
+            "x": 0.68,
+            "y": 0.95,
+            "scale": 0.43,
+            "flip": true
+          },
+          "action": "阿伯揮手道別",
+          "action_en": "he waves goodbye with a big smile",
+          "subtitle": "等你們來喔",
+          "camera": "固定鏡頭",
+          "camera_en": "static shot, no camera movement"
+        }
+      ],
+      "cta": "親子票 199 元"
+    }
+  ]
+}

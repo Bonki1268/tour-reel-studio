@@ -201,7 +201,8 @@
         "py"
       ],
       "min_unit": 3,
-      "spec": "specs/0010-prompt-engine"
+      "spec": "specs/0010-prompt-engine",
+      "red_at": "2026-10-01T06:05:57+08:00"
     },
     {
       "id": "S11",

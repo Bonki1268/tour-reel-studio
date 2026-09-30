@@ -24,6 +24,8 @@ class ShotDraft:
     action: str
     subtitle: str = ""
     camera: str = ""
+    action_en: str = ""  # 英文描述供影片提示詞使用（S10）
+    camera_en: str = ""
 
 
 @dataclass(frozen=True)

@@ -22,6 +22,9 @@ class Settings(BaseSettings):
     hf_image_model: str = ""
     hf_video_model: str = ""
     claude_model: str = ""
+    claude_effort: Literal["low", "medium", "high", "xhigh", "max"] = "medium"
+    claude_refusal_fallback: bool = True  # Claude 拒絕回應時由伺服器端改用其他模型（S10）
+    creative_engine: Literal["prompt", "fake"] = "prompt"
     cost_table: Path = REPO_ROOT / "config" / "cost_table.json"
     retry_reserve_shots: int = Field(default=1, ge=0)  # 成本上限預留幾鏡的完整重生（S04）
     webhook_enabled: bool = True
