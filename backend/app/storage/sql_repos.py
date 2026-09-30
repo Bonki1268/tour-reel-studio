@@ -30,9 +30,14 @@ from app.storage.db import session_factory
 from app.storage.models import (
     ApprovalRow,
     BrandProfileRow,
+    CharacterRow,
+    CharacterVersionRow,
     CostEntryRow,
     GenerationJobRow,
+    PlanRow,
     ProjectRow,
+    RenderRow,
+    ScenePhotoRow,
     ShotRow,
     ShotTakeRow,
     VideoRow,
@@ -151,7 +156,10 @@ class SqlShotRepository:
             return [_from_row(ShotTake, r) for r in rows]
 
     async def list_shots(self, video_id: str) -> list[Shot]:
-        raise NotImplementedError
+        async with self._sessions() as s:
+            query = select(ShotRow).where(ShotRow.video_id == video_id)
+            rows = await s.scalars(query.order_by(ShotRow.shot_no))
+            return [_from_row(Shot, r) for r in rows]
 
     async def update_take(self, take: ShotTake) -> None:
         async with self._sessions.begin() as s:
@@ -242,13 +250,19 @@ class SqlPlanRepository:
         self._sessions = sessions
 
     async def add(self, plan: Plan) -> None:
-        raise NotImplementedError
+        async with self._sessions.begin() as s:
+            s.add(PlanRow(**_values(plan)))
 
     async def get(self, plan_id: str) -> Plan | None:
-        raise NotImplementedError
+        async with self._sessions() as s:
+            row = await s.get(PlanRow, plan_id)
+            return None if row is None else _from_row(Plan, row)
 
     async def list(self, video_id: str) -> list[Plan]:
-        raise NotImplementedError
+        async with self._sessions() as s:
+            query = select(PlanRow).where(PlanRow.video_id == video_id)
+            rows = await s.scalars(query.order_by(PlanRow.created_at))
+            return [_from_row(Plan, r) for r in rows]
 
 
 class SqlCharacterRepository:
@@ -256,10 +270,23 @@ class SqlCharacterRepository:
         self._sessions = sessions
 
     async def add(self, character: Character, versions: list[CharacterVersion]) -> None:
-        raise NotImplementedError
+        async with self._sessions.begin() as s:
+            # 角色與版本互相參照：先寫入角色（未鎖定），再寫入版本，最後設定鎖定版本
+            row = CharacterRow(**{**_values(character), "locked_version_id": None})
+            s.add(row)
+            await s.flush()
+            s.add_all(CharacterVersionRow(**_values(v)) for v in versions)
+            await s.flush()
+            row.locked_version_id = character.locked_version_id
 
     async def locked_version(self, project_id: str) -> CharacterVersion | None:
-        raise NotImplementedError
+        async with self._sessions() as s:
+            row = await s.scalar(
+                select(CharacterVersionRow)
+                .join(CharacterRow, CharacterRow.locked_version_id == CharacterVersionRow.id)
+                .where(CharacterRow.project_id == project_id)
+            )
+            return None if row is None else _from_row(CharacterVersion, row)
 
 
 class SqlScenePhotoRepository:
@@ -267,10 +294,14 @@ class SqlScenePhotoRepository:
         self._sessions = sessions
 
     async def add(self, photo: ScenePhoto) -> None:
-        raise NotImplementedError
+        async with self._sessions.begin() as s:
+            s.add(ScenePhotoRow(**_values(photo)))
 
     async def list(self, project_id: str) -> list[ScenePhoto]:
-        raise NotImplementedError
+        async with self._sessions() as s:
+            query = select(ScenePhotoRow).where(ScenePhotoRow.project_id == project_id)
+            rows = await s.scalars(query.order_by(ScenePhotoRow.created_at))
+            return [_from_row(ScenePhoto, r) for r in rows]
 
 
 class SqlRenderRepository:
@@ -278,10 +309,14 @@ class SqlRenderRepository:
         self._sessions = sessions
 
     async def add(self, render: Render) -> None:
-        raise NotImplementedError
+        async with self._sessions.begin() as s:
+            s.add(RenderRow(**_values(render)))
 
     async def list(self, video_id: str) -> list[Render]:
-        raise NotImplementedError
+        async with self._sessions() as s:
+            query = select(RenderRow).where(RenderRow.video_id == video_id)
+            rows = await s.scalars(query.order_by(RenderRow.created_at))
+            return [_from_row(Render, r) for r in rows]
 
 
 def sql_repositories(engine: AsyncEngine) -> Repositories:

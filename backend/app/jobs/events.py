@@ -24,4 +24,4 @@ class MemoryEventBus:
         self.events: list[ProgressEvent] = []
 
     async def publish(self, event: ProgressEvent) -> None:
-        raise NotImplementedError
+        self.events.append(event)

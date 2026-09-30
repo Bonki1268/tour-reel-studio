@@ -89,7 +89,8 @@ class MemoryShotRepository:
         return _copy(self._takes.get(shot_id, []))
 
     async def list_shots(self, video_id: str) -> list[Shot]:
-        raise NotImplementedError
+        shots = [s for s in self._shots.values() if s.video_id == video_id]
+        return _copy(sorted(shots, key=lambda s: s.shot_no))
 
     async def update_take(self, take: ShotTake) -> None:
         takes = self._takes[take.shot_id]
@@ -146,38 +147,55 @@ class MemoryCostEntryRepository:
 
 
 class MemoryPlanRepository:
+    def __init__(self) -> None:
+        self._rows: list[Plan] = []
+
     async def add(self, plan: Plan) -> None:
-        raise NotImplementedError
+        self._rows.append(_copy(plan))
 
     async def get(self, plan_id: str) -> Plan | None:
-        raise NotImplementedError
+        return _copy(next((p for p in self._rows if p.id == plan_id), None))
 
     async def list(self, video_id: str) -> list[Plan]:
-        raise NotImplementedError
+        return _copy([p for p in self._rows if p.video_id == video_id])
 
 
 class MemoryCharacterRepository:
+    def __init__(self) -> None:
+        self._characters: list[Character] = []
+        self._versions: dict[str, CharacterVersion] = {}
+
     async def add(self, character: Character, versions: list[CharacterVersion]) -> None:
-        raise NotImplementedError
+        self._characters.append(_copy(character))
+        self._versions.update({v.id: _copy(v) for v in versions})
 
     async def locked_version(self, project_id: str) -> CharacterVersion | None:
-        raise NotImplementedError
+        for c in self._characters:
+            if c.project_id == project_id and c.locked_version_id in self._versions:
+                return _copy(self._versions[c.locked_version_id])
+        return None
 
 
 class MemoryScenePhotoRepository:
+    def __init__(self) -> None:
+        self._rows: list[ScenePhoto] = []
+
     async def add(self, photo: ScenePhoto) -> None:
-        raise NotImplementedError
+        self._rows.append(_copy(photo))
 
     async def list(self, project_id: str) -> list[ScenePhoto]:
-        raise NotImplementedError
+        return _copy([p for p in self._rows if p.project_id == project_id])
 
 
 class MemoryRenderRepository:
+    def __init__(self) -> None:
+        self._rows: list[Render] = []
+
     async def add(self, render: Render) -> None:
-        raise NotImplementedError
+        self._rows.append(_copy(render))
 
     async def list(self, video_id: str) -> list[Render]:
-        raise NotImplementedError
+        return _copy([r for r in self._rows if r.video_id == video_id])
 
 
 def memory_repositories() -> Repositories:

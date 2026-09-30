@@ -8,7 +8,15 @@ from app.domain.ports import Shot, ShotTake, Storage, VideoRecord
 
 class FakeRenderer:
     def build_timeline(self, video: VideoRecord, shots: list[tuple[Shot, ShotTake]]) -> dict[str, Any]:
-        raise NotImplementedError
+        clips = []
+        start = 0.0
+        for shot, take in shots:
+            end = start + shot.duration_s
+            subtitle = (shot.prompt or {}).get("subtitle", "")
+            clips.append({"shot_no": shot.shot_no, "clip_key": take.clip_key, "start": start, "end": end,
+                          "subtitle": subtitle})
+            start = end
+        return {"version": 1, "video_id": video.id, "duration_s": start, "clips": clips}
 
     async def render(self, timeline: Mapping[str, Any], storage: Storage, output_key: str) -> None:
-        raise NotImplementedError
+        await storage.put(output_key, b"", "video/mp4")

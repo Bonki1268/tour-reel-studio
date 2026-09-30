@@ -103,6 +103,7 @@ class ScenePhotoRow(Base):
     description: Mapped[str] = mapped_column(Text, default="")
     width: Mapped[int] = mapped_column(Integer)
     height: Mapped[int] = mapped_column(Integer)
+    created_at: Mapped[datetime] = _created_at()  # 0003（S07）：依上傳順序列出
 
 
 class VideoRow(Base):

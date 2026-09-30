@@ -1,6 +1,6 @@
 # 快速模式工作編排
 
-狀態：approved
+狀態：implemented
 版本：v1
 關聯開發步驟：S07
 核准者／時間：bonki

@@ -112,7 +112,9 @@ class RenderRepository:        add(render: Render)、list(video_id) -> list[Rend
 
 ## 資料模型／狀態轉換變更
 
-- 不新增資料表或遷移；使用 S05 已建立的 `plans`、`characters`、`character_versions`、`scene_photos`、`renders`。
+- 不新增資料表；使用 S05 已建立的 `plans`、`characters`、`character_versions`、`scene_photos`、`renders`。
+- 實作時補上遷移 `0003_scene_photos_created_at`：`scene_photos` 原本沒有 `created_at`，資料庫版無法保證「依上傳順序列出」實景照（企劃依序使用實景照）。
+- 實作時補上 `ShotRepository.list_shots(video_id)`（依 `shot_no` 排序），編排需要列出影片的所有鏡頭。
 - 影片狀態轉換只使用 S02 既有事件。
 
 ## API 契約（request／response、錯誤碼）

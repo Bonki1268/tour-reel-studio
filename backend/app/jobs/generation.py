@@ -17,7 +17,7 @@ from app.domain.cost import Budget, BudgetExceeded, CostTable, JobKind
 from app.domain.generation import MAX_ATTEMPTS, JobStatus, advance, should_retry, timed_out
 from app.domain.ids import idempotency_key, new_id
 from app.domain.ports import GenerationJob, Repositories, Shot, ShotTake, Storage, VideoRecord
-from app.domain.video import VideoEvent, utc_now
+from app.domain.video import VideoEvent, VideoStatus, utc_now
 from app.providers.base import (
     ImageProvider,
     ProviderError,
@@ -146,8 +146,10 @@ async def run_generation_job(ctx: GenerationContext, spec: JobSpec) -> Generatio
             if should_retry(attempt, failure.retryable):
                 continue
             await _transition(ctx, job, JobStatus.FAILED_FINAL)
-            spec.video.video.apply(VideoEvent.SHOT_FAILED_FINAL)
-            await ctx.repos.videos.save(spec.video)
+            # 多鏡同時失敗時，影片只進入一次 needs_attention（spec 0007 待決事項 1）
+            if spec.video.video.status == VideoStatus.GENERATING:
+                spec.video.video.apply(VideoEvent.SHOT_FAILED_FINAL)
+                await ctx.repos.videos.save(spec.video)
             return job
     return job
 

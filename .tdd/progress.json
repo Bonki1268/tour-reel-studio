@@ -1,6 +1,6 @@
 {
   "$comment": "由 scripts/tdd.py 維護，請勿手動修改。spec 為各步驟對應的 spec package。",
-  "current": "S07",
+  "current": "S08",
   "steps": [
     {
       "id": "S00",
@@ -148,7 +148,14 @@
       ],
       "min_unit": 2,
       "spec": "specs/0007-quick-mode-orchestration",
-      "red_at": "2026-10-01T01:49:39+08:00"
+      "red_at": "2026-10-01T01:49:39+08:00",
+      "status": "done",
+      "done_at": "2026-10-01T01:52:45+08:00",
+      "gate": {
+        "tests": 157,
+        "scenarios": 35,
+        "unit_tests": 19
+      }
     },
     {
       "id": "S08",
@@ -332,6 +339,13 @@
       "tests": 132,
       "scenarios": 29,
       "unit_tests": 23
+    },
+    {
+      "step": "S07",
+      "done_at": "2026-10-01T01:52:45+08:00",
+      "tests": 157,
+      "scenarios": 35,
+      "unit_tests": 19
     }
   ]
 }

@@ -19,11 +19,11 @@
 
 | 需求 | 驗收條件 | BDD 場景 | TDD／整合測試 | 實作位置 | 狀態 |
 |---|---|---|---|---|---|
-| R-001 | AC-001、AC-002 | `S07-01` | `test_r001_*` | `backend/app/jobs/orchestrator.py`、`backend/app/creative/` | TODO |
-| R-002 | AC-003 | `S07-01` | `test_r002_*` | `backend/app/jobs/orchestrator.py` | TODO |
-| R-003 | AC-003、AC-004 | `S07-01`、`S07-02` | — | `backend/app/jobs/orchestrator.py`、`backend/app/render/` | TODO |
-| R-004 | AC-005 | `S07-03` | `test_r004_*` | `backend/app/jobs/events.py` | TODO |
-| R-005 | AC-006、AC-007 | `S07-04` | `test_r005_*` | `backend/app/jobs/orchestrator.py`、`backend/app/jobs/generation.py` | TODO |
-| R-006 | AC-008 | `S07-05` | `test_r006_*` | `backend/app/jobs/orchestrator.py` | TODO |
-| R-007 | AC-009 | `S07-06` | — | `backend/app/jobs/orchestrator.py` | TODO |
-| R-008 | AC-010 | `S07-01` | `test_r008_*` | `backend/app/storage/` | TODO |
+| R-001 | AC-001、AC-002 | `S07-01` | `test_r001_*` | `backend/app/jobs/orchestrator.py`、`backend/app/creative/` | 完成 |
+| R-002 | AC-003 | `S07-01` | `test_r002_*` | `backend/app/jobs/orchestrator.py` | 完成 |
+| R-003 | AC-003、AC-004 | `S07-01`、`S07-02` | — | `backend/app/jobs/orchestrator.py`、`backend/app/render/` | 完成 |
+| R-004 | AC-005 | `S07-03` | `test_r004_*` | `backend/app/jobs/events.py` | 完成 |
+| R-005 | AC-006、AC-007 | `S07-04` | `test_r005_*` | `backend/app/jobs/orchestrator.py`、`backend/app/jobs/generation.py` | 完成 |
+| R-006 | AC-008 | `S07-05` | `test_r006_*` | `backend/app/jobs/orchestrator.py` | 完成 |
+| R-007 | AC-009 | `S07-06` | `test_r007_final_approval_hashes_latest_timeline` | `backend/app/jobs/orchestrator.py` | 完成 |
+| R-008 | AC-010 | `S07-01` | `test_r008_*`（含 `test_r008_list_shots_sorted_by_shot_no`） | `backend/app/storage/` | 完成 |
