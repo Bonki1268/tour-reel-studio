@@ -1,5 +1,5 @@
 # 測試用基礎服務（spec 0005；閘門以 `docker compose -f infra/docker-compose.test.yml up -d --wait` 啟動）
-# 帳密僅供本機測試容器使用。S3 相容儲存留到 S09 決定（spec 0005 待決事項 8）。
+# 帳密僅供本機測試容器使用。MinIO 映像依 spec 0009 待決事項 1 採用 bitnamilegacy（官方映像已無法取得）。
 name: trs-test
 
 services:
@@ -15,6 +15,20 @@ services:
       - /var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U trs -d trs"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  minio:
+    image: bitnamilegacy/minio:2025.5.24
+    environment:
+      MINIO_ROOT_USER: trs
+      MINIO_ROOT_PASSWORD: trs-secret-123
+      MINIO_DEFAULT_BUCKETS: trs-test
+    ports:
+      - "59000:9000"
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:9000/minio/health/live"]
       interval: 2s
       timeout: 3s
       retries: 30

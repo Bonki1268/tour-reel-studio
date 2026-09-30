@@ -31,6 +31,13 @@ class Settings(BaseSettings):
     redis_url: str = "redis://localhost:56379/0"
     presign_ttl_s: int = Field(default=900, gt=0, le=900)  # 預簽名網址有效期，上限 15 分鐘（S08）
     sse_keepalive_s: float = Field(default=15, gt=0)
+    # S3 相容儲存（S09）；預設值對應 infra/docker-compose.test.yml 的本機測試 MinIO
+    s3_endpoint_url: str = "http://localhost:59000"
+    s3_public_endpoint_url: str = ""  # 產生預簽名網址用的瀏覽器可連位址；空白時使用 s3_endpoint_url
+    s3_bucket: str = "trs-test"
+    s3_access_key_id: str = "trs"
+    s3_secret_access_key: SecretStr = SecretStr("trs-secret-123")
+    s3_region: str = "us-east-1"
     # 預設值對應 infra/docker-compose.test.yml 的本機測試資料庫（S05）
     database_url: str = "postgresql+psycopg://trs:trs@localhost:55432/trs"
 

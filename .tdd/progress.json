@@ -183,7 +183,8 @@
         "py"
       ],
       "min_unit": 1,
-      "spec": "specs/0009-object-storage"
+      "spec": "specs/0009-object-storage",
+      "red_at": "2026-10-01T02:21:42+08:00"
     },
     {
       "id": "S10",

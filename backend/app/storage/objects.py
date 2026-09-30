@@ -2,8 +2,13 @@
 
 from datetime import timedelta
 
+from app.config import Settings
 from app.domain.ports import PresignedUrl
 from app.domain.video import utc_now
+
+
+class ObjectNotFound(KeyError):
+    """物件不存在。"""
 
 
 class MemoryStorage:
@@ -22,9 +27,34 @@ class MemoryStorage:
     async def exists(self, key: str) -> bool:
         return key in self._objects
 
+    async def presign_put(self, key: str, ttl_s: int, content_type: str) -> PresignedUrl:
+        raise NotImplementedError
+
     async def presign_get(self, key: str, ttl_s: int) -> PresignedUrl:
         """測試用網址：memory://<key>?expires=<epoch 秒>。"""
         if key not in self._objects:
             raise KeyError(f"物件不存在：{key}")
         expires_at = utc_now() + timedelta(seconds=ttl_s)
         return PresignedUrl(f"memory://{key}?expires={int(expires_at.timestamp())}", expires_at)
+
+
+class S3Storage:
+    """S3 相容儲存（MinIO／R2／S3）；boto3 的同步呼叫在執行緒中執行（spec 0009）。"""
+
+    def __init__(self, settings: Settings) -> None:
+        self.bucket = settings.s3_bucket
+
+    async def put(self, key: str, data: bytes, content_type: str) -> None:
+        raise NotImplementedError
+
+    async def get(self, key: str) -> bytes:
+        raise NotImplementedError
+
+    async def exists(self, key: str) -> bool:
+        raise NotImplementedError
+
+    async def presign_get(self, key: str, ttl_s: int) -> PresignedUrl:
+        raise NotImplementedError
+
+    async def presign_put(self, key: str, ttl_s: int, content_type: str) -> PresignedUrl:
+        raise NotImplementedError
