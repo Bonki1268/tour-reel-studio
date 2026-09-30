@@ -214,3 +214,14 @@ class RenderRow(Base):
     mp4_key: Mapped[str] = mapped_column(String)
     thumb_key: Mapped[str | None] = mapped_column(String)
     created_at: Mapped[datetime] = _created_at()
+
+
+class ApiIdempotencyRow(Base):
+    """API 冪等鍵與第一次成功的回應（0004；S08）。"""
+
+    __tablename__ = "api_idempotency"
+    key: Mapped[str] = mapped_column(String, primary_key=True)
+    request_hash: Mapped[str] = mapped_column(String)
+    status_code: Mapped[int] = mapped_column(Integer)
+    body: Mapped[Any] = mapped_column(JSONB)
+    created_at: Mapped[datetime] = _created_at()

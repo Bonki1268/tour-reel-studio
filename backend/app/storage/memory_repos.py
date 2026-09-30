@@ -200,11 +200,17 @@ class MemoryRenderRepository:
 
 
 class MemoryIdempotencyRepository:
+    def __init__(self) -> None:
+        self._rows: dict[str, IdempotencyRecord] = {}
+
     async def get(self, key: str) -> IdempotencyRecord | None:
-        raise NotImplementedError
+        return _copy(self._rows.get(key))
 
     async def save(self, record: IdempotencyRecord) -> bool:
-        raise NotImplementedError
+        if record.key in self._rows:
+            return False
+        self._rows[record.key] = _copy(record)
+        return True
 
 
 def memory_repositories() -> Repositories:

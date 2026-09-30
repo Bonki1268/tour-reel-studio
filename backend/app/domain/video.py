@@ -71,7 +71,10 @@ class InvalidTransition(Exception):
 
 def check_transition(status: VideoStatus, event: VideoEvent) -> VideoStatus:
     """不改變影片，只檢查事件是否合法（S08：API 先同步檢查再排入 Worker）。"""
-    raise NotImplementedError
+    new_status = TRANSITIONS.get((status, event))
+    if new_status is None:
+        raise InvalidTransition(status, event)
+    return new_status
 
 
 @dataclass(frozen=True)
@@ -94,9 +97,7 @@ class Video:
 
     def apply(self, event: VideoEvent) -> VideoStatus:
         """依轉換表轉換並記錄歷程；不合法時拋出 InvalidTransition，狀態與歷程都不變。"""
-        new_status = TRANSITIONS.get((self.status, event))
-        if new_status is None:
-            raise InvalidTransition(self.status, event)
+        new_status = check_transition(self.status, event)
         self.history.append(StatusChange(event, self.status, new_status, self.clock()))
         self.status = new_status
         return new_status

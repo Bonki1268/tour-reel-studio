@@ -5,11 +5,18 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from app.config import Settings
+from app.creative.fake import FakeCreativeEngine
+from app.domain.cost import CostTable
 from app.domain.ports import Repositories, Storage
 from app.domain.video import utc_now
-from app.jobs.events import EventBus
-from app.jobs.orchestrator import QuickModeOrchestrator
-from app.jobs.queue import JobQueue
+from app.jobs.events import EventBus, RedisEventBus
+from app.jobs.orchestrator import OrchestratorDeps, QuickModeOrchestrator
+from app.jobs.queue import ArqJobQueue, JobQueue
+from app.providers.fake import FakeProvider
+from app.render.fake import FakeRenderer
+from app.storage.db import create_engine
+from app.storage.objects import MemoryStorage
+from app.storage.sql_repos import sql_repositories
 
 
 @dataclass
@@ -28,4 +35,14 @@ def build_services(settings: Settings) -> AppServices:
 
     S08 時創作引擎、供應商與合成器仍為假實作（S10、S12、S13 替換）；物件儲存為記憶體版（S09 替換）。
     """
-    raise NotImplementedError
+    repos = sql_repositories(create_engine(settings))
+    storage = MemoryStorage()
+    events = RedisEventBus(settings.redis_url)
+    provider = FakeProvider()
+    orchestrator = QuickModeOrchestrator(OrchestratorDeps(
+        repos=repos, storage=storage, engine=FakeCreativeEngine(), renderer=FakeRenderer(),
+        image_provider=provider, video_provider=provider, results=provider, events=events,
+        cost_table=CostTable.load(settings.cost_table), settings=settings,
+    ))
+    return AppServices(settings=settings, repos=repos, storage=storage, orchestrator=orchestrator,
+                       queue=ArqJobQueue(settings.redis_url), events=events)

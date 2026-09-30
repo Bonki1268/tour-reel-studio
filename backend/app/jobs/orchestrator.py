@@ -85,20 +85,29 @@ class QuickModeOrchestrator:
 
     async def create_video(self, project_id: str, topic: str) -> VideoRecord:
         """建立快速模式影片並進入 planning（API 呼叫；企劃由 Worker 的 propose_plans 產生）。"""
-        raise NotImplementedError
-
-    async def propose_plans(self, video_id: str) -> VideoRecord:
-        raise NotImplementedError
-
-    async def regenerate_plans(self, video_id: str) -> VideoRecord:
-        raise NotImplementedError
-
-    async def submit_topic(self, project_id: str, topic: str) -> VideoRecord:
+        if await self.repos.projects.get(project_id) is None:
+            raise NotFound(f"專案不存在：{project_id}")
         video = VideoRecord(
             id=new_id(), project_id=project_id, mode="quick", topic=topic, video=Video(clock=self.deps.clock)
         )
         await self.repos.videos.add(video)
         await self._apply(video, VideoEvent.SUBMIT_TOPIC)
+        return video
+
+    async def propose_plans(self, video_id: str) -> VideoRecord:
+        """Worker：影片在 planning 時請創作引擎提出企劃，完成後進入 plan_ready。"""
+        return await self._propose(await self._video(video_id))
+
+    async def regenerate_plans(self, video_id: str) -> VideoRecord:
+        video = await self._video(video_id)
+        await self._apply(video, VideoEvent.REGENERATE_PLANS)
+        return await self._propose(video)
+
+    async def submit_topic(self, project_id: str, topic: str) -> VideoRecord:
+        """建立影片並產生企劃（create_video＋propose_plans）。"""
+        return await self._propose(await self.create_video(project_id, topic))
+
+    async def _propose(self, video: VideoRecord) -> VideoRecord:
         try:
             drafts = await self.deps.engine.propose_plans(await self._plan_context(video))
             if len(drafts) not in PLAN_COUNT:
@@ -263,14 +272,14 @@ class QuickModeOrchestrator:
     async def _video(self, video_id: str) -> VideoRecord:
         video = await self.repos.videos.get(video_id)
         if video is None:
-            raise KeyError(f"影片不存在：{video_id}")
+            raise NotFound(f"影片不存在：{video_id}")
         video.video.clock = self.deps.clock
         return video
 
     async def _plan(self, video_id: str, plan_id: str) -> Plan:
         plan = await self.repos.plans.get(plan_id)
         if plan is None or plan.video_id != video_id:
-            raise KeyError(f"影片 {video_id} 沒有企劃 {plan_id}")
+            raise NotFound(f"影片 {video_id} 沒有企劃 {plan_id}")
         return plan
 
     async def _plan_context(self, video: VideoRecord) -> PlanContext:

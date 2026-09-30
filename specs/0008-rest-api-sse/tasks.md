@@ -20,12 +20,12 @@
 
 | 需求 | 驗收條件 | BDD 場景 | TDD／整合測試 | 實作位置 | 狀態 |
 |---|---|---|---|---|---|
-| R-001 | AC-001、AC-002 | `S08-01` | `test_r001_*` | `backend/app/api/routes/videos.py` | TODO |
-| R-002 | AC-011 | `S08-07` | — | `backend/app/api/routes/{projects,videos}.py` | TODO |
-| R-003 | AC-003、AC-005 | `S08-02`、`S08-03` | `test_r003_*` | `backend/app/api/routes/videos.py` | TODO |
-| R-004 | AC-003、AC-004 | `S08-02` | `test_r004_*` | `backend/app/api/idempotency.py` | TODO |
-| R-005 | AC-006、AC-007 | `S08-04` | `test_r005_*` | `backend/app/api/errors.py` | TODO |
-| R-006 | AC-008、AC-009 | `S08-05` | `test_r006_*` | `backend/app/api/routes/events.py`、`backend/app/jobs/events.py` | TODO |
-| R-007 | AC-010 | `S08-06` | — | `backend/app/api/routes/videos.py`、`backend/app/storage/objects.py` | TODO |
-| R-008 | AC-012 | `S08-07` | `test_r008_*` | `backend/app/api/routes/videos.py` | TODO |
-| R-009 | AC-013 | `S08-05` | `test_r009_*` | `backend/app/jobs/{queue,worker,events}.py` | TODO |
+| R-001 | AC-001、AC-002 | `S08-01` | `test_r001_*` | `backend/app/api/routes/videos.py` | 完成 |
+| R-002 | AC-011 | `S08-07` | `test_r002_project_endpoint` | `backend/app/api/routes/{projects,videos}.py` | 完成 |
+| R-003 | AC-003、AC-005 | `S08-02`、`S08-03` | `test_r003_*` | `backend/app/api/routes/videos.py` | 完成 |
+| R-004 | AC-003、AC-004 | `S08-02` | `test_r004_*` | `backend/app/api/idempotency.py` | 完成 |
+| R-005 | AC-006、AC-007 | `S08-04` | `test_r005_*` | `backend/app/api/errors.py` | 完成 |
+| R-006 | AC-008、AC-009 | `S08-05` | `test_r006_*` | `backend/app/api/sse.py`、`backend/app/jobs/events.py` | 完成 |
+| R-007 | AC-010 | `S08-06` | `test_r007_download_requires_approved` | `backend/app/api/routes/videos.py`、`backend/app/storage/objects.py` | 完成 |
+| R-008 | AC-012 | `S08-07` | `test_r008_*` | `backend/app/api/routes/videos.py` | 完成 |
+| R-009 | AC-013 | `S08-05` | `test_r009_*` | `backend/app/jobs/{queue,worker,events}.py` | 完成 |

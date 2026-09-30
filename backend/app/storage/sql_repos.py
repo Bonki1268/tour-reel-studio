@@ -29,6 +29,7 @@ from app.domain.ports import (
 from app.domain.video import StatusChange, Video, VideoEvent, VideoStatus
 from app.storage.db import session_factory
 from app.storage.models import (
+    ApiIdempotencyRow,
     ApprovalRow,
     BrandProfileRow,
     CharacterRow,
@@ -325,10 +326,19 @@ class SqlIdempotencyRepository:
         self._sessions = sessions
 
     async def get(self, key: str) -> IdempotencyRecord | None:
-        raise NotImplementedError
+        async with self._sessions() as s:
+            row = await s.get(ApiIdempotencyRow, key)
+            return None if row is None else _from_row(IdempotencyRecord, row)
 
     async def save(self, record: IdempotencyRecord) -> bool:
-        raise NotImplementedError
+        async with self._sessions.begin() as s:
+            inserted = await s.scalar(
+                insert(ApiIdempotencyRow)
+                .values(**_values(record))
+                .on_conflict_do_nothing(index_elements=[ApiIdempotencyRow.key])
+                .returning(ApiIdempotencyRow.key)
+            )
+            return inserted is not None
 
 
 def sql_repositories(engine: AsyncEngine) -> Repositories:

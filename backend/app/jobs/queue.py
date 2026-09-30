@@ -3,6 +3,9 @@
 from collections.abc import Awaitable, Callable
 from typing import Any, Protocol
 
+from arq import ArqRedis, create_pool
+from arq.connections import RedisSettings
+
 JobHandler = Callable[[str, dict[str, Any]], Awaitable[None]]
 
 
@@ -18,19 +21,29 @@ class MemoryJobQueue:
         self._next = 0
 
     async def enqueue(self, name: str, **kwargs: Any) -> None:
-        raise NotImplementedError
+        self.jobs.append((name, dict(kwargs)))
 
     async def run_all(self, handler: JobHandler) -> None:
-        raise NotImplementedError
+        while self._next < len(self.jobs):
+            name, kwargs = self.jobs[self._next]
+            self._next += 1
+            await handler(name, kwargs)
 
 
 class ArqJobQueue:
     def __init__(self, redis_url: str, *, queue_name: str | None = None) -> None:
         self.redis_url = redis_url
         self.queue_name = queue_name
+        self._pool: ArqRedis | None = None
 
     async def enqueue(self, name: str, **kwargs: Any) -> None:
-        raise NotImplementedError
+        if self._pool is None:
+            self._pool = await create_pool(RedisSettings.from_dsn(self.redis_url))
+        if self.queue_name is not None:
+            kwargs["_queue_name"] = self.queue_name
+        await self._pool.enqueue_job(name, **kwargs)
 
     async def close(self) -> None:
-        raise NotImplementedError
+        if self._pool is not None:
+            await self._pool.aclose()
+            self._pool = None

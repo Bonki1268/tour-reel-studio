@@ -24,6 +24,13 @@ backend/app/
 
 新增依賴：`arq`、`redis`（arq 已依賴）、`sse-starlette` 不使用（以 `StreamingResponse` 自行輸出 SSE 格式）。
 
+實作時的調整：
+- SSE 串流放在 `app/api/sse.py`（`format_sse`、`sse_stream`），端點與其他影片端點同在 `routes/videos.py`；依賴注入放在 `app/api/deps.py`（`Services`，未注入時第一次使用才依設定建立）。
+- 核准者固定為 `DEMO_USER = "demo"`（MVP 單一 Demo 帳號）。
+- S07 的 `KeyError` 改為 `NotFound(KeyError)`，既有呼叫端不受影響。
+- Worker 工作遇到可預期的業務例外（核准失效、超出預算、企劃失敗、狀態不符）時發布 `job_failed` 事件後結束，不讓 arq 重試；其他例外照常拋出。
+- 新增設定 `sse_keepalive_s`（預設 15 秒；測試使用較短的值）。
+
 ### 工作佇列（`app/jobs/queue.py`）
 
 ```python

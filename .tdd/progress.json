@@ -1,6 +1,6 @@
 {
   "$comment": "由 scripts/tdd.py 維護，請勿手動修改。spec 為各步驟對應的 spec package。",
-  "current": "S08",
+  "current": "S09",
   "steps": [
     {
       "id": "S00",
@@ -166,7 +166,14 @@
       ],
       "min_unit": 2,
       "spec": "specs/0008-rest-api-sse",
-      "red_at": "2026-10-01T02:06:28+08:00"
+      "red_at": "2026-10-01T02:06:28+08:00",
+      "status": "done",
+      "done_at": "2026-10-01T02:10:46+08:00",
+      "gate": {
+        "tests": 199,
+        "scenarios": 42,
+        "unit_tests": 35
+      }
     },
     {
       "id": "S09",
@@ -347,6 +354,13 @@
       "tests": 157,
       "scenarios": 35,
       "unit_tests": 19
+    },
+    {
+      "step": "S08",
+      "done_at": "2026-10-01T02:10:46+08:00",
+      "tests": 199,
+      "scenarios": 42,
+      "unit_tests": 35
     }
   ]
 }
