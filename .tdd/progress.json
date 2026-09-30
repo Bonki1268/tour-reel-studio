@@ -165,7 +165,8 @@
         "py"
       ],
       "min_unit": 2,
-      "spec": "specs/0008-rest-api-sse"
+      "spec": "specs/0008-rest-api-sse",
+      "red_at": "2026-10-01T02:06:28+08:00"
     },
     {
       "id": "S09",

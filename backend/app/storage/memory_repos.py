@@ -15,6 +15,7 @@ from app.domain.ports import (
     Character,
     CharacterVersion,
     GenerationJob,
+    IdempotencyRecord,
     Plan,
     Project,
     Render,
@@ -198,6 +199,14 @@ class MemoryRenderRepository:
         return _copy([r for r in self._rows if r.video_id == video_id])
 
 
+class MemoryIdempotencyRepository:
+    async def get(self, key: str) -> IdempotencyRecord | None:
+        raise NotImplementedError
+
+    async def save(self, record: IdempotencyRecord) -> bool:
+        raise NotImplementedError
+
+
 def memory_repositories() -> Repositories:
     return Repositories(
         projects=MemoryProjectRepository(),
@@ -210,4 +219,5 @@ def memory_repositories() -> Repositories:
         characters=MemoryCharacterRepository(),
         scene_photos=MemoryScenePhotoRepository(),
         renders=MemoryRenderRepository(),
+        idempotency=MemoryIdempotencyRepository(),
     )

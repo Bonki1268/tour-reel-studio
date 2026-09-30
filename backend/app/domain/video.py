@@ -69,6 +69,11 @@ class InvalidTransition(Exception):
         super().__init__(f"影片狀態 {status} 不接受事件 {event}")
 
 
+def check_transition(status: VideoStatus, event: VideoEvent) -> VideoStatus:
+    """不改變影片，只檢查事件是否合法（S08：API 先同步檢查再排入 Worker）。"""
+    raise NotImplementedError
+
+
 @dataclass(frozen=True)
 class StatusChange:
     event: VideoEvent

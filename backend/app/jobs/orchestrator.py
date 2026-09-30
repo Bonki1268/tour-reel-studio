@@ -35,6 +35,13 @@ ASPECT_RATIO = "9:16"
 SUBTITLE_LANG = "zh-TW"
 
 
+class NotFound(KeyError):
+    """專案、影片、企劃或鏡頭不存在（API 對應 404）。"""
+
+    def __str__(self) -> str:
+        return str(self.args[0]) if self.args else "資料不存在"
+
+
 class PlanningFailed(Exception):
     """創作引擎失敗或企劃數不符；影片已進入 failed。"""
 
@@ -75,6 +82,16 @@ class QuickModeOrchestrator:
         self.repos = deps.repos
 
     # 企劃
+
+    async def create_video(self, project_id: str, topic: str) -> VideoRecord:
+        """建立快速模式影片並進入 planning（API 呼叫；企劃由 Worker 的 propose_plans 產生）。"""
+        raise NotImplementedError
+
+    async def propose_plans(self, video_id: str) -> VideoRecord:
+        raise NotImplementedError
+
+    async def regenerate_plans(self, video_id: str) -> VideoRecord:
+        raise NotImplementedError
 
     async def submit_topic(self, project_id: str, topic: str) -> VideoRecord:
         video = VideoRecord(

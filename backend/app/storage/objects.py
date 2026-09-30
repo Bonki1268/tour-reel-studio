@@ -1,4 +1,6 @@
-"""物件儲存的記憶體實作（spec 0006 待決事項 3；S09 補上 S3 實作與預簽網址）。"""
+"""物件儲存的記憶體實作（spec 0006 待決事項 3；S08 預簽名下載；S09 補上 S3 實作）。"""
+
+from app.domain.ports import PresignedUrl
 
 
 class MemoryStorage:
@@ -16,3 +18,6 @@ class MemoryStorage:
 
     async def exists(self, key: str) -> bool:
         return key in self._objects
+
+    async def presign_get(self, key: str, ttl_s: int) -> PresignedUrl:
+        raise NotImplementedError

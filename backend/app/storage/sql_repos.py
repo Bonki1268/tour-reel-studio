@@ -16,6 +16,7 @@ from app.domain.ports import (
     Character,
     CharacterVersion,
     GenerationJob,
+    IdempotencyRecord,
     Plan,
     Project,
     Render,
@@ -319,6 +320,17 @@ class SqlRenderRepository:
             return [_from_row(Render, r) for r in rows]
 
 
+class SqlIdempotencyRepository:
+    def __init__(self, sessions: Sessions) -> None:
+        self._sessions = sessions
+
+    async def get(self, key: str) -> IdempotencyRecord | None:
+        raise NotImplementedError
+
+    async def save(self, record: IdempotencyRecord) -> bool:
+        raise NotImplementedError
+
+
 def sql_repositories(engine: AsyncEngine) -> Repositories:
     sessions = session_factory(engine)
     return Repositories(
@@ -332,4 +344,5 @@ def sql_repositories(engine: AsyncEngine) -> Repositories:
         characters=SqlCharacterRepository(sessions),
         scene_photos=SqlScenePhotoRepository(sessions),
         renders=SqlRenderRepository(sessions),
+        idempotency=SqlIdempotencyRepository(sessions),
     )

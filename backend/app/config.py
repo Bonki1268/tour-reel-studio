@@ -27,6 +27,10 @@ class Settings(BaseSettings):
     webhook_enabled: bool = True
     generation_timeout_s: float = Field(default=600, gt=0)  # 自 submitted 起算（S06）
     generation_poll_interval_s: float = Field(default=5, gt=0)
+    # 預設值對應 infra/docker-compose.test.yml 的本機測試 Redis（S08）
+    redis_url: str = "redis://localhost:56379/0"
+    presign_ttl_s: int = Field(default=900, gt=0, le=900)  # 預簽名網址有效期，上限 15 分鐘（S08）
+    sse_keepalive_s: float = Field(default=15, gt=0)
     # 預設值對應 infra/docker-compose.test.yml 的本機測試資料庫（S05）
     database_url: str = "postgresql+psycopg://trs:trs@localhost:55432/trs"
 

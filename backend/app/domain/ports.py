@@ -136,6 +136,22 @@ class Render:
     thumb_key: str | None = None
 
 
+@dataclass(frozen=True)
+class PresignedUrl:
+    url: str
+    expires_at: datetime
+
+
+@dataclass
+class IdempotencyRecord:
+    """API 冪等鍵與第一次成功的回應（S08）。"""
+
+    key: str
+    request_hash: str
+    status_code: int
+    body: JSON
+
+
 class ProjectRepository(Protocol):
     async def add(self, project: Project, brand: BrandProfile) -> None: ...
     async def get(self, project_id: str) -> tuple[Project, BrandProfile] | None: ...
@@ -198,12 +214,18 @@ class RenderRepository(Protocol):
     async def list(self, video_id: str) -> list[Render]: ...  # 依建立順序
 
 
+class IdempotencyRepository(Protocol):
+    async def get(self, key: str) -> IdempotencyRecord | None: ...
+    async def save(self, record: IdempotencyRecord) -> bool: ...  # 鍵已存在時回傳 False
+
+
 class Storage(Protocol):
-    """物件儲存（S06 定義最小子集；S09 補上預簽網址與 S3 實作）。"""
+    """物件儲存（S06 定義最小子集；S08 加上預簽名下載；S09 補上 S3 實作）。"""
 
     async def put(self, key: str, data: bytes, content_type: str) -> None: ...
     async def get(self, key: str) -> bytes: ...
     async def exists(self, key: str) -> bool: ...
+    async def presign_get(self, key: str, ttl_s: int) -> PresignedUrl: ...
 
 
 @dataclass
@@ -218,3 +240,4 @@ class Repositories:
     characters: CharacterRepository
     scene_photos: ScenePhotoRepository
     renders: RenderRepository
+    idempotency: IdempotencyRepository
