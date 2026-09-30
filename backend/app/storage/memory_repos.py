@@ -84,7 +84,9 @@ class MemoryShotRepository:
         return _copy(self._takes.get(shot_id, []))
 
     async def update_take(self, take: ShotTake) -> None:
-        raise NotImplementedError
+        takes = self._takes[take.shot_id]
+        index = next(i for i, t in enumerate(takes) if t.id == take.id)
+        takes[index] = _copy(take)
 
 
 class MemoryGenerationJobRepository:
@@ -102,13 +104,15 @@ class MemoryGenerationJobRepository:
         return _copy(next((j for j in self._by_key.values() if j.id == job_id), None))
 
     async def get_by_key(self, idempotency_key: str) -> GenerationJob | None:
-        raise NotImplementedError
+        return _copy(self._by_key.get(idempotency_key))
 
     async def count_by_key(self, idempotency_key: str) -> int:
         return int(idempotency_key in self._by_key)
 
     async def update(self, job: GenerationJob) -> None:
-        raise NotImplementedError
+        if self._by_key.get(job.idempotency_key, job).id != job.id:
+            raise ValueError(f"冪等鍵 {job.idempotency_key} 已屬於其他工作")
+        self._by_key[job.idempotency_key] = _copy(job)
 
 
 class MemoryApprovalRepository:

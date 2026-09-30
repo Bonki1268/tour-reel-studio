@@ -143,7 +143,7 @@ class Budget:
 
     def release(self, job_id: str) -> None:
         """釋放工作的預留額度（失敗的嘗試；spec 0006 R-007）。"""
-        raise NotImplementedError
+        self.reserved.pop(job_id, None)
 
     def record(
         self, job_id: str, kind: JobKind, model: str, actual: Decimal | None, table: CostTable

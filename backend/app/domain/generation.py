@@ -1,6 +1,6 @@
 """生成工作狀態（架構書 §6.2；spec 0006）。純領域邏輯，不依賴供應商或資料庫。"""
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import StrEnum
 
 from app.domain.ports import GenerationJob
@@ -16,6 +16,15 @@ class JobStatus(StrEnum):
     FAILED_FINAL = "failed_final"
 
 
+_J = JobStatus
+TRANSITIONS: dict[JobStatus, frozenset[JobStatus]] = {
+    _J.QUEUED: frozenset({_J.SUBMITTED, _J.FAILED}),
+    _J.SUBMITTED: frozenset({_J.RUNNING, _J.SUCCEEDED, _J.FAILED}),
+    _J.RUNNING: frozenset({_J.SUCCEEDED, _J.FAILED}),
+    _J.SUCCEEDED: frozenset({_J.STORED, _J.FAILED}),  # 下載或轉存失敗
+    _J.FAILED: frozenset({_J.FAILED_FINAL}),
+}
+
 MAX_ATTEMPTS = 2  # 自動重試 1 次
 
 
@@ -27,12 +36,17 @@ class InvalidJobTransition(Exception):
 
 
 def advance(job: GenerationJob, to: JobStatus, *, error: str | None = None) -> None:
-    raise NotImplementedError
+    """依轉換表轉換；不合法時拋出 InvalidJobTransition，工作不變。"""
+    if to not in TRANSITIONS.get(JobStatus(job.status), frozenset()):
+        raise InvalidJobTransition(job.status, to)
+    job.status = to
+    if error is not None:
+        job.error = error
 
 
 def should_retry(attempt: int, retryable: bool) -> bool:
-    raise NotImplementedError
+    return retryable and attempt < MAX_ATTEMPTS
 
 
 def timed_out(submitted_at: datetime, now: datetime, timeout_s: float) -> bool:
-    raise NotImplementedError
+    return now - submitted_at >= timedelta(seconds=timeout_s)

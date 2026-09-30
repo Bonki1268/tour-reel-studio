@@ -2,11 +2,17 @@
 
 
 class MemoryStorage:
+    def __init__(self) -> None:
+        self._objects: dict[str, tuple[bytes, str]] = {}
+
     async def put(self, key: str, data: bytes, content_type: str) -> None:
-        raise NotImplementedError
+        self._objects[key] = (bytes(data), content_type)
 
     async def get(self, key: str) -> bytes:
-        raise NotImplementedError
+        try:
+            return self._objects[key][0]
+        except KeyError:
+            raise KeyError(f"物件不存在：{key}") from None
 
     async def exists(self, key: str) -> bool:
-        raise NotImplementedError
+        return key in self._objects

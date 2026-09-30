@@ -18,11 +18,11 @@
 
 | 需求 | 驗收條件 | BDD 場景 | TDD／整合測試 | 實作位置 | 狀態 |
 |---|---|---|---|---|---|
-| R-001 | AC-001 | `S06-01` | `test_r001_invalid_job_transition_rejected` | `backend/app/jobs/generation.py` | TODO |
-| R-002 | AC-002 | `S06-02` | `test_r002_max_two_attempts` | `backend/app/domain/generation.py` | TODO |
-| R-003 | AC-003、AC-004 | `S06-03` | `test_r003_*` | `backend/app/domain/generation.py`、`backend/app/jobs/generation.py` | TODO |
-| R-004 | AC-005 | `S06-04` | `test_r004_*` | 同上 | TODO |
-| R-005 | AC-006、AC-007 | `S06-05` | `test_r005_*` | `backend/app/jobs/generation.py` | TODO |
-| R-006 | AC-008 | `S06-06` | — | `backend/app/jobs/generation.py` | TODO |
-| R-007 | AC-009、AC-010 | `S06-06`、`S06-01` | `test_r007_*` | `backend/app/jobs/generation.py`、`backend/app/domain/cost.py` | TODO |
-| R-008 | AC-011 | `S06-01` | `test_r008_*` | `backend/app/storage/` | TODO |
+| R-001 | AC-001 | `S06-01` | `test_r001_job_transitions_follow_table`、`test_r001_invalid_job_transition_rejected` | `backend/app/jobs/generation.py` | 完成 |
+| R-002 | AC-002 | `S06-02` | `test_r002_max_two_attempts` | `backend/app/domain/generation.py` | 完成 |
+| R-003 | AC-003、AC-004 | `S06-03` | `test_r003_*` | `backend/app/domain/generation.py`、`backend/app/jobs/generation.py` | 完成 |
+| R-004 | AC-005 | `S06-04` | `test_r004_*` | 同上 | 完成 |
+| R-005 | AC-006、AC-007 | `S06-05` | `test_r005_*`（含 `test_r005_regenerated_take_is_new_job`） | `backend/app/jobs/generation.py` | 完成 |
+| R-006 | AC-008 | `S06-06` | — | `backend/app/jobs/generation.py` | 完成 |
+| R-007 | AC-009、AC-010 | `S06-06`、`S06-01` | `test_r007_*`（含 `test_r007_budget_release_frees_reservation`） | `backend/app/jobs/generation.py`、`backend/app/domain/cost.py` | 完成 |
+| R-008 | AC-011 | `S06-01` | `test_r008_*` | `backend/app/storage/` | 完成 |

@@ -146,7 +146,8 @@ class SqlShotRepository:
             return [_from_row(ShotTake, r) for r in rows]
 
     async def update_take(self, take: ShotTake) -> None:
-        raise NotImplementedError
+        async with self._sessions.begin() as s:
+            await s.merge(ShotTakeRow(**_values(take)))
 
 
 def _job_from_row(row: GenerationJobRow) -> GenerationJob:
@@ -186,10 +187,15 @@ class SqlGenerationJobRepository:
             return n or 0
 
     async def get_by_key(self, idempotency_key: str) -> GenerationJob | None:
-        raise NotImplementedError
+        async with self._sessions() as s:
+            row = await s.scalar(
+                select(GenerationJobRow).where(GenerationJobRow.idempotency_key == idempotency_key)
+            )
+            return None if row is None else _job_from_row(row)
 
     async def update(self, job: GenerationJob) -> None:
-        raise NotImplementedError
+        async with self._sessions.begin() as s:
+            await s.merge(GenerationJobRow(**_values(job)))
 
 
 class SqlApprovalRepository:

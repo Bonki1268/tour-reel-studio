@@ -27,7 +27,8 @@ class JobStatus(StrEnum):
     QUEUED, SUBMITTED, RUNNING, SUCCEEDED, STORED, FAILED, FAILED_FINAL
 
 TRANSITIONS = {
-    QUEUED: {SUBMITTED}, SUBMITTED: {RUNNING, SUCCEEDED, FAILED}, RUNNING: {SUCCEEDED, FAILED},
+    QUEUED: {SUBMITTED, FAILED},   # 送出時供應商即拒絕 → FAILED（實作時補上）
+    SUBMITTED: {RUNNING, SUCCEEDED, FAILED}, RUNNING: {SUCCEEDED, FAILED},
     SUCCEEDED: {STORED, FAILED}, FAILED: {FAILED_FINAL},
 }
 MAX_ATTEMPTS = 2
@@ -97,6 +98,8 @@ async def run_generation_job(ctx: GenerationContext, spec: JobSpec) -> Generatio
 5. 輪詢 `fetch_result`，間隔 `GENERATION_POLL_INTERVAL_S`；`running` → `RUNNING`；超過 `GENERATION_TIMEOUT_S` → 逾時失敗。
 6. `succeeded` → `SUCCEEDED` → `download` → `storage.put(§7 路徑)` → `update_take` → `STORED` → `budget.record` → 成本帳新增。
 7. 失敗 → `FAILED` → `budget.release(job.id)` → 可重試則下一個 attempt，否則 `FAILED_FINAL` 並對影片套用 `SHOT_FAILED_FINAL`、保存影片。
+
+冪等鍵中的 `input_hash` 為 `canonical_hash({"shot_take_attempt": 鏡頭版本, "input": input_snapshot})`（spec 待決事項 2）。`GenerationContext.provider_name`（預設 `higgsfield`）為送出前的供應商名稱，送出後以 `ProviderJob.provider` 為準。
 
 每一次狀態變更都呼叫 `repos.jobs.update(job)`（R-008）。狀態轉換同時附加到 `job_events: list[tuple[str, JobStatus]]`（供測試與 S08 的 SSE 使用）。
 
