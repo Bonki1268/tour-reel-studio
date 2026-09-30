@@ -176,6 +176,7 @@ class GenerationJobRow(Base):
     est_cost: Mapped[Decimal | None] = mapped_column(CREDITS)
     actual_cost: Mapped[Decimal | None] = mapped_column(CREDITS)
     error: Mapped[str | None] = mapped_column(Text)
+    submitted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))  # 0002（S06）
     created_at: Mapped[datetime] = _created_at()
 
 

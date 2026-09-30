@@ -25,6 +25,8 @@ class Settings(BaseSettings):
     cost_table: Path = REPO_ROOT / "config" / "cost_table.json"
     retry_reserve_shots: int = Field(default=1, ge=0)  # 成本上限預留幾鏡的完整重生（S04）
     webhook_enabled: bool = True
+    generation_timeout_s: float = Field(default=600, gt=0)  # 自 submitted 起算（S06）
+    generation_poll_interval_s: float = Field(default=5, gt=0)
     # 預設值對應 infra/docker-compose.test.yml 的本機測試資料庫（S05）
     database_url: str = "postgresql+psycopg://trs:trs@localhost:55432/trs"
 

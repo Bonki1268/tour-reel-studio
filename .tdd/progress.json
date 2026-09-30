@@ -129,7 +129,8 @@
         "py"
       ],
       "min_unit": 3,
-      "spec": "specs/0006-generation-job"
+      "spec": "specs/0006-generation-job",
+      "red_at": "2026-10-01T01:38:30+08:00"
     },
     {
       "id": "S07",

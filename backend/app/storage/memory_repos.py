@@ -83,6 +83,9 @@ class MemoryShotRepository:
     async def takes(self, shot_id: str) -> list[ShotTake]:
         return _copy(self._takes.get(shot_id, []))
 
+    async def update_take(self, take: ShotTake) -> None:
+        raise NotImplementedError
+
 
 class MemoryGenerationJobRepository:
     def __init__(self) -> None:
@@ -98,8 +101,14 @@ class MemoryGenerationJobRepository:
     async def get(self, job_id: str) -> GenerationJob | None:
         return _copy(next((j for j in self._by_key.values() if j.id == job_id), None))
 
+    async def get_by_key(self, idempotency_key: str) -> GenerationJob | None:
+        raise NotImplementedError
+
     async def count_by_key(self, idempotency_key: str) -> int:
         return int(idempotency_key in self._by_key)
+
+    async def update(self, job: GenerationJob) -> None:
+        raise NotImplementedError
 
 
 class MemoryApprovalRepository:

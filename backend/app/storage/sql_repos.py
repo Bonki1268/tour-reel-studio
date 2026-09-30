@@ -145,6 +145,9 @@ class SqlShotRepository:
             )
             return [_from_row(ShotTake, r) for r in rows]
 
+    async def update_take(self, take: ShotTake) -> None:
+        raise NotImplementedError
+
 
 def _job_from_row(row: GenerationJobRow) -> GenerationJob:
     job = _from_row(GenerationJob, row)
@@ -181,6 +184,12 @@ class SqlGenerationJobRepository:
                 select(func.count()).where(GenerationJobRow.idempotency_key == idempotency_key)
             )
             return n or 0
+
+    async def get_by_key(self, idempotency_key: str) -> GenerationJob | None:
+        raise NotImplementedError
+
+    async def update(self, job: GenerationJob) -> None:
+        raise NotImplementedError
 
 
 class SqlApprovalRepository:
