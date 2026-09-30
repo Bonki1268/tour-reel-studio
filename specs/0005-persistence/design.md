@@ -36,13 +36,15 @@ class VideoRepository(Protocol):
 
 class ShotRepository(Protocol):
     async def add_shot(self, shot: Shot) -> None
-    async def add_take(self, shot_id: str) -> ShotTake      # attempt = 既有最大值 + 1，並設為目前版本
+    async def add_take(self, shot_id: str, *, keyframe_key=None, clip_key=None, status="pending") -> ShotTake
+        # attempt = 既有最大值 + 1，並設為目前版本（關鍵字參數為實作時補上，供寫入版本內容）
     async def takes(self, shot_id: str) -> list[ShotTake]   # 依 attempt 排序
     async def get_shot(self, shot_id: str) -> Shot | None
 
 class GenerationJobRepository(Protocol):
     async def create_or_get(self, job: GenerationJob) -> tuple[GenerationJob, bool]   # bool：是否新建
     async def get(self, job_id: str) -> GenerationJob | None
+    async def count_by_key(self, idempotency_key: str) -> int   # 實作時補上，驗證 AC-004「只有 1 筆」
 
 class ApprovalRepository(Protocol):
     async def add(self, video_id: str, approval: Approval) -> None
@@ -72,7 +74,9 @@ def idempotency_key(video_id: str, shot_no: int, kind: str, input_hash: str, att
 - `shot_takes`：`(shot_id, attempt)` 唯一索引
 - JSON 欄位一律 JSONB；點數欄位（`cost_cap`、`est_cost`、`actual_cost`、`credits`）為 `NUMERIC(12, 4)`
 - 主鍵為 UUID 字串（`String(36)`），由 `new_id()` 產生（spec 待決事項 4）
-- `shots.current_take_id` 與 `shot_takes.shot_id` 互相參照：`current_take_id` 以 `use_alter=True` 建立外鍵
+- `shots.current_take_id` 與 `shot_takes.shot_id` 互相參照：`current_take_id` 以 `use_alter=True` 建立外鍵（`characters.locked_version_id`、`videos.selected_plan_id` 同理）；遷移中於所有資料表建立後才加上，降版時先移除
+- 實作時補上：`cost_entries.source`（`provider`／`table`），保存 S04 `CostEntry.source`，AC-008 要求讀回的領域物件相等；`cost_entries.job_id` 暫不設外鍵（S04 的 job_id 為任意字串，S06 串接生成工作時再決定）
+- `approvals`、`cost_entries` 依 `created_at`（`clock_timestamp()`）排序讀回
 
 ### 設定
 

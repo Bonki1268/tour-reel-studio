@@ -1,6 +1,6 @@
 {
   "$comment": "由 scripts/tdd.py 維護，請勿手動修改。spec 為各步驟對應的 spec package。",
-  "current": "S05",
+  "current": "S06",
   "steps": [
     {
       "id": "S00",
@@ -112,7 +112,14 @@
       ],
       "min_unit": 2,
       "spec": "specs/0005-persistence",
-      "red_at": "2026-10-01T01:27:49+08:00"
+      "red_at": "2026-10-01T01:27:49+08:00",
+      "status": "done",
+      "done_at": "2026-10-01T01:30:40+08:00",
+      "gate": {
+        "tests": 103,
+        "scenarios": 23,
+        "unit_tests": 24
+      }
     },
     {
       "id": "S06",
@@ -302,6 +309,13 @@
       "tests": 74,
       "scenarios": 18,
       "unit_tests": 18
+    },
+    {
+      "step": "S05",
+      "done_at": "2026-10-01T01:30:40+08:00",
+      "tests": 103,
+      "scenarios": 23,
+      "unit_tests": 24
     }
   ]
 }

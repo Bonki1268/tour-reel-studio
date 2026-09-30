@@ -17,10 +17,10 @@
 
 | 需求 | 驗收條件 | BDD 場景 | TDD／整合測試 | 實作位置 | 狀態 |
 |---|---|---|---|---|---|
-| R-001 | AC-001 | `S05-01` | — | `backend/app/storage/models.py`、`backend/alembic/` | TODO |
-| R-002 | AC-002 | `S05-02` | `test_r002_project_and_brand_roundtrip` | `backend/app/storage/` | TODO |
-| R-003 | AC-003 | `S05-03` | `test_r003_takes_are_kept` | `backend/app/storage/` | TODO |
-| R-004 | AC-004、AC-005 | `S05-04` | `test_r004_idempotency_key_*`、`test_r004_create_or_get_returns_existing` | `backend/app/domain/ids.py`、`backend/app/storage/` | TODO |
-| R-005 | AC-006 | `S05-05` | `test_r005_json_types_roundtrip` | `backend/app/storage/` | TODO |
-| R-006 | AC-007 | `S05-02` | 以上參數化測試（memory／sql） | `backend/app/storage/memory_repos.py` | TODO |
-| R-007 | AC-008 | `S05-05` | `test_r007_video_history_approvals_costs_roundtrip` | `backend/app/storage/` | TODO |
+| R-001 | AC-001 | `S05-01` | `test_r001_migrations_downgrade_to_base` | `backend/app/storage/models.py`、`backend/alembic/` | 完成 |
+| R-002 | AC-002 | `S05-02` | `test_r002_project_and_brand_roundtrip` | `backend/app/storage/` | 完成 |
+| R-003 | AC-003 | `S05-03` | `test_r003_takes_are_kept` | `backend/app/storage/` | 完成 |
+| R-004 | AC-004、AC-005 | `S05-04` | `test_r004_idempotency_key_*`、`test_r004_create_or_get_returns_existing` | `backend/app/domain/ids.py`、`backend/app/storage/` | 完成 |
+| R-005 | AC-006 | `S05-05` | `test_r005_json_types_roundtrip` | `backend/app/storage/` | 完成 |
+| R-006 | AC-007 | `S05-02` | 以上參數化測試（memory／sql） | `backend/app/storage/memory_repos.py` | 完成 |
+| R-007 | AC-008 | `S05-05` | `test_r007_video_history_approvals_costs_roundtrip` | `backend/app/storage/` | 完成 |
