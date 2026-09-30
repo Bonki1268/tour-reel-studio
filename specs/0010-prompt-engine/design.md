@@ -103,6 +103,8 @@ class PromptEngine:
 | R-003 | AC-005 | BDD（S10-03）＋Unit | 同上 |
 | R-004 | AC-006 | BDD（S10-05）＋Unit | 同上 |
 | R-005 | AC-007 | BDD（S10-06） | 同上 |
+
+> 實作發現：`anthropic` 1.x 改用 `httpx2`，`respx` 只能攔截 `httpx`，因此 `test_r006_*` 改以 `httpx2.MockTransport` 注入 `AnthropicClaudeClient(http_client=...)` 攔截請求，驗證內容不變（仍不連網）。送給 Claude 的 JSON Schema 以 SDK 的 `anthropic.transform_schema` 產生（加上 `additionalProperties: false`，並把 API 不支援的數值／長度限制移到 description；這些限制仍由 Pydantic 驗證）。S09 的 `test_r005_build_services_uses_s3` 改為指定 `creative_engine="fake"`，因為預設引擎 `prompt` 需要 `CLAUDE_MODEL`；斷言不變。
 | R-006 | AC-008 | Unit | `backend/tests/unit/test_prompt_engine.py` |
 | — | — | `@external`（不列入閘門） | `backend/tests/external/test_claude_live.py` |
 

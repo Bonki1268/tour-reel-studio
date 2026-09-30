@@ -5,7 +5,10 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from app.config import Settings
+from app.creative.base import CreativeEngine
+from app.creative.claude import AnthropicClaudeClient
 from app.creative.fake import FakeCreativeEngine
+from app.creative.prompt_engine import PromptEngine
 from app.domain.cost import CostTable
 from app.domain.ports import Repositories, Storage
 from app.domain.video import utc_now
@@ -33,14 +36,19 @@ class AppServices:
 def build_services(settings: Settings) -> AppServices:
     """依設定建立正式環境的服務（資料庫 repository、arq 佇列、Redis 事件）。
 
-    創作引擎、供應商與合成器仍為假實作（S10、S12、S13 替換）；物件儲存為 S3 相容儲存（S09）。
+    創作引擎依 CREATIVE_ENGINE 選擇（S10）；供應商與合成器仍為假實作（S12、S13 替換）；
+    物件儲存為 S3 相容儲存（S09）。
     """
     repos = sql_repositories(create_engine(settings))
     storage = S3Storage(settings)
     events = RedisEventBus(settings.redis_url)
     provider = FakeProvider()
+    engine: CreativeEngine = (
+        PromptEngine(AnthropicClaudeClient(settings), settings) if settings.creative_engine == "prompt"
+        else FakeCreativeEngine()
+    )
     orchestrator = QuickModeOrchestrator(OrchestratorDeps(
-        repos=repos, storage=storage, engine=FakeCreativeEngine(), renderer=FakeRenderer(),
+        repos=repos, storage=storage, engine=engine, renderer=FakeRenderer(),
         image_provider=provider, video_provider=provider, results=provider, events=events,
         cost_table=CostTable.load(settings.cost_table), settings=settings,
     ))

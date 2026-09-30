@@ -22,7 +22,14 @@ from app.creative.prompt_engine import (
     validate_plans,
 )
 from app.creative.schema import PlansOut
-from tests.claude_support import TEST_MODEL, RecordedClaude, engine_settings, fixture_json, fixture_text, plan_context
+from tests.claude_support import (
+    TEST_MODEL,
+    RecordedClaude,
+    engine_settings,
+    fixture_json,
+    fixture_text,
+    plan_context,
+)
 
 pytestmark = pytest.mark.S10
 
@@ -267,7 +274,8 @@ def test_r006_missing_model_is_config_error() -> None:
     assert exc.value.missing == ("CLAUDE_MODEL",)
 
 
-@pytest.mark.parametrize(("engine_name", "engine_type"), [("prompt", PromptEngine), ("fake", FakeCreativeEngine)])
+@pytest.mark.parametrize(("engine_name", "engine_type"),
+                         [("prompt", PromptEngine), ("fake", FakeCreativeEngine)])
 def test_r006_build_services_selects_engine(engine_name: str, engine_type: type) -> None:
     settings = Settings(cost_table=REPO_ROOT / "config" / "cost_table.example.json",
                         creative_engine=engine_name, claude_model=TEST_MODEL)
@@ -287,7 +295,8 @@ def sse_body(text: str, stop_reason: str) -> bytes:
         ("content_block_delta", {"type": "content_block_delta", "index": 0,
                                  "delta": {"type": "text_delta", "text": text}}),
         ("content_block_stop", {"type": "content_block_stop", "index": 0}),
-        ("message_delta", {"type": "message_delta", "delta": {"stop_reason": stop_reason, "stop_sequence": None},
+        ("message_delta", {"type": "message_delta",
+                           "delta": {"stop_reason": stop_reason, "stop_sequence": None},
                            "usage": {"output_tokens": 45}}),
         ("message_stop", {"type": "message_stop"}),
     ]
@@ -342,7 +351,8 @@ async def test_r006_anthropic_client_request_shape() -> None:
 
 async def test_r006_fallback_can_be_disabled() -> None:
     mock = MockAnthropic()
-    settings = Settings(claude_model="another-model", claude_refusal_fallback=False, anthropic_api_key=FAKE_KEY)
+    settings = Settings(claude_model="another-model", claude_refusal_fallback=False,
+                        anthropic_api_key=FAKE_KEY)
 
     await AnthropicClaudeClient(settings, http_client=mock.client()).complete(
         system="S", messages=[{"role": "user", "content": "U"}], schema=SCHEMA)

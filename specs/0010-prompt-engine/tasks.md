@@ -17,9 +17,9 @@
 
 | 需求 | 驗收條件 | BDD 場景 | TDD／整合測試 | 實作位置 | 狀態 |
 |---|---|---|---|---|---|
-| R-001 | AC-001、AC-002 | `S10-01` | `test_r001_*` | `backend/app/creative/{schema,prompt_engine}.py` | TODO |
-| R-002 | AC-003、AC-004 | `S10-02`、`S10-04` | — | `backend/app/creative/prompt_engine.py` | TODO |
-| R-003 | AC-005 | `S10-03` | `test_r003_*` | `backend/app/creative/prompt_engine.py` | TODO |
-| R-004 | AC-006 | `S10-05` | `test_r004_*` | `backend/app/creative/prompt_engine.py`、`skills/tourism-promo/SKILL.md` | TODO |
-| R-005 | AC-007 | `S10-06` | — | `backend/app/creative/prompt_engine.py` | TODO |
-| R-006 | AC-008 | `S10-05` | `test_r006_*` | `backend/app/creative/claude.py`、`backend/app/api/services.py` | TODO |
+| R-001 | AC-001、AC-002 | `S10-01` | `test_r001_*` | `backend/app/creative/{schema,prompt_engine}.py` | DONE |
+| R-002 | AC-003、AC-004 | `S10-02`、`S10-04` | `test_r002_*` | `backend/app/creative/prompt_engine.py` | DONE |
+| R-003 | AC-005 | `S10-03` | `test_r003_*` | `backend/app/creative/prompt_engine.py` | DONE |
+| R-004 | AC-006 | `S10-05` | `test_r004_*` | `backend/app/creative/prompt_engine.py`、`skills/tourism-promo/SKILL.md` | DONE |
+| R-005 | AC-007 | `S10-06` | `test_r005_*` | `backend/app/creative/prompt_engine.py` | DONE |
+| R-006 | AC-008 | `S10-05` | `test_r006_*` | `backend/app/creative/claude.py`、`backend/app/api/services.py` | DONE |
