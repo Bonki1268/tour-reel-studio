@@ -12,9 +12,14 @@ from app.domain.cost import CostEntry
 from app.domain.ids import new_id
 from app.domain.ports import (
     BrandProfile,
+    Character,
+    CharacterVersion,
     GenerationJob,
+    Plan,
     Project,
+    Render,
     Repositories,
+    ScenePhoto,
     Shot,
     ShotTake,
     VideoRecord,
@@ -83,6 +88,9 @@ class MemoryShotRepository:
     async def takes(self, shot_id: str) -> list[ShotTake]:
         return _copy(self._takes.get(shot_id, []))
 
+    async def list_shots(self, video_id: str) -> list[Shot]:
+        raise NotImplementedError
+
     async def update_take(self, take: ShotTake) -> None:
         takes = self._takes[take.shot_id]
         index = next(i for i, t in enumerate(takes) if t.id == take.id)
@@ -137,6 +145,41 @@ class MemoryCostEntryRepository:
         return list(self._rows.get(video_id, []))
 
 
+class MemoryPlanRepository:
+    async def add(self, plan: Plan) -> None:
+        raise NotImplementedError
+
+    async def get(self, plan_id: str) -> Plan | None:
+        raise NotImplementedError
+
+    async def list(self, video_id: str) -> list[Plan]:
+        raise NotImplementedError
+
+
+class MemoryCharacterRepository:
+    async def add(self, character: Character, versions: list[CharacterVersion]) -> None:
+        raise NotImplementedError
+
+    async def locked_version(self, project_id: str) -> CharacterVersion | None:
+        raise NotImplementedError
+
+
+class MemoryScenePhotoRepository:
+    async def add(self, photo: ScenePhoto) -> None:
+        raise NotImplementedError
+
+    async def list(self, project_id: str) -> list[ScenePhoto]:
+        raise NotImplementedError
+
+
+class MemoryRenderRepository:
+    async def add(self, render: Render) -> None:
+        raise NotImplementedError
+
+    async def list(self, video_id: str) -> list[Render]:
+        raise NotImplementedError
+
+
 def memory_repositories() -> Repositories:
     return Repositories(
         projects=MemoryProjectRepository(),
@@ -145,4 +188,8 @@ def memory_repositories() -> Repositories:
         jobs=MemoryGenerationJobRepository(),
         approvals=MemoryApprovalRepository(),
         costs=MemoryCostEntryRepository(),
+        plans=MemoryPlanRepository(),
+        characters=MemoryCharacterRepository(),
+        scene_photos=MemoryScenePhotoRepository(),
+        renders=MemoryRenderRepository(),
     )

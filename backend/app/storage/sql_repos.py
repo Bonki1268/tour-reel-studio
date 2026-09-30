@@ -13,9 +13,14 @@ from app.domain.cost import CostEntry, JobKind
 from app.domain.ids import new_id
 from app.domain.ports import (
     BrandProfile,
+    Character,
+    CharacterVersion,
     GenerationJob,
+    Plan,
     Project,
+    Render,
     Repositories,
+    ScenePhoto,
     Shot,
     ShotTake,
     VideoRecord,
@@ -145,6 +150,9 @@ class SqlShotRepository:
             )
             return [_from_row(ShotTake, r) for r in rows]
 
+    async def list_shots(self, video_id: str) -> list[Shot]:
+        raise NotImplementedError
+
     async def update_take(self, take: ShotTake) -> None:
         async with self._sessions.begin() as s:
             await s.merge(ShotTakeRow(**_values(take)))
@@ -229,6 +237,53 @@ class SqlCostEntryRepository:
             return [_from_row(CostEntry, r) for r in rows]
 
 
+class SqlPlanRepository:
+    def __init__(self, sessions: Sessions) -> None:
+        self._sessions = sessions
+
+    async def add(self, plan: Plan) -> None:
+        raise NotImplementedError
+
+    async def get(self, plan_id: str) -> Plan | None:
+        raise NotImplementedError
+
+    async def list(self, video_id: str) -> list[Plan]:
+        raise NotImplementedError
+
+
+class SqlCharacterRepository:
+    def __init__(self, sessions: Sessions) -> None:
+        self._sessions = sessions
+
+    async def add(self, character: Character, versions: list[CharacterVersion]) -> None:
+        raise NotImplementedError
+
+    async def locked_version(self, project_id: str) -> CharacterVersion | None:
+        raise NotImplementedError
+
+
+class SqlScenePhotoRepository:
+    def __init__(self, sessions: Sessions) -> None:
+        self._sessions = sessions
+
+    async def add(self, photo: ScenePhoto) -> None:
+        raise NotImplementedError
+
+    async def list(self, project_id: str) -> list[ScenePhoto]:
+        raise NotImplementedError
+
+
+class SqlRenderRepository:
+    def __init__(self, sessions: Sessions) -> None:
+        self._sessions = sessions
+
+    async def add(self, render: Render) -> None:
+        raise NotImplementedError
+
+    async def list(self, video_id: str) -> list[Render]:
+        raise NotImplementedError
+
+
 def sql_repositories(engine: AsyncEngine) -> Repositories:
     sessions = session_factory(engine)
     return Repositories(
@@ -238,4 +293,8 @@ def sql_repositories(engine: AsyncEngine) -> Repositories:
         jobs=SqlGenerationJobRepository(sessions),
         approvals=SqlApprovalRepository(sessions),
         costs=SqlCostEntryRepository(sessions),
+        plans=SqlPlanRepository(sessions),
+        characters=SqlCharacterRepository(sessions),
+        scene_photos=SqlScenePhotoRepository(sessions),
+        renders=SqlRenderRepository(sessions),
     )

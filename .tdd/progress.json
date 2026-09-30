@@ -147,7 +147,8 @@
         "py"
       ],
       "min_unit": 2,
-      "spec": "specs/0007-quick-mode-orchestration"
+      "spec": "specs/0007-quick-mode-orchestration",
+      "red_at": "2026-10-01T01:49:39+08:00"
     },
     {
       "id": "S08",

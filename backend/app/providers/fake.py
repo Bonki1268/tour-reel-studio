@@ -1,6 +1,6 @@
 """FakeProvider：以腳本決定每次送出的結果，供測試與 Demo 使用（spec 0006）。"""
 
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 from decimal import Decimal
 from typing import Literal
@@ -35,9 +35,13 @@ class FakeProvider:
         content: bytes = b"fake-result",
         on_submit: Callable[[], None] | None = None,
         name: str = "fake",
+        duration_s: float = 0,
+        outcomes_by_shot: Mapping[int, Sequence[Outcome]] | None = None,
     ) -> None:
         if not outcomes:
             raise ValueError("outcomes 至少要有一項")
+        if duration_s or outcomes_by_shot:
+            raise NotImplementedError
         self.submissions: list[ProviderRequest] = []  # 每次送出的請求
         self.external_ids: list[str] = []  # 每次送出回傳的 request ID
         self.fetches: list[str] = []  # 每次查詢的 request ID

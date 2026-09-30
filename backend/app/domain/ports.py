@@ -88,6 +88,54 @@ class GenerationJob:
     submitted_at: datetime | None = None  # 逾時由此起算（S06）
 
 
+@dataclass
+class Plan:
+    id: str
+    video_id: str
+    payload: JSON
+    engine: str
+
+
+@dataclass
+class Character:
+    id: str
+    project_id: str
+    name: str
+    locked_version_id: str | None = None
+
+
+@dataclass
+class CharacterVersion:
+    id: str
+    character_id: str
+    version: int
+    status: str
+    identity_board_key: str | None = None
+    cutout_key: str | None = None
+    anchor_card: JSON = None
+    voice: JSON = None
+
+
+@dataclass
+class ScenePhoto:
+    id: str
+    project_id: str
+    image_key: str
+    width: int
+    height: int
+    description: str = ""
+
+
+@dataclass
+class Render:
+    id: str
+    video_id: str
+    aspect_ratio: str
+    mp4_key: str
+    subtitle_lang: str | None = None
+    thumb_key: str | None = None
+
+
 class ProjectRepository(Protocol):
     async def add(self, project: Project, brand: BrandProfile) -> None: ...
     async def get(self, project_id: str) -> tuple[Project, BrandProfile] | None: ...
@@ -108,6 +156,7 @@ class ShotRepository(Protocol):
     ) -> ShotTake: ...
     async def takes(self, shot_id: str) -> list[ShotTake]: ...
     async def update_take(self, take: ShotTake) -> None: ...
+    async def list_shots(self, video_id: str) -> list[Shot]: ...  # 依 shot_no 排序（S07）
 
 
 class GenerationJobRepository(Protocol):
@@ -128,6 +177,27 @@ class CostEntryRepository(Protocol):
     async def list(self, video_id: str) -> list[CostEntry]: ...
 
 
+class PlanRepository(Protocol):
+    async def add(self, plan: Plan) -> None: ...
+    async def get(self, plan_id: str) -> Plan | None: ...
+    async def list(self, video_id: str) -> list[Plan]: ...  # 依建立順序
+
+
+class CharacterRepository(Protocol):
+    async def add(self, character: Character, versions: list[CharacterVersion]) -> None: ...
+    async def locked_version(self, project_id: str) -> CharacterVersion | None: ...
+
+
+class ScenePhotoRepository(Protocol):
+    async def add(self, photo: ScenePhoto) -> None: ...
+    async def list(self, project_id: str) -> list[ScenePhoto]: ...  # 依建立順序
+
+
+class RenderRepository(Protocol):
+    async def add(self, render: Render) -> None: ...
+    async def list(self, video_id: str) -> list[Render]: ...  # 依建立順序
+
+
 class Storage(Protocol):
     """物件儲存（S06 定義最小子集；S09 補上預簽網址與 S3 實作）。"""
 
@@ -144,3 +214,7 @@ class Repositories:
     jobs: GenerationJobRepository
     approvals: ApprovalRepository
     costs: CostEntryRepository
+    plans: PlanRepository
+    characters: CharacterRepository
+    scene_photos: ScenePhotoRepository
+    renders: RenderRepository
