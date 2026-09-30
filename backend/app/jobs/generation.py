@@ -27,10 +27,9 @@ from app.providers.base import (
     ResultSource,
     VideoProvider,
 )
+from app.storage import keys
 
 # 架構書 §7 物件儲存路徑的檔名
-RESULT_FILES = {JobKind.KEYFRAME: "keyframe.png", JobKind.VIDEO: "clip.mp4"}
-
 _URL_QUERY = re.compile(r"(https?://[^\s?]+)\?\S*")
 
 
@@ -110,9 +109,9 @@ def build_attempt(ctx: GenerationContext, spec: JobSpec, attempt: int) -> Genera
 
 
 def result_key(spec: JobSpec) -> str:
-    """架構書 §7：videos/{video_id}/shots/{shot_no}/take{n}/keyframe.png｜clip.mp4"""
-    shot_dir = f"videos/{spec.video.id}/shots/{spec.shot.shot_no}/take{spec.take.attempt}"
-    return f"{shot_dir}/{RESULT_FILES[spec.kind]}"
+    """結果的自有儲存路徑（架構書 §7，由 keys 產生）。"""
+    make = keys.keyframe if spec.kind == JobKind.KEYFRAME else keys.clip
+    return make(spec.video.id, spec.shot.shot_no, spec.take.attempt)
 
 
 def _emit(ctx: GenerationContext, job: GenerationJob) -> None:

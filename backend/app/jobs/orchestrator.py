@@ -29,6 +29,7 @@ from app.jobs.events import EventPublisher, ProgressEvent
 from app.jobs.generation import GenerationContext, JobSpec, run_generation_job
 from app.providers.base import ImageProvider, ResultSource, VideoProvider
 from app.render.base import Renderer
+from app.storage import keys
 
 PLAN_COUNT = range(2, 4)  # 創作引擎須提出 2～3 個企劃
 ASPECT_RATIO = "9:16"
@@ -248,7 +249,7 @@ class QuickModeOrchestrator:
         pairs = [(s, await self._current_take(s)) for s in shots]
         timeline = self.deps.renderer.build_timeline(video, pairs)
         render = Render(new_id(), video.id, ASPECT_RATIO, "", SUBTITLE_LANG)
-        render.mp4_key = f"videos/{video.id}/renders/{render.id}.mp4"
+        render.mp4_key = keys.render(video.id, render.id)
         await self.deps.renderer.render(timeline, self.deps.storage, render.mp4_key)
         video.timeline = timeline
         await self.repos.renders.add(render)

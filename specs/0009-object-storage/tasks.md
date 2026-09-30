@@ -15,8 +15,8 @@
 
 | 需求 | 驗收條件 | BDD 場景 | TDD／整合測試 | 實作位置 | 狀態 |
 |---|---|---|---|---|---|
-| R-001 | AC-001 | `S09-01` | `test_r001_*` | `backend/app/storage/objects.py` | TODO |
-| R-002 | AC-002 | `S09-02` | `test_r002_*` | `backend/app/storage/objects.py` | TODO |
-| R-003 | AC-003、AC-004、AC-005 | `S09-03` | `test_r003_*` | `backend/app/storage/keys.py` | TODO |
-| R-004 | AC-006 | `S09-04` | — | `backend/app/storage/objects.py` | TODO |
-| R-005 | AC-007 | `S09-02` | `test_r005_*` | `backend/app/storage/objects.py`、`backend/app/api/services.py` | TODO |
+| R-001 | AC-001 | `S09-01` | `test_r001_*` | `backend/app/storage/objects.py` | 完成 |
+| R-002 | AC-002 | `S09-02` | `test_r002_*` | `backend/app/storage/objects.py` | 完成 |
+| R-003 | AC-003、AC-004、AC-005 | `S09-03` | `test_r003_*` | `backend/app/storage/keys.py` | 完成 |
+| R-004 | AC-006 | `S09-04` | — | `backend/app/storage/objects.py` | 完成 |
+| R-005 | AC-007 | `S09-02` | `test_r005_*` | `backend/app/storage/objects.py`、`backend/app/api/services.py` | 完成 |

@@ -1,6 +1,6 @@
 {
   "$comment": "由 scripts/tdd.py 維護，請勿手動修改。spec 為各步驟對應的 spec package。",
-  "current": "S09",
+  "current": "S10",
   "steps": [
     {
       "id": "S00",
@@ -184,7 +184,14 @@
       ],
       "min_unit": 1,
       "spec": "specs/0009-object-storage",
-      "red_at": "2026-10-01T02:21:42+08:00"
+      "red_at": "2026-10-01T02:21:42+08:00",
+      "status": "done",
+      "done_at": "2026-10-01T02:23:31+08:00",
+      "gate": {
+        "tests": 219,
+        "scenarios": 46,
+        "unit_tests": 16
+      }
     },
     {
       "id": "S10",
@@ -362,6 +369,13 @@
       "tests": 199,
       "scenarios": 42,
       "unit_tests": 35
+    },
+    {
+      "step": "S09",
+      "done_at": "2026-10-01T02:23:31+08:00",
+      "tests": 219,
+      "scenarios": 46,
+      "unit_tests": 16
     }
   ]
 }

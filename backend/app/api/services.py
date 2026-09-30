@@ -15,7 +15,7 @@ from app.jobs.queue import ArqJobQueue, JobQueue
 from app.providers.fake import FakeProvider
 from app.render.fake import FakeRenderer
 from app.storage.db import create_engine
-from app.storage.objects import MemoryStorage
+from app.storage.objects import S3Storage
 from app.storage.sql_repos import sql_repositories
 
 
@@ -33,10 +33,10 @@ class AppServices:
 def build_services(settings: Settings) -> AppServices:
     """依設定建立正式環境的服務（資料庫 repository、arq 佇列、Redis 事件）。
 
-    S08 時創作引擎、供應商與合成器仍為假實作（S10、S12、S13 替換）；物件儲存為記憶體版（S09 替換）。
+    創作引擎、供應商與合成器仍為假實作（S10、S12、S13 替換）；物件儲存為 S3 相容儲存（S09）。
     """
     repos = sql_repositories(create_engine(settings))
-    storage = MemoryStorage()
+    storage = S3Storage(settings)
     events = RedisEventBus(settings.redis_url)
     provider = FakeProvider()
     orchestrator = QuickModeOrchestrator(OrchestratorDeps(
