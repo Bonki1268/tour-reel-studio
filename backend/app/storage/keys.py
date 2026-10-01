@@ -56,3 +56,7 @@ def clip(video_id: str, shot_no: int, take: int) -> str:
 
 def render(video_id: str, render_id: str) -> str:
     return f"videos/{_seg(video_id)}/renders/{_seg(render_id)}.mp4"
+
+
+def render_thumb(video_id: str, render_id: str) -> str:
+    raise NotImplementedError

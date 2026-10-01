@@ -4,10 +4,19 @@ from collections.abc import Mapping
 from typing import Any
 
 from app.domain.ports import Shot, ShotTake, Storage, VideoRecord
+from app.render.timeline import Style
 
 
 class FakeRenderer:
-    def build_timeline(self, video: VideoRecord, shots: list[tuple[Shot, ShotTake]]) -> dict[str, Any]:
+    def build_timeline(
+        self,
+        video: VideoRecord,
+        shots: list[tuple[Shot, ShotTake]],
+        *,
+        style: Style | None = None,
+        outro_key: str | None = None,
+        bgm_key: str | None = None,
+    ) -> dict[str, Any]:
         clips = []
         start = 0.0
         for shot, take in shots:
@@ -18,5 +27,7 @@ class FakeRenderer:
             start = end
         return {"version": 1, "video_id": video.id, "duration_s": start, "clips": clips}
 
-    async def render(self, timeline: Mapping[str, Any], storage: Storage, output_key: str) -> None:
+    async def render(
+        self, timeline: Mapping[str, Any], storage: Storage, output_key: str, thumb_key: str | None = None
+    ) -> None:
         await storage.put(output_key, b"", "video/mp4")

@@ -32,6 +32,10 @@ class Settings(BaseSettings):
     cost_table: Path = REPO_ROOT / "config" / "cost_table.json"
     retry_reserve_shots: int = Field(default=1, ge=0)  # 成本上限預留幾鏡的完整重生（S04）
     webhook_enabled: bool = True
+    # 合成（S13）：BGM_KEY 為自有儲存中的背景音樂，空白時輸出靜音音軌
+    renderer: Literal["ffmpeg", "fake"] = "ffmpeg"
+    bgm_key: str = ""
+    render_timeout_s: float = Field(default=120, gt=0)
     generation_timeout_s: float = Field(default=600, gt=0)  # 自 submitted 起算（S06）
     generation_poll_interval_s: float = Field(default=5, gt=0)
     # 預設值對應 infra/docker-compose.test.yml 的本機測試 Redis（S08）
