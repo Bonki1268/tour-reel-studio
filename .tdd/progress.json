@@ -1,6 +1,6 @@
 {
   "$comment": "由 scripts/tdd.py 維護，請勿手動修改。spec 為各步驟對應的 spec package。",
-  "current": "S13",
+  "current": "S14",
   "steps": [
     {
       "id": "S00",
@@ -256,7 +256,14 @@
       ],
       "min_unit": 2,
       "spec": "specs/0013-timeline-render",
-      "red_at": "2026-10-01T11:12:59+08:00"
+      "red_at": "2026-10-01T11:12:59+08:00",
+      "status": "done",
+      "done_at": "2026-10-01T11:16:13+08:00",
+      "gate": {
+        "tests": 407,
+        "scenarios": 71,
+        "unit_tests": 34
+      }
     },
     {
       "id": "S14",
@@ -422,6 +429,13 @@
       "tests": 367,
       "scenarios": 65,
       "unit_tests": 68
+    },
+    {
+      "step": "S13",
+      "done_at": "2026-10-01T11:16:13+08:00",
+      "tests": 407,
+      "scenarios": 71,
+      "unit_tests": 34
     }
   ]
 }

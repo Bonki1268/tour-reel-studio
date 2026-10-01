@@ -32,13 +32,15 @@ from app.jobs.events import EventPublisher, ProgressEvent
 from app.jobs.generation import GenerationContext, JobSpec, run_generation_job
 from app.providers.base import ImageProvider, ResultSource, VideoProvider
 from app.providers.composite import Placement, PlacementError, build_compose_request, composite, to_png
-from app.render.base import Renderer
+from app.render.base import Renderer, RenderError
+from app.render.timeline import Style
 from app.storage import keys
 from app.storage.objects import ObjectNotFound
 
 PLAN_COUNT = range(2, 4)  # 創作引擎須提出 2～3 個企劃
 ASPECT_RATIO = "9:16"
 SUBTITLE_LANG = "zh-TW"
+RENDER_ATTEMPTS = 2  # 合成失敗自動重試 1 次
 
 
 class NotFound(KeyError):
@@ -290,17 +292,42 @@ class QuickModeOrchestrator:
         return {"shot_no": shot.shot_no, **request.to_input()}
 
     async def _render(self, video: VideoRecord) -> None:
+        """依時間軸 JSON 合成；失敗自動重試 1 次，仍失敗則進入 needs_attention（架構書 §6.1；spec 0013）。"""
         await self._publish("render_started", video.id)
         shots = await self.repos.shots.list_shots(video.id)
         pairs = [(s, await self._current_take(s)) for s in shots]
-        timeline = self.deps.renderer.build_timeline(video, pairs)
+        style = await self._style(video.project_id)
+        bgm_key = self.deps.settings.bgm_key or None
+        timeline = self.deps.renderer.build_timeline(video, pairs, style=style, bgm_key=bgm_key)
+        video.timeline = timeline
         render = Render(new_id(), video.id, ASPECT_RATIO, "", SUBTITLE_LANG)
         render.mp4_key = keys.render(video.id, render.id)
-        await self.deps.renderer.render(timeline, self.deps.storage, render.mp4_key)
-        video.timeline = timeline
+        render.thumb_key = keys.render_thumb(video.id, render.id)
+        for attempt in range(1, RENDER_ATTEMPTS + 1):
+            try:
+                await self.deps.renderer.render(timeline, self.deps.storage, render.mp4_key, render.thumb_key)
+                break
+            except RenderError as e:
+                if attempt < RENDER_ATTEMPTS:
+                    await self._apply(video, VideoEvent.RENDER_RETRY)
+                    continue
+                await self._apply(video, VideoEvent.RENDER_FAILED_FINAL)
+                await self._publish("render_failed", video.id, error=str(e)[:500])
+                return
         await self.repos.renders.add(render)
         await self._apply(video, VideoEvent.RENDER_DONE)
         await self._publish("review_ready", video.id, render_id=render.id, mp4_key=render.mp4_key)
+
+    async def _style(self, project_id: str) -> Style:
+        """字幕描邊用品牌主色（品牌檔案的第一個顏色）；沒有或格式不符時用預設值。"""
+        found = await self.repos.projects.get(project_id)
+        colors = found[1].visual.get("colors") if found else None
+        if isinstance(colors, list) and colors and isinstance(colors[0], str):
+            try:
+                return Style(primary_color=colors[0])
+            except ValueError:
+                pass
+        return Style()
 
     # 成品確認
 

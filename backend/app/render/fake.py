@@ -1,10 +1,10 @@
-"""FakeRenderer：只產生時間軸 JSON 與空白成品檔（spec 0007）。"""
+"""FakeRenderer：產生與 FFmpeg 合成器相同格式的時間軸 JSON，成品與縮圖為空檔（spec 0007、0013）。"""
 
 from collections.abc import Mapping
 from typing import Any
 
 from app.domain.ports import Shot, ShotTake, Storage, VideoRecord
-from app.render.timeline import Style
+from app.render.timeline import Style, timeline_from_shots
 
 
 class FakeRenderer:
@@ -17,17 +17,11 @@ class FakeRenderer:
         outro_key: str | None = None,
         bgm_key: str | None = None,
     ) -> dict[str, Any]:
-        clips = []
-        start = 0.0
-        for shot, take in shots:
-            end = start + shot.duration_s
-            subtitle = (shot.prompt or {}).get("subtitle", "")
-            clips.append({"shot_no": shot.shot_no, "clip_key": take.clip_key, "start": start, "end": end,
-                          "subtitle": subtitle})
-            start = end
-        return {"version": 1, "video_id": video.id, "duration_s": start, "clips": clips}
+        return timeline_from_shots(video, shots, style=style, outro_key=outro_key, bgm_key=bgm_key)
 
     async def render(
         self, timeline: Mapping[str, Any], storage: Storage, output_key: str, thumb_key: str | None = None
     ) -> None:
         await storage.put(output_key, b"", "video/mp4")
+        if thumb_key is not None:
+            await storage.put(thumb_key, b"", "image/jpeg")

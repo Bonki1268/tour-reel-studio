@@ -17,7 +17,9 @@ from app.jobs.orchestrator import OrchestratorDeps, QuickModeOrchestrator
 from app.jobs.queue import ArqJobQueue, JobQueue
 from app.providers.fake import FakeProvider
 from app.providers.higgsfield import HiggsfieldProvider
+from app.render.base import Renderer
 from app.render.fake import FakeRenderer
+from app.render.ffmpeg import FfmpegRenderer
 from app.storage.db import create_engine
 from app.storage.objects import S3Storage
 from app.storage.sql_repos import sql_repositories
@@ -38,7 +40,7 @@ def build_services(settings: Settings) -> AppServices:
     """依設定建立正式環境的服務（資料庫 repository、arq 佇列、Redis 事件）。
 
     創作引擎依 CREATIVE_ENGINE 選擇（S10）；設定 HIGGSFIELD_API_KEY 時供應商為 Higgsfield（S12），
-    否則為假實作；合成器仍為假實作（S13 替換）；物件儲存為 S3 相容儲存（S09）。
+    否則為假實作；合成器依 RENDERER 選擇（S13）；物件儲存為 S3 相容儲存（S09）。
     """
     repos = sql_repositories(create_engine(settings))
     storage = S3Storage(settings)
@@ -52,8 +54,9 @@ def build_services(settings: Settings) -> AppServices:
         PromptEngine(AnthropicClaudeClient(settings), settings) if settings.creative_engine == "prompt"
         else FakeCreativeEngine()
     )
+    renderer: Renderer = FfmpegRenderer(settings) if settings.renderer == "ffmpeg" else FakeRenderer()
     orchestrator = QuickModeOrchestrator(OrchestratorDeps(
-        repos=repos, storage=storage, engine=engine, renderer=FakeRenderer(),
+        repos=repos, storage=storage, engine=engine, renderer=renderer,
         image_provider=provider, video_provider=provider, results=provider, events=events,
         cost_table=CostTable.load(settings.cost_table), settings=settings,
     ))

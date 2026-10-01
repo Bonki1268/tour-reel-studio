@@ -7,6 +7,10 @@ from app.domain.ports import Shot, ShotTake, Storage, VideoRecord
 from app.render.timeline import Style
 
 
+class RenderError(Exception):
+    """合成失敗（FFmpeg 錯誤、逾時、素材不存在或輸出不符）；編排據此重試（spec 0013 R-007）。"""
+
+
 class Renderer(Protocol):
     def build_timeline(
         self,

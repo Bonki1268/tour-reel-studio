@@ -15,10 +15,10 @@
 
 | 需求 | 驗收條件 | BDD 場景 | TDD／整合測試 | 實作位置 | 狀態 |
 |---|---|---|---|---|---|
-| R-001 | AC-001 | `S13-01` | `test_r001_*` | `backend/app/render/timeline.py` | TODO |
-| R-002 | AC-002 | `S13-02` | `test_r002_*` | `backend/app/render/ffmpeg.py` | TODO |
-| R-003 | AC-003 | `S13-03` | `test_r003_*` | `backend/app/render/timeline.py` | TODO |
-| R-004 | AC-004 | `S13-04` | `test_r004_*` | `backend/app/render/ffmpeg.py` | TODO |
-| R-005 | AC-005 | `S13-05` | `test_r005_*` | `backend/app/render/timeline.py`、`backend/app/render/ffmpeg.py` | TODO |
-| R-006 | AC-006 | `S13-06` | `test_r006_*` | `backend/app/render/ffmpeg.py`、`backend/app/jobs/orchestrator.py` | TODO |
-| R-007 | AC-007 | `S13-02` | `test_r007_*` | `backend/app/jobs/orchestrator.py` | TODO |
+| R-001 | AC-001 | `S13-01` | `test_r001_*` | `backend/app/render/timeline.py` | done |
+| R-002 | AC-002 | `S13-02` | `test_r002_*` | `backend/app/render/ffmpeg.py` | done |
+| R-003 | AC-003 | `S13-03` | `test_r003_*` | `backend/app/render/timeline.py` | done |
+| R-004 | AC-004 | `S13-04` | `test_r004_*` | `backend/app/render/ffmpeg.py` | done |
+| R-005 | AC-005 | `S13-05` | `test_r005_*` | `backend/app/render/timeline.py`、`backend/app/render/ffmpeg.py` | done |
+| R-006 | AC-006 | `S13-06` | `test_r006_*` | `backend/app/render/ffmpeg.py`、`backend/app/jobs/orchestrator.py` | done |
+| R-007 | AC-007 | `S13-02` | `test_r007_*` | `backend/app/jobs/orchestrator.py` | done |

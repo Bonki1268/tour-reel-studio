@@ -59,4 +59,4 @@ def render(video_id: str, render_id: str) -> str:
 
 
 def render_thumb(video_id: str, render_id: str) -> str:
-    raise NotImplementedError
+    return f"videos/{_seg(video_id)}/renders/{_seg(render_id)}.jpg"
