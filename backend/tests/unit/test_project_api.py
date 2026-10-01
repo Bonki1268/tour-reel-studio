@@ -50,7 +50,8 @@ async def test_r007_unknown_project_is_404(env: ApiEnv) -> None:
 
 def test_r007_openapi_declares_project_out() -> None:
     schema = create_app(ApiEnv().services.settings, ApiEnv().services).openapi()
-    response = schema["paths"]["/projects/{project_id}"]["get"]["responses"]["200"]["content"]["application/json"]
+    responses = schema["paths"]["/projects/{project_id}"]["get"]["responses"]
+    response = responses["200"]["content"]["application/json"]
     assert response["schema"]["$ref"].endswith("/ProjectOut")
     photo = schema["components"]["schemas"]["ScenePhotoOut"]["properties"]
     assert {"url", "width", "height"} <= set(photo)

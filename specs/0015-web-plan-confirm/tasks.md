@@ -16,10 +16,10 @@
 
 | 需求 | 驗收條件 | BDD 場景 | TDD／整合測試 | 實作位置 | 狀態 |
 |---|---|---|---|---|---|
-| R-001 | AC-001 | `S15-01` | — | `apps/web/src/app/projects/[projectId]/page.tsx`、`src/api/*` | TODO |
-| R-002 | AC-002 | `S15-02` | `[S15] sellingPointLabels` | `apps/web/src/components/TopicForm.tsx`、`src/lib/plan.ts` | TODO |
-| R-003 | AC-003 | `S15-03` | `[S15] formatCredits` | `apps/web/src/components/PlanCard.tsx`、`src/lib/format.ts` | TODO |
-| R-004 | AC-004 | `S15-04` | `[S15] placement` | `apps/web/src/components/PlacementEditor.tsx`、`src/lib/placement.ts` | TODO |
-| R-005 | AC-005 | `S15-05` | — | `apps/web/src/components/ApprovePanel.tsx` | TODO |
-| R-006 | AC-006 | `S15-06` | `[S15] buildApproveRequest` | `apps/web/src/lib/approve.ts`、`ApprovePanel.tsx` | TODO |
-| R-007 | AC-007 | `S15-04` | `test_r007_*`（pytest） | `backend/app/api/routes/projects.py`、`schemas.py` | TODO |
+| R-001 | AC-001 | `S15-01` | — | `apps/web/src/app/projects/[projectId]/page.tsx`、`src/api/*` | done |
+| R-002 | AC-002 | `S15-02` | `[S15] sellingPointLabels` | `apps/web/src/components/TopicForm.tsx`、`src/lib/plan.ts` | done |
+| R-003 | AC-003 | `S15-03` | `[S15] formatCredits` | `apps/web/src/components/PlanCard.tsx`、`src/lib/format.ts` | done |
+| R-004 | AC-004 | `S15-04` | `[S15] placement` | `apps/web/src/components/PlacementEditor.tsx`、`src/lib/placement.ts` | done |
+| R-005 | AC-005 | `S15-05` | — | `apps/web/src/components/ApprovePanel.tsx` | done |
+| R-006 | AC-006 | `S15-06` | `[S15] buildApproveRequest` | `apps/web/src/lib/approve.ts`、`ApprovePanel.tsx` | done |
+| R-007 | AC-007 | `S15-04` | `test_r007_*`（pytest） | `backend/app/api/routes/projects.py`、`schemas.py` | done |

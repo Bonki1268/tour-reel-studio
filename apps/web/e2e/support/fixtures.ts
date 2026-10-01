@@ -2,7 +2,8 @@ import { test as base } from "playwright-bdd";
 import { MockApi } from "./mockApi";
 
 export const test = base.extend<{ api: MockApi }>({
-  api: async ({}, use) => {
-    await use(new MockApi());
+  // 第二個參數不命名為 use，避免被 React Hooks 規則誤判
+  api: async ({}, provide) => {
+    await provide(new MockApi());
   },
 });

@@ -48,9 +48,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": true,
-                  "title": "Response Get Project Projects  Project Id  Get"
+                  "$ref": "#/components/schemas/ProjectOut"
                 }
               }
             }
@@ -477,6 +475,76 @@
         ],
         "title": "ApprovePlanIn"
       },
+      "BrandOut": {
+        "properties": {
+          "visual": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Visual"
+          },
+          "selling_points": {
+            "items": {},
+            "type": "array",
+            "title": "Selling Points"
+          },
+          "tone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tone"
+          },
+          "info": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Info"
+          }
+        },
+        "type": "object",
+        "required": [
+          "visual",
+          "selling_points",
+          "info"
+        ],
+        "title": "BrandOut"
+      },
+      "CharacterOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "anchor_card": {
+            "title": "Anchor Card"
+          },
+          "cutout_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cutout Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "version"
+        ],
+        "title": "CharacterOut",
+        "description": "鎖定的角色版本；cutout_url 為去背圖的預簽名網址（spec 0015 R-007）。"
+      },
       "DownloadOut": {
         "properties": {
           "url": {
@@ -592,6 +660,91 @@
           "estimate"
         ],
         "title": "PlanOut"
+      },
+      "ProjectOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "brand": {
+            "$ref": "#/components/schemas/BrandOut"
+          },
+          "character": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CharacterOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "scene_photos": {
+            "items": {
+              "$ref": "#/components/schemas/ScenePhotoOut"
+            },
+            "type": "array",
+            "title": "Scene Photos"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "brand",
+          "character",
+          "scene_photos"
+        ],
+        "title": "ProjectOut"
+      },
+      "ScenePhotoOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "image_key": {
+            "type": "string",
+            "title": "Image Key"
+          },
+          "width": {
+            "type": "integer",
+            "title": "Width"
+          },
+          "height": {
+            "type": "integer",
+            "title": "Height"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "default": ""
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "image_key",
+          "width",
+          "height"
+        ],
+        "title": "ScenePhotoOut"
       },
       "ShotOut": {
         "properties": {

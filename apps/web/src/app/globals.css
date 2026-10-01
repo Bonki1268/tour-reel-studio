@@ -1,10 +1,151 @@
 :root {
   color-scheme: light;
   font-family: system-ui, "PingFang TC", "Noto Sans TC", sans-serif;
+  --accent: #6b8e23;
+  --border: #ddd6c8;
 }
 
 body {
   margin: 0;
   background: #f7f5f0;
   color: #222;
+}
+
+.page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #777;
+  font-size: 0.85rem;
+}
+
+h1 {
+  margin: 4px 0 16px;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.primary {
+  background: var(--accent);
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 18px;
+}
+
+.topic-form {
+  display: grid;
+  gap: 10px;
+}
+
+.topic-form input {
+  font: inherit;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chips button {
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  background: #fff;
+  border-radius: 999px;
+  padding: 4px 12px;
+}
+
+.status {
+  color: #555;
+}
+
+.plans {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.plan-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.plan-card.selected {
+  border: 2px solid var(--accent);
+}
+
+.plan-card .shots {
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+}
+
+.plan-card .shots li {
+  display: grid;
+}
+
+.plan-card .subtitle {
+  color: #666;
+}
+
+.estimate {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 12px;
+}
+
+.estimate dd {
+  margin: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.placements {
+  margin-top: 28px;
+}
+
+.editors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.placement {
+  margin: 0;
+}
+
+.placement figcaption {
+  display: grid;
+  gap: 4px;
+  font-size: 0.9rem;
+}
+
+.approve {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+  margin-top: 20px;
+}
+
+.error {
+  color: #b42318;
 }

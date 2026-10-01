@@ -15,12 +15,30 @@ export type ApproveRequest = {
 };
 
 export function buildApproveRequest(input: ApproveInput): ApproveRequest {
-  throw new Error("not implemented");
+  if (!input.idempotencyKey) throw new Error("核准請求必須帶 Idempotency-Key");
+  return {
+    url: `/api/videos/${encodeURIComponent(input.videoId)}/approve-plan`,
+    init: {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Idempotency-Key": input.idempotencyKey },
+      body: JSON.stringify({ plan_id: input.planId, cost_cap: input.costCap, placements: input.placements }),
+    },
+  };
 }
 
 /** 同一企劃重送沿用同一個 Idempotency-Key；改選企劃時產生新的。 */
 export function createApproveSession(newKey: () => string = () => crypto.randomUUID()): {
   keyFor(planId: string): string;
 } {
-  throw new Error("not implemented");
+  const keys = new Map<string, string>();
+  return {
+    keyFor(planId) {
+      let key = keys.get(planId);
+      if (!key) {
+        key = newKey();
+        keys.set(planId, key);
+      }
+      return key;
+    },
+  };
 }

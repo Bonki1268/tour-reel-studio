@@ -1,6 +1,6 @@
 {
   "$comment": "由 scripts/tdd.py 維護，請勿手動修改。spec 為各步驟對應的 spec package。",
-  "current": "S15",
+  "current": "S16",
   "steps": [
     {
       "id": "S00",
@@ -294,7 +294,14 @@
       ],
       "min_unit": 2,
       "spec": "specs/0015-web-plan-confirm",
-      "red_at": "2026-10-01T11:46:16+08:00"
+      "red_at": "2026-10-01T11:46:16+08:00",
+      "status": "done",
+      "done_at": "2026-10-01T11:51:33+08:00",
+      "gate": {
+        "tests": 473,
+        "scenarios": 81,
+        "unit_tests": 22
+      }
     },
     {
       "id": "S16",
@@ -453,6 +460,13 @@
       "tests": 444,
       "scenarios": 75,
       "unit_tests": 33
+    },
+    {
+      "step": "S15",
+      "done_at": "2026-10-01T11:51:33+08:00",
+      "tests": 473,
+      "scenarios": 81,
+      "unit_tests": 22
     }
   ]
 }

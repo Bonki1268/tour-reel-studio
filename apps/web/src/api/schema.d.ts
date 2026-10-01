@@ -206,6 +206,35 @@ export interface components {
                 [key: string]: components["schemas"]["PlacementIn"];
             } | null;
         };
+        /** BrandOut */
+        BrandOut: {
+            /** Visual */
+            visual: {
+                [key: string]: unknown;
+            };
+            /** Selling Points */
+            selling_points: unknown[];
+            /** Tone */
+            tone?: string | null;
+            /** Info */
+            info: {
+                [key: string]: unknown;
+            };
+        };
+        /**
+         * CharacterOut
+         * @description 鎖定的角色版本；cutout_url 為去背圖的預簽名網址（spec 0015 R-007）。
+         */
+        CharacterOut: {
+            /** Id */
+            id: string;
+            /** Version */
+            version: number;
+            /** Anchor Card */
+            anchor_card?: unknown;
+            /** Cutout Url */
+            cutout_url?: string | null;
+        };
         /** DownloadOut */
         DownloadOut: {
             /** Url */
@@ -256,6 +285,35 @@ export interface components {
                 [key: string]: unknown;
             };
             estimate: components["schemas"]["EstimateOut"];
+        };
+        /** ProjectOut */
+        ProjectOut: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            brand: components["schemas"]["BrandOut"];
+            character: components["schemas"]["CharacterOut"] | null;
+            /** Scene Photos */
+            scene_photos: components["schemas"]["ScenePhotoOut"][];
+        };
+        /** ScenePhotoOut */
+        ScenePhotoOut: {
+            /** Id */
+            id: string;
+            /** Image Key */
+            image_key: string;
+            /** Width */
+            width: number;
+            /** Height */
+            height: number;
+            /**
+             * Description
+             * @default
+             */
+            description: string;
+            /** Url */
+            url?: string | null;
         };
         /** ShotOut */
         ShotOut: {
@@ -371,9 +429,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        [key: string]: unknown;
-                    };
+                    "application/json": components["schemas"]["ProjectOut"];
                 };
             };
             /** @description Validation Error */

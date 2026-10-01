@@ -105,6 +105,8 @@ Given("已選擇第 {int} 個企劃", async ({ page, api }, n: number) => {
 
 When("在第 {int} 鏡的實景照上把角色拖到右下方", async ({ page }, n: number) => {
   const canvas = page.getByTestId(`placement-shot-${n}`).locator("canvas").first();
+  // 擺放區在企劃卡下方，先像使用者一樣捲動到可視範圍
+  await canvas.scrollIntoViewIfNeeded();
   const box = (await canvas.boundingBox())!;
   const initial = plans[0].payload.shots[n - 1].placement;
   // 從角色身體中段按下（腳底上方 1/4 身高），拖到照片右下方
