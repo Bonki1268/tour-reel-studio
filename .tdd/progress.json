@@ -288,11 +288,13 @@
       "title": "前端：選題與企劃確認",
       "milestone": "M3",
       "suites": [
+        "py",
         "web",
         "e2e"
       ],
       "min_unit": 2,
-      "spec": "specs/0015-web-plan-confirm"
+      "spec": "specs/0015-web-plan-confirm",
+      "red_at": "2026-10-01T11:46:16+08:00"
     },
     {
       "id": "S16",

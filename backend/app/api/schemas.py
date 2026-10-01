@@ -74,3 +74,36 @@ class VideoOut(BaseModel):
 class DownloadOut(BaseModel):
     url: str
     expires_at: datetime
+
+
+class CharacterOut(BaseModel):
+    """鎖定的角色版本；cutout_url 為去背圖的預簽名網址（spec 0015 R-007）。"""
+
+    id: str
+    version: int
+    anchor_card: Any = None
+    cutout_url: str | None = None
+
+
+class ScenePhotoOut(BaseModel):
+    id: str
+    image_key: str
+    width: int
+    height: int
+    description: str = ""
+    url: str | None = None
+
+
+class BrandOut(BaseModel):
+    visual: dict[str, Any]
+    selling_points: list[Any]
+    tone: str | None = None
+    info: dict[str, Any]
+
+
+class ProjectOut(BaseModel):
+    id: str
+    name: str
+    brand: BrandOut
+    character: CharacterOut | None
+    scene_photos: list[ScenePhotoOut]
