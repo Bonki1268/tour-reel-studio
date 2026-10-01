@@ -31,6 +31,13 @@ class ApprovePlanIn(BaseModel):
     placements: dict[int, PlacementIn] | None = None
 
 
+class RegenerateIn(BaseModel):
+    """重生單鏡；cost_cap 為使用者同意提高後的成本上限（spec 0016 R-007）。"""
+
+    model_config = ConfigDict(extra="forbid")
+    cost_cap: Decimal | None = Field(default=None, gt=0)
+
+
 class EstimateOut(BaseModel):
     total: Decimal
     reserve: Decimal
@@ -56,6 +63,7 @@ class ShotOut(BaseModel):
     duration_s: float
     placement: dict[str, Any] | None
     take: TakeOut | None
+    regen_cost: Decimal = Decimal(0)  # 該鏡完整重生（關鍵幀＋影片）的預估點數（spec 0016 R-007）
 
 
 class VideoOut(BaseModel):

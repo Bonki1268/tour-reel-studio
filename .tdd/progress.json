@@ -308,11 +308,13 @@
       "title": "前端：進度與成品確認",
       "milestone": "M3",
       "suites": [
+        "py",
         "web",
         "e2e"
       ],
       "min_unit": 2,
-      "spec": "specs/0016-web-progress-review"
+      "spec": "specs/0016-web-progress-review",
+      "red_at": "2026-10-01T12:00:04+08:00"
     },
     {
       "id": "S17",

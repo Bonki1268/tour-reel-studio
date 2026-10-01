@@ -156,3 +156,8 @@ def check_before_submit(video: Video, approval: Approval, current_input: object)
     except ApprovalInvalidated:
         video.apply(VideoEvent.APPROVAL_INVALIDATED)
         raise
+
+
+def raise_cap(previous: Approval, cost_cap: Decimal, approved_by: str) -> Approval:
+    """使用者同意提高成本上限：沿用企劃核准的輸入雜湊，記錄新的上限（spec 0016 R-007）。"""
+    raise NotImplementedError
