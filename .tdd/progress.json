@@ -1,6 +1,6 @@
 {
   "$comment": "由 scripts/tdd.py 維護，請勿手動修改。spec 為各步驟對應的 spec package。",
-  "current": "S12",
+  "current": "S13",
   "steps": [
     {
       "id": "S00",
@@ -238,7 +238,14 @@
       ],
       "min_unit": 3,
       "spec": "specs/0012-higgsfield-adapter",
-      "red_at": "2026-10-01T11:02:26+08:00"
+      "red_at": "2026-10-01T11:02:26+08:00",
+      "status": "done",
+      "done_at": "2026-10-01T11:05:06+08:00",
+      "gate": {
+        "tests": 367,
+        "scenarios": 65,
+        "unit_tests": 68
+      }
     },
     {
       "id": "S13",
@@ -407,6 +414,13 @@
       "tests": 289,
       "scenarios": 58,
       "unit_tests": 26
+    },
+    {
+      "step": "S12",
+      "done_at": "2026-10-01T11:05:06+08:00",
+      "tests": 367,
+      "scenarios": 65,
+      "unit_tests": 68
     }
   ]
 }

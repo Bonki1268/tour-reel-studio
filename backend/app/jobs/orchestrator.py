@@ -4,11 +4,14 @@
 """
 
 import asyncio
+import io
 from collections.abc import Awaitable, Callable, Mapping
 from dataclasses import asdict, dataclass
 from datetime import datetime
 from decimal import Decimal
 from typing import Any
+
+from PIL import Image
 
 from app.config import Settings
 from app.creative.base import CreativeEngine, PlanContext, PlanDraft, ShotDraft
@@ -28,8 +31,10 @@ from app.domain.video import Video, VideoEvent, VideoStatus, utc_now
 from app.jobs.events import EventPublisher, ProgressEvent
 from app.jobs.generation import GenerationContext, JobSpec, run_generation_job
 from app.providers.base import ImageProvider, ResultSource, VideoProvider
+from app.providers.composite import Placement, PlacementError, build_compose_request, composite, to_png
 from app.render.base import Renderer
 from app.storage import keys
+from app.storage.objects import ObjectNotFound
 
 PLAN_COUNT = range(2, 4)  # 創作引擎須提出 2～3 個企劃
 ASPECT_RATIO = "9:16"
@@ -41,6 +46,10 @@ class NotFound(KeyError):
 
     def __str__(self) -> str:
         return str(self.args[0]) if self.args else "資料不存在"
+
+
+class ShotAssetMissing(Exception):
+    """B1 粗合成需要的實景照、角色去背圖或身份板不存在。"""
 
 
 class PlanningFailed(Exception):
@@ -221,10 +230,18 @@ class QuickModeOrchestrator:
         take = await self._current_take(shot)
         prompt = shot.prompt or {}
         await self._publish("shot_started", video.id, shot.shot_no)
+        try:
+            keyframe_input = await self._prepare_keyframe(
+                video, shot, take, prompt.get("keyframe_prompt", "")
+            )
+        except (PlacementError, ShotAssetMissing, ObjectNotFound) as e:
+            # 擺放或素材有誤：不送出任何供應商請求，該鏡失敗（spec 0012 R-008）
+            if video.video.status == VideoStatus.GENERATING:
+                await self._apply(video, VideoEvent.SHOT_FAILED_FINAL)
+            await self._publish("shot_failed", video.id, shot.shot_no, reason=str(e))
+            return False
         keyframe = await run_generation_job(gctx, JobSpec(
-            video, shot, take, JobKind.KEYFRAME, approval, approval_input,
-            {"shot_no": shot.shot_no, "prompt": prompt.get("keyframe_prompt", ""),
-             "scene_photo_id": shot.scene_photo_id, "placement": shot.placement},
+            video, shot, take, JobKind.KEYFRAME, approval, approval_input, keyframe_input,
         ))
         if keyframe.status != JobStatus.STORED:
             await self._publish("shot_failed", video.id, shot.shot_no, job_id=keyframe.id)
@@ -235,13 +252,42 @@ class QuickModeOrchestrator:
         clip = await run_generation_job(gctx, JobSpec(
             video, shot, take, JobKind.VIDEO, approval, approval_input,
             {"shot_no": shot.shot_no, "prompt": prompt.get("video_prompt", ""),
-             "keyframe_key": take.keyframe_key},
+             "keyframe_key": take.keyframe_key, "duration_s": shot.duration_s},
         ))
         if clip.status != JobStatus.STORED:
             await self._publish("shot_failed", video.id, shot.shot_no, job_id=clip.id)
             return False
         await self._publish("shot_done", video.id, shot.shot_no)
         return True
+
+    async def _prepare_keyframe(
+        self, video: VideoRecord, shot: Shot, take: ShotTake, keyframe_prompt: str
+    ) -> dict[str, Any]:
+        """B1：依擺放產生粗合成圖與遮罩並存入自有儲存，回傳精修合成請求（S11）作為關鍵幀工作輸入。"""
+        placement = Placement.from_mapping(shot.placement or {})
+        photo = next((p for p in await self.repos.scene_photos.list(video.project_id)
+                      if p.id == shot.scene_photo_id), None)
+        version = await self.repos.characters.locked_version(video.project_id)
+        if photo is None or version is None or not version.cutout_key or not version.identity_board_key:
+            raise ShotAssetMissing(f"第 {shot.shot_no} 鏡缺少實景照或已鎖定的角色素材")
+        storage = self.deps.storage
+        photo_bytes, cutout_bytes = await storage.get(photo.image_key), await storage.get(version.cutout_key)
+
+        def render() -> tuple[bytes, bytes]:
+            photo_img = Image.open(io.BytesIO(photo_bytes))
+            result = composite(photo_img, Image.open(io.BytesIO(cutout_bytes)), placement)
+            return to_png(result.rough), to_png(result.mask)
+
+        rough_png, mask_png = await asyncio.to_thread(render)
+        rough_key = keys.rough(video.id, shot.shot_no, take.attempt)
+        mask_key = keys.mask(video.id, shot.shot_no, take.attempt)
+        await storage.put(rough_key, rough_png, "image/png")
+        await storage.put(mask_key, mask_png, "image/png")
+        request = build_compose_request(
+            rough_key=rough_key, mask_key=mask_key, identity_board_key=version.identity_board_key,
+            keyframe_prompt=keyframe_prompt,
+        )
+        return {"shot_no": shot.shot_no, **request.to_input()}
 
     async def _render(self, video: VideoRecord) -> None:
         await self._publish("render_started", video.id)

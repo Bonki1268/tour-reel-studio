@@ -16,11 +16,11 @@
 
 | 需求 | 驗收條件 | BDD 場景 | TDD／整合測試 | 實作位置 | 狀態 |
 |---|---|---|---|---|---|
-| R-001 | AC-001 | `S12-01` | `test_r001_*` | `backend/app/providers/higgsfield.py` | TODO |
-| R-002 | AC-002 | `S12-02` | `test_r002_*` | `backend/app/providers/higgsfield.py` | TODO |
-| R-003 | AC-003 | `S12-03` | `test_r003_*` | `backend/app/providers/higgsfield.py` | TODO |
-| R-004 | AC-004 | `S12-04` | — | `backend/app/providers/higgsfield.py` | TODO |
-| R-005 | AC-005 | `S12-05` | `test_r005_*` | `backend/app/providers/webhook.py`、`backend/app/api/routes/webhooks.py` | TODO |
-| R-006 | AC-006 | `S12-06` | `test_r006_*` | `backend/app/providers/higgsfield.py` | TODO |
-| R-007 | AC-007 | `S12-07` | `test_r006_error_message_excludes_key` | `backend/app/providers/higgsfield.py` | TODO |
-| R-008 | AC-008 | `S12-02` | `test_r008_*` | `backend/app/jobs/orchestrator.py` | TODO |
+| R-001 | AC-001 | `S12-01` | `test_r001_*` | `backend/app/providers/higgsfield.py` | done |
+| R-002 | AC-002 | `S12-02` | `test_r002_*` | `backend/app/providers/higgsfield.py` | done |
+| R-003 | AC-003 | `S12-03` | `test_r003_*` | `backend/app/providers/higgsfield.py` | done |
+| R-004 | AC-004 | `S12-04` | — | `backend/app/providers/higgsfield.py` | done |
+| R-005 | AC-005 | `S12-05` | `test_r005_*` | `backend/app/providers/webhook.py`、`backend/app/api/routes/webhooks.py` | done |
+| R-006 | AC-006 | `S12-06` | `test_r006_*` | `backend/app/providers/higgsfield.py` | done |
+| R-007 | AC-007 | `S12-07` | `test_r006_error_message_excludes_key`、`test_r007_*` | `backend/app/providers/higgsfield.py` | done |
+| R-008 | AC-008 | `S12-02` | `test_r008_*` | `backend/app/jobs/orchestrator.py` | done |

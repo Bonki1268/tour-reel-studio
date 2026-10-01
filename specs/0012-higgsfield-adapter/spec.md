@@ -1,6 +1,6 @@
 # Higgsfield adapter
 
-狀態： approved
+狀態： implemented
 版本：v1
 關聯開發步驟：S12
 核准者／時間：bonki

@@ -16,6 +16,7 @@ from app.jobs.events import EventBus, RedisEventBus
 from app.jobs.orchestrator import OrchestratorDeps, QuickModeOrchestrator
 from app.jobs.queue import ArqJobQueue, JobQueue
 from app.providers.fake import FakeProvider
+from app.providers.higgsfield import HiggsfieldProvider
 from app.render.fake import FakeRenderer
 from app.storage.db import create_engine
 from app.storage.objects import S3Storage
@@ -36,13 +37,17 @@ class AppServices:
 def build_services(settings: Settings) -> AppServices:
     """依設定建立正式環境的服務（資料庫 repository、arq 佇列、Redis 事件）。
 
-    創作引擎依 CREATIVE_ENGINE 選擇（S10）；供應商與合成器仍為假實作（S12、S13 替換）；
-    物件儲存為 S3 相容儲存（S09）。
+    創作引擎依 CREATIVE_ENGINE 選擇（S10）；設定 HIGGSFIELD_API_KEY 時供應商為 Higgsfield（S12），
+    否則為假實作；合成器仍為假實作（S13 替換）；物件儲存為 S3 相容儲存（S09）。
     """
     repos = sql_repositories(create_engine(settings))
     storage = S3Storage(settings)
     events = RedisEventBus(settings.redis_url)
-    provider = FakeProvider()
+    key = settings.higgsfield_api_key
+    provider: FakeProvider | HiggsfieldProvider = (
+        HiggsfieldProvider(settings, storage) if key is not None and key.get_secret_value().strip()
+        else FakeProvider()
+    )
     engine: CreativeEngine = (
         PromptEngine(AnthropicClaudeClient(settings), settings) if settings.creative_engine == "prompt"
         else FakeCreativeEngine()
