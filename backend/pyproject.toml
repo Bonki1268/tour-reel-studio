@@ -31,6 +31,7 @@ boto3-stubs = {version = "^1.35", extras = ["s3"]}
 respx = "^0.23.1"
 opencv-python-headless = "^5.0.0.93"
 numpy = ">=2,<2.3"
+types-qrcode = "^8.2.0.20260518"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

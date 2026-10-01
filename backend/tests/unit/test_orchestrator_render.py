@@ -46,7 +46,8 @@ async def test_r006_timeline_uses_brand_color_and_validates() -> None:
     assert video is not None
     timeline = Timeline.model_validate(video.timeline)
     assert timeline.style.primary_color == "#6B8E23"  # 品牌檔案的第一個顏色
-    assert len(timeline.video_clips) == 3
+    # S14 起時間軸最後接上片尾（spec 0014 R-007）
+    assert [c.source for c in timeline.video_clips] == ["ai_composite"] * 3 + ["template"]
 
 
 async def test_r007_render_retry_then_success() -> None:

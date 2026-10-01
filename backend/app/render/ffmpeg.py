@@ -19,7 +19,7 @@ from pydantic import ValidationError
 from app.config import Settings
 from app.domain.ports import Shot, ShotTake, Storage, VideoRecord
 from app.render.base import RenderError
-from app.render.outro import OutroInfo
+from app.render.outro import OutroInfo, card_to_clip_command, make_card
 from app.render.timeline import Style, Timeline, timeline_from_shots, to_ass
 from app.storage.objects import ObjectNotFound
 
@@ -201,4 +201,10 @@ class FfmpegRenderer:
                     time.monotonic() - started)
 
     async def render_outro(self, info: OutroInfo, storage: Storage, key: str) -> None:
-        raise NotImplementedError
+        """片尾卡 → 3 秒、1080×1920、30fps 的 H.264 影片段（無音軌）。"""
+        card = await asyncio.to_thread(make_card, info)
+        with tempfile.TemporaryDirectory(prefix="trs-outro-") as tmp:
+            png, mp4 = Path(tmp) / "outro.png", Path(tmp) / "outro.mp4"
+            card.image.save(png, "PNG")
+            await _run(card_to_clip_command(png, mp4), self.settings.render_timeout_s)
+            await storage.put(key, mp4.read_bytes(), "video/mp4")

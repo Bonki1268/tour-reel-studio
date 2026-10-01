@@ -28,4 +28,4 @@ class FakeRenderer:
             await storage.put(thumb_key, b"", "image/jpeg")
 
     async def render_outro(self, info: OutroInfo, storage: Storage, key: str) -> None:
-        raise NotImplementedError
+        await storage.put(key, b"", "video/mp4")

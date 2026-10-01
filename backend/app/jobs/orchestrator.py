@@ -33,6 +33,7 @@ from app.jobs.generation import GenerationContext, JobSpec, run_generation_job
 from app.providers.base import ImageProvider, ResultSource, VideoProvider
 from app.providers.composite import Placement, PlacementError, build_compose_request, composite, to_png
 from app.render.base import Renderer, RenderError
+from app.render.outro import outro_info, parse_color
 from app.render.timeline import Style
 from app.storage import keys
 from app.storage.objects import ObjectNotFound
@@ -292,19 +293,28 @@ class QuickModeOrchestrator:
         return {"shot_no": shot.shot_no, **request.to_input()}
 
     async def _render(self, video: VideoRecord) -> None:
-        """依時間軸 JSON 合成；失敗自動重試 1 次，仍失敗則進入 needs_attention（架構書 §6.1；spec 0013）。"""
+        """產生片尾（S14）→ 依時間軸 JSON 合成；失敗自動重試 1 次，仍失敗則進入 needs_attention
+        （架構書 §6.1；spec 0013、0014）。"""
         await self._publish("render_started", video.id)
         shots = await self.repos.shots.list_shots(video.id)
         pairs = [(s, await self._current_take(s)) for s in shots]
-        style = await self._style(video.project_id)
+        found = await self.repos.projects.get(video.project_id)
+        outro = await outro_info(found[0], found[1], self.deps.storage) if found else None
+        style = Style(primary_color="#{:02X}{:02X}{:02X}".format(*parse_color(outro.primary_color))) \
+            if outro else Style()
+        outro_key = keys.outro(video.id) if outro else None
         bgm_key = self.deps.settings.bgm_key or None
-        timeline = self.deps.renderer.build_timeline(video, pairs, style=style, bgm_key=bgm_key)
+        timeline = self.deps.renderer.build_timeline(
+            video, pairs, style=style, outro_key=outro_key, bgm_key=bgm_key
+        )
         video.timeline = timeline
         render = Render(new_id(), video.id, ASPECT_RATIO, "", SUBTITLE_LANG)
         render.mp4_key = keys.render(video.id, render.id)
         render.thumb_key = keys.render_thumb(video.id, render.id)
         for attempt in range(1, RENDER_ATTEMPTS + 1):
             try:
+                if outro is not None and outro_key is not None:
+                    await self.deps.renderer.render_outro(outro, self.deps.storage, outro_key)
                 await self.deps.renderer.render(timeline, self.deps.storage, render.mp4_key, render.thumb_key)
                 break
             except RenderError as e:
@@ -317,17 +327,6 @@ class QuickModeOrchestrator:
         await self.repos.renders.add(render)
         await self._apply(video, VideoEvent.RENDER_DONE)
         await self._publish("review_ready", video.id, render_id=render.id, mp4_key=render.mp4_key)
-
-    async def _style(self, project_id: str) -> Style:
-        """字幕描邊用品牌主色（品牌檔案的第一個顏色）；沒有或格式不符時用預設值。"""
-        found = await self.repos.projects.get(project_id)
-        colors = found[1].visual.get("colors") if found else None
-        if isinstance(colors, list) and colors and isinstance(colors[0], str):
-            try:
-                return Style(primary_color=colors[0])
-            except ValueError:
-                pass
-        return Style()
 
     # 成品確認
 
