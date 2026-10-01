@@ -1,5 +1,6 @@
 """資料庫版 repository（spec 0005）。ORM 與領域物件的轉換集中在這裡。"""
 
+from collections.abc import Iterable
 from dataclasses import fields
 from datetime import datetime
 from typing import Any, TypeVar
@@ -171,6 +172,9 @@ class SqlShotRepository:
         async with self._sessions.begin() as s:
             await s.merge(ShotTakeRow(**_values(take)))
 
+    async def get_take(self, take_id: str) -> ShotTake | None:
+        raise NotImplementedError
+
 
 def _job_from_row(row: GenerationJobRow) -> GenerationJob:
     job = _from_row(GenerationJob, row)
@@ -219,6 +223,14 @@ class SqlGenerationJobRepository:
         async with self._sessions.begin() as s:
             await s.merge(GenerationJobRow(**_values(job)))
 
+    async def update_if(self, job: GenerationJob, expected: str) -> bool:
+        raise NotImplementedError
+
+    async def list_by_status(self, statuses: Iterable[str]) -> list[GenerationJob]:
+        raise NotImplementedError
+
+    async def get_by_provider_key(self, key: str) -> GenerationJob | None:
+        raise NotImplementedError
 
 class SqlApprovalRepository:
     def __init__(self, sessions: Sessions) -> None:

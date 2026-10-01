@@ -349,7 +349,8 @@
         "py"
       ],
       "min_unit": 2,
-      "spec": "specs/0018-demo-reliability"
+      "spec": "specs/0018-demo-reliability",
+      "red_at": "2026-10-01T19:56:35+08:00"
     },
     {
       "id": "S19",

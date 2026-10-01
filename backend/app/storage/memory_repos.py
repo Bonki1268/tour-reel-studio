@@ -3,6 +3,7 @@
 寫入與讀出都深複製，行為與資料庫版一致：呼叫端之後修改物件，不影響已儲存的內容。
 """
 
+from collections.abc import Iterable
 from copy import deepcopy
 from dataclasses import replace
 from typing import TypeVar
@@ -102,6 +103,9 @@ class MemoryShotRepository:
         index = next(i for i, t in enumerate(takes) if t.id == take.id)
         takes[index] = _copy(take)
 
+    async def get_take(self, take_id: str) -> ShotTake | None:
+        raise NotImplementedError
+
 
 class MemoryGenerationJobRepository:
     def __init__(self) -> None:
@@ -128,6 +132,14 @@ class MemoryGenerationJobRepository:
             raise ValueError(f"冪等鍵 {job.idempotency_key} 已屬於其他工作")
         self._by_key[job.idempotency_key] = _copy(job)
 
+    async def update_if(self, job: GenerationJob, expected: str) -> bool:
+        raise NotImplementedError
+
+    async def list_by_status(self, statuses: Iterable[str]) -> list[GenerationJob]:
+        raise NotImplementedError
+
+    async def get_by_provider_key(self, key: str) -> GenerationJob | None:
+        raise NotImplementedError
 
 class MemoryApprovalRepository:
     def __init__(self) -> None:

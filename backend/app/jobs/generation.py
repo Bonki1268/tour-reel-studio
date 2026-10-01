@@ -236,3 +236,7 @@ async def _store(ctx: GenerationContext, spec: JobSpec, job: GenerationJob, resu
     entry = ctx.budget.record(job.id, spec.kind, job.model, result.actual_cost, ctx.cost_table)
     if entry is not None:
         await ctx.repos.costs.add(spec.video.id, entry)
+
+
+async def complete_job(ctx: GenerationContext, job: GenerationJob, result: ProviderResult) -> bool:
+    raise NotImplementedError
