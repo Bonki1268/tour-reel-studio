@@ -38,6 +38,9 @@ class Settings(BaseSettings):
     render_timeout_s: float = Field(default=120, gt=0)
     generation_timeout_s: float = Field(default=600, gt=0)  # 自 submitted 起算（S06）
     generation_poll_interval_s: float = Field(default=5, gt=0)
+    # 保底成品（S18）：自有儲存中的物件路徑；生成超過門檻秒數時 GET /videos/{id} 回傳 fallback_url
+    demo_fallback_video: str = ""
+    demo_fallback_after_s: float = Field(default=420, gt=0)
     # 預設值對應 infra/docker-compose.test.yml 的本機測試 Redis（S08）
     redis_url: str = "redis://localhost:56379/0"
     presign_ttl_s: int = Field(default=900, gt=0, le=900)  # 預簽名網址有效期，上限 15 分鐘（S08）

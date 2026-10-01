@@ -393,6 +393,8 @@ export interface components {
             spent: string;
             /** Preview Url */
             preview_url?: string | null;
+            /** Fallback Url */
+            fallback_url?: string | null;
         };
     };
     responses: never;

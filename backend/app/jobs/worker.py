@@ -18,10 +18,11 @@ from app.domain.cost import BudgetExceeded
 from app.domain.video import InvalidTransition
 from app.jobs.events import ProgressEvent
 from app.jobs.orchestrator import PlanningFailed
+from app.jobs.recovery import process_webhook, recover
 
 log = logging.getLogger(__name__)
 
-JOB_NAMES = ("plan_video", "generate_video", "regenerate_plans", "regenerate_shot")
+JOB_NAMES = ("plan_video", "generate_video", "regenerate_plans", "regenerate_shot", "process_webhook")
 
 # 業務上可預期的失敗：影片狀態已由編排處理，發布 job_failed 事件後不再拋出
 _EXPECTED = (ApprovalInvalidated, BudgetExceeded, PlanningFailed, InvalidTransition)
@@ -40,6 +41,8 @@ async def run_job(services: AppServices, name: str, **kwargs: Any) -> None:
             await orch.regenerate_plans(video_id)
         elif name == "regenerate_shot":
             await orch.regenerate_shot(video_id, int(kwargs["shot_no"]))
+        elif name == "process_webhook":
+            await process_webhook(orch.deps, str(kwargs["job_id"]))
         else:
             raise ValueError(f"未知的工作：{name}")
     except _EXPECTED as e:
@@ -64,8 +67,17 @@ def arq_functions() -> list[Function]:
     return [func(_arq_job(n), name=n) for n in JOB_NAMES]
 
 
+async def startup_recovery(services: AppServices) -> None:
+    """Worker 啟動時接續進行中的工作（spec 0018 R-005）；失敗只記錄，不阻止 Worker 啟動。"""
+    try:
+        await recover(services.repos, services.queue, services.settings, services.clock)
+    except Exception:
+        log.exception("恢復掃描失敗")
+
+
 async def _startup(ctx: dict[str, Any]) -> None:
     ctx["services"] = build_services(load_settings())
+    await startup_recovery(ctx["services"])
 
 
 class WorkerSettings:

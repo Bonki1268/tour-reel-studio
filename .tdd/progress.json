@@ -1,6 +1,6 @@
 {
   "$comment": "由 scripts/tdd.py 維護，請勿手動修改。spec 為各步驟對應的 spec package。",
-  "current": "S18",
+  "current": "S19",
   "steps": [
     {
       "id": "S00",
@@ -350,7 +350,14 @@
       ],
       "min_unit": 2,
       "spec": "specs/0018-demo-reliability",
-      "red_at": "2026-10-01T19:56:35+08:00"
+      "red_at": "2026-10-01T19:56:35+08:00",
+      "status": "done",
+      "done_at": "2026-10-01T20:01:25+08:00",
+      "gate": {
+        "tests": 556,
+        "scenarios": 96,
+        "unit_tests": 25
+      }
     },
     {
       "id": "S19",
@@ -499,6 +506,13 @@
       "tests": 526,
       "scenarios": 91,
       "unit_tests": 23
+    },
+    {
+      "step": "S18",
+      "done_at": "2026-10-01T20:01:25+08:00",
+      "tests": 556,
+      "scenarios": 96,
+      "unit_tests": 25
     }
   ]
 }

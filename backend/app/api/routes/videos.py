@@ -24,6 +24,7 @@ from app.api.schemas import (
 from app.api.services import AppServices
 from app.api.sse import sse_stream
 from app.domain.cost import CostTableError, JobKind
+from app.domain.fallback import fallback_due
 from app.domain.ports import VideoRecord
 from app.domain.video import VideoEvent, VideoStatus, check_transition
 from app.jobs.orchestrator import NotFound
@@ -72,8 +73,19 @@ async def video_out(svc: AppServices, video_id: str) -> VideoOut:
     return VideoOut(
         id=video.id, project_id=video.project_id, status=video.video.status, topic=video.topic, plans=plans,
         selected_plan_id=video.selected_plan_id, shots=shots, cost_cap=video.cost_cap, spent=spent,
-        preview_url=preview,
+        preview_url=preview, fallback_url=await _fallback_url(svc, video, has_render=bool(renders)),
     )
+
+
+async def _fallback_url(svc: AppServices, video: VideoRecord, *, has_render: bool) -> str | None:
+    """保底成品（spec 0018 R-006）：已設定、物件存在且生成超過展示門檻時回傳預簽名網址；不改變任何狀態。"""
+    s = svc.settings
+    key = s.demo_fallback_video.strip()
+    if not key or not fallback_due(video.video, svc.clock(), s.demo_fallback_after_s, has_render=has_render):
+        return None
+    if not await svc.storage.exists(key):
+        return None
+    return (await svc.storage.presign_get(key, s.presign_ttl_s)).url
 
 
 def _json(model: VideoOut) -> dict[str, Any]:

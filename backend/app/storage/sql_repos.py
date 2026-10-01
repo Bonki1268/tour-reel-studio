@@ -5,7 +5,7 @@ from dataclasses import fields
 from datetime import datetime
 from typing import Any, TypeVar
 
-from sqlalchemy import func, select
+from sqlalchemy import func, select, update
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
@@ -173,7 +173,9 @@ class SqlShotRepository:
             await s.merge(ShotTakeRow(**_values(take)))
 
     async def get_take(self, take_id: str) -> ShotTake | None:
-        raise NotImplementedError
+        async with self._sessions() as s:
+            row = await s.get(ShotTakeRow, take_id)
+            return None if row is None else _from_row(ShotTake, row)
 
 
 def _job_from_row(row: GenerationJobRow) -> GenerationJob:
@@ -224,13 +226,28 @@ class SqlGenerationJobRepository:
             await s.merge(GenerationJobRow(**_values(job)))
 
     async def update_if(self, job: GenerationJob, expected: str) -> bool:
-        raise NotImplementedError
+        """單一 UPDATE … WHERE status = :expected：多個行程同時寫入時只有一個成功（spec 0018 R-004）。"""
+        async with self._sessions.begin() as s:
+            updated = await s.scalar(
+                update(GenerationJobRow)
+                .where(GenerationJobRow.id == job.id, GenerationJobRow.status == expected)
+                .values(**_values(job))
+                .returning(GenerationJobRow.id)
+            )
+            return updated is not None
 
     async def list_by_status(self, statuses: Iterable[str]) -> list[GenerationJob]:
-        raise NotImplementedError
+        async with self._sessions() as s:
+            query = select(GenerationJobRow).where(GenerationJobRow.status.in_(list(statuses)))
+            rows = await s.scalars(query.order_by(GenerationJobRow.id))
+            return [_job_from_row(r) for r in rows]
 
     async def get_by_provider_key(self, key: str) -> GenerationJob | None:
-        raise NotImplementedError
+        async with self._sessions() as s:
+            row = await s.scalar(
+                select(GenerationJobRow).where(GenerationJobRow.provider_idempotency_key == key)
+            )
+            return None if row is None else _job_from_row(row)
 
 class SqlApprovalRepository:
     def __init__(self, sessions: Sessions) -> None:

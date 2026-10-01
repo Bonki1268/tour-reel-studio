@@ -16,9 +16,9 @@
 
 | 需求 | 驗收條件 | BDD 場景 | TDD／整合測試 | 實作位置 | 狀態 |
 |---|---|---|---|---|---|
-| R-001 | AC-001 | `S18-01` | — | `backend/app/jobs/generation.py` | TODO |
-| R-002 | AC-002 | `S18-02` | — | `backend/app/jobs/generation.py` | TODO |
-| R-003 | AC-003、AC-007 | `S18-03` | `test_r003_*` | `backend/app/api/routes/webhooks.py`、`backend/app/jobs/worker.py` | TODO |
-| R-004 | AC-003、AC-006 | `S18-03` | `test_r004_*` | `backend/app/jobs/generation.py`、`backend/app/storage/` | TODO |
-| R-005 | AC-004、AC-008 | `S18-04` | `test_r005_*` | `backend/app/jobs/recovery.py` | TODO |
-| R-006 | AC-005、AC-009 | `S18-05` | `test_r006_*` | `backend/app/domain/fallback.py`、`backend/app/api/routes/videos.py` | TODO |
+| R-001 | AC-001 | `S18-01` | — | `backend/app/jobs/generation.py` | done |
+| R-002 | AC-002 | `S18-02` | — | `backend/app/jobs/generation.py` | done |
+| R-003 | AC-003、AC-007 | `S18-03` | `test_r003_*` | `backend/app/api/routes/webhooks.py`、`backend/app/jobs/recovery.py`、`backend/app/jobs/worker.py` | done |
+| R-004 | AC-003、AC-006 | `S18-03` | `test_r004_*` | `backend/app/jobs/generation.py`、`backend/app/storage/` | done |
+| R-005 | AC-004、AC-008 | `S18-04` | `test_r005_*` | `backend/app/jobs/recovery.py`、`backend/app/jobs/worker.py` | done |
+| R-006 | AC-005、AC-009 | `S18-05` | `test_r006_*` | `backend/app/domain/fallback.py`、`backend/app/api/routes/videos.py` | done |

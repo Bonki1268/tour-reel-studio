@@ -34,8 +34,8 @@ Worker: generate_video ──▶ run_generation_job ──▶ _wait 輪詢 ─�
 
 ### Webhook（app/api/routes/webhooks.py、app/jobs/worker.py）
 
-- 端點：簽章無效 401；簽章有效一律 202 `{"accepted": true}`（S12 R-005 的回應不變）。`ref` 對應到 `submitted`／`running` 的工作時排入 `process_webhook(video_id, job_id)`；對應不到或工作已結束時不排入、不做任何變更。
-- `process_webhook`：重新讀取工作，非 `submitted`／`running` 時結束；`fetch_result(ProviderJob(原 request ID))`；`succeeded` → `complete_job`（預算以該影片目前的成本帳建立）；`running`／`failed` → 不處理（失敗與重試只由輪詢端決定）。
+- 端點：簽章無效 401；簽章有效一律 202 `{"accepted": true}`（S12 R-005 的回應不變）。`ref` 對應到未結束（`submitted`／`running`／`succeeded`）的工作時排入 `process_webhook(video_id, job_id)`；對應不到或工作已結束（`stored`／`failed`／`failed_final`）時不排入、不做任何變更。`succeeded` 代表另一個來源轉存中，webhook 仍會處理，由條件更新確保只轉存一次。
+- `process_webhook`：重新讀取工作，已結束時回傳 `skipped`；`fetch_result(ProviderJob(原 request ID))`；`succeeded` → `complete_job`（預算以該影片目前的成本帳建立）；`running`／`failed` → 不處理（失敗與重試只由輪詢端決定）。
 
 ### 恢復（app/jobs/recovery.py）
 

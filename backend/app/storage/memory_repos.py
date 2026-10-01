@@ -104,7 +104,7 @@ class MemoryShotRepository:
         takes[index] = _copy(take)
 
     async def get_take(self, take_id: str) -> ShotTake | None:
-        raise NotImplementedError
+        return _copy(next((t for ts in self._takes.values() for t in ts if t.id == take_id), None))
 
 
 class MemoryGenerationJobRepository:
@@ -133,13 +133,19 @@ class MemoryGenerationJobRepository:
         self._by_key[job.idempotency_key] = _copy(job)
 
     async def update_if(self, job: GenerationJob, expected: str) -> bool:
-        raise NotImplementedError
+        # 檢查與寫入之間沒有 await：同一個事件迴圈中天然原子
+        current = self._by_key.get(job.idempotency_key)
+        if current is None or current.id != job.id or current.status != expected:
+            return False
+        self._by_key[job.idempotency_key] = _copy(job)
+        return True
 
     async def list_by_status(self, statuses: Iterable[str]) -> list[GenerationJob]:
-        raise NotImplementedError
+        wanted = set(statuses)
+        return _copy([j for j in self._by_key.values() if j.status in wanted])
 
     async def get_by_provider_key(self, key: str) -> GenerationJob | None:
-        raise NotImplementedError
+        return _copy(next((j for j in self._by_key.values() if j.provider_idempotency_key == key), None))
 
 class MemoryApprovalRepository:
     def __init__(self) -> None:

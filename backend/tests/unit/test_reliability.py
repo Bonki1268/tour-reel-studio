@@ -169,7 +169,7 @@ async def test_r004_poller_defers_to_other_winner() -> None:
     assert result.status == JobStatus.STORED and result.id == job.id
     assert storage.puts[keyframe_key(env)] == 1
     assert len(await env.repos.costs.list(env.video.id)) == 1
-    assert env.ctx.budget.spent() > 0 and job.id not in env.ctx.budget.reserved
+    assert env.ctx.budget.spent > 0 and job.id not in env.ctx.budget.reserved
 
 
 async def test_r004_poller_sees_other_failure_and_retries() -> None:
@@ -416,7 +416,7 @@ def test_r006_fallback_uses_last_generating_entry() -> None:
     video.apply(VideoEvent.SHOT_FAILED_FINAL)  # needs_attention
     assert fallback_due(video, clock() + timedelta(seconds=500), 420, has_render=False)
     clock.advance(500)
-    video.apply(VideoEvent.REGENERATE_SHOT)  # 重新進入 generating
+    video.apply(VideoEvent.CONFIRM_REGENERATE)  # 重新進入 generating
     assert video.status == VideoStatus.GENERATING
     assert not fallback_due(video, clock() + timedelta(seconds=100), 420, has_render=False)
     assert fallback_due(video, clock() + timedelta(seconds=420), 420, has_render=False)

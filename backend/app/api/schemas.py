@@ -77,6 +77,7 @@ class VideoOut(BaseModel):
     cost_cap: Decimal | None
     spent: Decimal
     preview_url: str | None = None
+    fallback_url: str | None = None  # 保底成品（S18）：生成超過展示門檻時才有值
 
 
 class DownloadOut(BaseModel):
