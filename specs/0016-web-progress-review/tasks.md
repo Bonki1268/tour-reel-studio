@@ -15,10 +15,10 @@
 
 | 需求 | 驗收條件 | BDD 場景 | TDD／整合測試 | 實作位置 | 狀態 |
 |---|---|---|---|---|---|
-| R-001 | AC-001 | `S16-01` | `[S16] progress reducer` | `apps/web/src/lib/progress.ts`、`app/videos/[videoId]/page.tsx` | TODO |
-| R-002 | AC-002 | `S16-02` | — | `apps/web/src/components/ShotProgress.tsx` | TODO |
-| R-003 | AC-003 | `S16-03` | — | `apps/web/src/components/ResultPanel.tsx` | TODO |
-| R-004 | AC-004 | `S16-04` | `[S16] budget` | `apps/web/src/lib/budget.ts`、`RegenDialog.tsx` | TODO |
-| R-005 | AC-005 | `S16-05` | `[S16] backoff` | `apps/web/src/lib/backoff.ts`、`api/reconnect.ts` | TODO |
-| R-006 | AC-006 | `S16-06` | — | `apps/web/src/components/ResultPanel.tsx` | TODO |
-| R-007 | AC-007 | `S16-04` | `test_r007_*`（pytest） | `backend/app/api/routes/videos.py`、`domain/approval.py` | TODO |
+| R-001 | AC-001 | `S16-01` | `[S16] progress reducer` | `apps/web/src/lib/progress.ts`、`app/videos/[videoId]/page.tsx` | done |
+| R-002 | AC-002 | `S16-02` | — | `apps/web/src/components/ShotProgress.tsx` | done |
+| R-003 | AC-003 | `S16-03` | — | `apps/web/src/components/ResultPanel.tsx` | done |
+| R-004 | AC-004 | `S16-04` | `[S16] budget` | `apps/web/src/lib/budget.ts`、`RegenDialog.tsx` | done |
+| R-005 | AC-005 | `S16-05` | `[S16] backoff` | `apps/web/src/lib/backoff.ts`、`api/reconnect.ts` | done |
+| R-006 | AC-006 | `S16-06` | — | `apps/web/src/components/ResultPanel.tsx` | done |
+| R-007 | AC-007 | `S16-04` | `test_r007_*`（pytest） | `backend/app/api/routes/videos.py`、`domain/approval.py` | done |

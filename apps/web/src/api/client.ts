@@ -41,3 +41,20 @@ export const createVideo = (projectId: string, topic: string) =>
   });
 
 export const getVideo = (videoId: string) => request<VideoOut>(`/videos/${encodeURIComponent(videoId)}`);
+
+export type DownloadOut = components["schemas"]["DownloadOut"];
+
+/** 重生單鏡；costCap 為使用者同意提高後的成本上限（spec 0016 R-004、R-007）。 */
+export const regenerateShot = (videoId: string, shotNo: number, costCap?: string) =>
+  request<VideoOut>(`/videos/${encodeURIComponent(videoId)}/shots/${shotNo}/regenerate`, {
+    method: "POST",
+    ...(costCap === undefined
+      ? {}
+      : { headers: { "Content-Type": "application/json" }, body: JSON.stringify({ cost_cap: costCap }) }),
+  });
+
+export const approveFinal = (videoId: string) =>
+  request<VideoOut>(`/videos/${encodeURIComponent(videoId)}/approve`, { method: "POST" });
+
+export const getDownload = (videoId: string) =>
+  request<DownloadOut>(`/videos/${encodeURIComponent(videoId)}/download`);

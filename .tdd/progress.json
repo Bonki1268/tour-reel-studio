@@ -1,6 +1,6 @@
 {
   "$comment": "由 scripts/tdd.py 維護，請勿手動修改。spec 為各步驟對應的 spec package。",
-  "current": "S16",
+  "current": "S17",
   "steps": [
     {
       "id": "S00",
@@ -314,7 +314,14 @@
       ],
       "min_unit": 2,
       "spec": "specs/0016-web-progress-review",
-      "red_at": "2026-10-01T12:00:04+08:00"
+      "red_at": "2026-10-01T12:00:04+08:00",
+      "status": "done",
+      "done_at": "2026-10-01T12:04:06+08:00",
+      "gate": {
+        "tests": 499,
+        "scenarios": 87,
+        "unit_tests": 20
+      }
     },
     {
       "id": "S17",
@@ -469,6 +476,13 @@
       "tests": 473,
       "scenarios": 81,
       "unit_tests": 22
+    },
+    {
+      "step": "S16",
+      "done_at": "2026-10-01T12:04:06+08:00",
+      "tests": 499,
+      "scenarios": 87,
+      "unit_tests": 20
     }
   ]
 }

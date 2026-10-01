@@ -15,6 +15,7 @@ from app.api.schemas import (
     DownloadOut,
     EstimateOut,
     PlanOut,
+    RegenerateIn,
     ShotOut,
     TakeOut,
     TopicIn,
@@ -22,6 +23,7 @@ from app.api.schemas import (
 )
 from app.api.services import AppServices
 from app.api.sse import sse_stream
+from app.domain.cost import CostTableError, JobKind
 from app.domain.ports import VideoRecord
 from app.domain.video import VideoEvent, VideoStatus, check_transition
 from app.jobs.orchestrator import NotFound
@@ -36,6 +38,15 @@ async def _video(svc: AppServices, video_id: str) -> VideoRecord:
     return video
 
 
+def _shot_cost(svc: AppServices) -> Decimal:
+    """單鏡完整重生（關鍵幀＋影片）的預估點數（與 S04 estimate_video 的單鏡成本相同）。"""
+    table, s = svc.orchestrator.deps.cost_table, svc.settings
+    try:
+        return table.price(JobKind.KEYFRAME, s.hf_image_model) + table.price(JobKind.VIDEO, s.hf_video_model)
+    except CostTableError:
+        return Decimal(0)
+
+
 async def video_out(svc: AppServices, video_id: str) -> VideoOut:
     video = await _video(svc, video_id)
     plans = [
@@ -43,6 +54,7 @@ async def video_out(svc: AppServices, video_id: str) -> VideoOut:
                 estimate=EstimateOut(**vars(await svc.orchestrator.estimate(video.id, p.id))))
         for p in await svc.repos.plans.list(video.id)
     ]
+    regen_cost = _shot_cost(svc)
     shots = []
     for shot in await svc.repos.shots.list_shots(video.id):
         take = next((t for t in await svc.repos.shots.takes(shot.id) if t.id == shot.current_take_id), None)
@@ -50,6 +62,7 @@ async def video_out(svc: AppServices, video_id: str) -> VideoOut:
             shot_no=shot.shot_no, role=shot.role, duration_s=shot.duration_s, placement=shot.placement,
             take=None if take is None else TakeOut(attempt=take.attempt, status=take.status,
                                                    keyframe_key=take.keyframe_key, clip_key=take.clip_key),
+            regen_cost=regen_cost,
         ))
     spent = sum((c.credits for c in await svc.repos.costs.list(video.id)), Decimal(0))
     renders = await svc.repos.renders.list(video.id)
@@ -106,11 +119,16 @@ async def approve_plan(
 
 
 @router.post("/videos/{video_id}/shots/{shot_no}/regenerate", status_code=202)
-async def regenerate_shot(video_id: str, shot_no: int, svc: Services) -> VideoOut:
+async def regenerate_shot(
+    video_id: str, shot_no: int, svc: Services, body: RegenerateIn | None = None
+) -> VideoOut:
     video = await _video(svc, video_id)
     check_transition(video.video.status, VideoEvent.REGENERATE_SHOT)
     if shot_no not in {s.shot_no for s in await svc.repos.shots.list_shots(video_id)}:
         raise NotFound(f"影片 {video_id} 沒有第 {shot_no} 鏡")
+    if body is not None and body.cost_cap is not None:
+        # 使用者在確認對話框同意提高成本上限（spec 0016 R-007）
+        await svc.orchestrator.raise_cost_cap(video_id, body.cost_cap, DEMO_USER)
     await svc.queue.enqueue("regenerate_shot", video_id=video_id, shot_no=shot_no)
     return await video_out(svc, video_id)
 

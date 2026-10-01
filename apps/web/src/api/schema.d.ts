@@ -297,6 +297,14 @@ export interface components {
             /** Scene Photos */
             scene_photos: components["schemas"]["ScenePhotoOut"][];
         };
+        /**
+         * RegenerateIn
+         * @description 重生單鏡；cost_cap 為使用者同意提高後的成本上限（spec 0016 R-007）。
+         */
+        RegenerateIn: {
+            /** Cost Cap */
+            cost_cap?: number | string | null;
+        };
         /** ScenePhotoOut */
         ScenePhotoOut: {
             /** Id */
@@ -328,6 +336,11 @@ export interface components {
                 [key: string]: unknown;
             } | null;
             take: components["schemas"]["TakeOut"] | null;
+            /**
+             * Regen Cost
+             * @default 0
+             */
+            regen_cost: string;
         };
         /** TakeOut */
         TakeOut: {
@@ -587,7 +600,11 @@ export interface operations {
             };
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["RegenerateIn"] | null;
+            };
+        };
         responses: {
             /** @description Successful Response */
             202: {

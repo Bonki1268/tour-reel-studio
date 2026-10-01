@@ -275,6 +275,23 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/RegenerateIn"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Body"
+              }
+            }
+          }
+        },
         "responses": {
           "202": {
             "description": "Successful Response",
@@ -702,6 +719,30 @@
         ],
         "title": "ProjectOut"
       },
+      "RegenerateIn": {
+        "properties": {
+          "cost_cap": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cost Cap"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "RegenerateIn",
+        "description": "重生單鏡；cost_cap 為使用者同意提高後的成本上限（spec 0016 R-007）。"
+      },
       "ScenePhotoOut": {
         "properties": {
           "id": {
@@ -781,6 +822,12 @@
                 "type": "null"
               }
             ]
+          },
+          "regen_cost": {
+            "type": "string",
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Regen Cost",
+            "default": "0"
           }
         },
         "type": "object",

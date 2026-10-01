@@ -23,6 +23,7 @@ export class ProgressMock {
   private waiting: (() => void) | null = null;
   private drop: (() => void) | null = null;
   private seconds = 0;
+  private reconnecting = false;
 
   async install(page: Page, context: BrowserContext): Promise<void> {
     await context.route("https://storage.test/**", (route) =>
@@ -38,8 +39,9 @@ export class ProgressMock {
     this.waiting?.();
   }
 
-  /** 中斷目前的 SSE 連線。 */
+  /** 中斷目前的 SSE 連線；之後的新連線如同真實後端，立即送出目前狀態（status 事件）。 */
   disconnect(): void {
+    this.reconnecting = true;
     this.drop?.();
   }
 
@@ -99,12 +101,13 @@ export class ProgressMock {
     if (method === "GET" && path === `/videos/${VIDEO_ID}/events`) {
       this.connections += 1;
       const outcome = await new Promise<"events" | "drop">((resolve) => {
-        if (this.queue.length) return resolve("events");
+        if (this.queue.length || this.reconnecting) return resolve("events");
         this.waiting = () => resolve("events");
         this.drop = () => resolve("drop");
       });
       this.waiting = this.drop = null;
       if (outcome === "drop") return route.abort("connectionreset");
+      this.reconnecting = false;
       const events = this.queue.splice(0);
       return route.fulfill({
         status: 200,

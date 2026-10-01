@@ -160,4 +160,13 @@ def check_before_submit(video: Video, approval: Approval, current_input: object)
 
 def raise_cap(previous: Approval, cost_cap: Decimal, approved_by: str) -> Approval:
     """使用者同意提高成本上限：沿用企劃核准的輸入雜湊，記錄新的上限（spec 0016 R-007）。"""
-    raise NotImplementedError
+    if previous.cost_cap is not None and cost_cap <= previous.cost_cap:
+        raise ValueError(f"新的成本上限 {cost_cap} 必須高於目前的 {previous.cost_cap}")
+    return Approval(
+        kind=ApprovalKind.PLAN,
+        input_hash=previous.input_hash,
+        cost_cap=cost_cap,
+        auto_approved=False,
+        approved_by=approved_by,
+        approved_at=max(utc_now(), previous.approved_at),
+    )

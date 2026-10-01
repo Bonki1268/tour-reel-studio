@@ -5,7 +5,7 @@ from typing import Any
 from app.domain.approval import ApprovalInvalidated
 from app.domain.cost import BudgetExceeded
 from app.domain.video import InvalidTransition
-from app.jobs.orchestrator import NotFound
+from app.jobs.orchestrator import CapNotRaised, NotFound
 
 
 class InvalidState(Exception):
@@ -21,7 +21,7 @@ class CostCapTooLow(Exception):
 
 
 HANDLED = (InvalidTransition, InvalidState, ApprovalInvalidated, BudgetExceeded, NotFound,
-           IdempotencyConflict, CostCapTooLow)
+           IdempotencyConflict, CostCapTooLow, CapNotRaised)
 
 
 def error_response(exc: Exception) -> tuple[int, dict[str, Any]]:
@@ -42,6 +42,8 @@ def error_response(exc: Exception) -> tuple[int, dict[str, Any]]:
         return 404, {"code": "not_found", "message": str(exc)}
     if isinstance(exc, IdempotencyConflict):
         return 422, {"code": "idempotency_conflict", "message": str(exc)}
+    if isinstance(exc, CapNotRaised):
+        return 422, {"code": "cap_not_raised", "message": str(exc)}
     if isinstance(exc, CostCapTooLow):
         return 422, {"code": "cost_cap_too_low", "message": str(exc)}
     return 500, {"code": "internal_error", "message": "伺服器發生錯誤，請稍後再試"}

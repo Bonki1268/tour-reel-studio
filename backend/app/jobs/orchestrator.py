@@ -22,6 +22,7 @@ from app.domain.approval import (
     auto_approve,
     canonical_hash,
     plan_approval_input,
+    raise_cap,
 )
 from app.domain.cost import Budget, CostTable, Estimate, JobKind, estimate_video
 from app.domain.generation import JobStatus
@@ -53,6 +54,10 @@ class NotFound(KeyError):
 
 class ShotAssetMissing(Exception):
     """B1 粗合成需要的實景照、角色去背圖或身份板不存在。"""
+
+
+class CapNotRaised(ValueError):
+    """提高成本上限時，新上限沒有高於目前上限（API 對應 422）。"""
 
 
 class PlanningFailed(Exception):
@@ -327,6 +332,20 @@ class QuickModeOrchestrator:
         await self.repos.renders.add(render)
         await self._apply(video, VideoEvent.RENDER_DONE)
         await self._publish("review_ready", video.id, render_id=render.id, mp4_key=render.mp4_key)
+
+    async def raise_cost_cap(self, video_id: str, cost_cap: Decimal, approved_by: str) -> Approval:
+        """使用者同意提高成本上限（重生超出剩餘預算時；spec 0016 R-007）。"""
+        video = await self._video(video_id)
+        approval = next(a for a in reversed(await self.repos.approvals.list(video.id))
+                        if a.kind == ApprovalKind.PLAN)
+        try:
+            raised = raise_cap(approval, cost_cap, approved_by)
+        except ValueError as e:
+            raise CapNotRaised(str(e)) from None
+        await self.repos.approvals.add(video.id, raised)
+        video.cost_cap = cost_cap
+        await self.repos.videos.save(video)
+        return raised
 
     # 成品確認
 
