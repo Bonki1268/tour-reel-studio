@@ -81,7 +81,9 @@ def test_r007_invalid_seed_writes_nothing(tmp_path: Path) -> None:
     assert storage._objects == {}
 
 
-def test_r007_main_returns_1_on_validation_failure(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+def test_r007_main_returns_1_on_validation_failure(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
     write_demo(tmp_path / "demo", NAME, n_scenes=2)
     code = seed_run.main(["--demo-dir", str(tmp_path / "demo"), "--cache-dir", str(tmp_path / "cache")])
     assert code == 1

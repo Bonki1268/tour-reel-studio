@@ -48,8 +48,8 @@ def demo_json(name: str, n_scenes: int = 3, **overrides: Any) -> dict[str, Any]:
             "cutout": "character_cutout.png",
         },
         "scenes": [
-            {"file": f"scene-{i + 1}.jpg", "description_zh": f"實景 {i + 1}", "description_en": f"scene {i + 1}"}
-            for i in range(n_scenes)
+            {"file": f"scene-{n}.jpg", "description_zh": f"實景 {n}", "description_en": f"scene {n}"}
+            for n in range(1, n_scenes + 1)
         ],
     }
     data.update(overrides)

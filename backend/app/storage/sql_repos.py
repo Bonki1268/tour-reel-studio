@@ -76,6 +76,10 @@ class SqlProjectRepository:
                 return None
             return _from_row(Project, project), _from_row(BrandProfile, brand)
 
+    async def update_brand(self, brand: BrandProfile) -> None:
+        async with self._sessions.begin() as s:
+            await s.merge(BrandProfileRow(**_values(brand)))
+
 
 def _history_to_json(history: list[StatusChange]) -> list[dict[str, str]]:
     return [
@@ -99,10 +103,6 @@ def _video_columns(record: VideoRecord) -> dict[str, Any]:
     video: Video = values.pop("video")
     values.update(status=video.status, status_history=_history_to_json(video.history))
     return values
-
-
-    async def update_brand(self, brand: BrandProfile) -> None:
-        raise NotImplementedError
 
 
 class SqlVideoRepository:
@@ -294,12 +294,23 @@ class SqlCharacterRepository:
             )
             return None if row is None else _from_row(CharacterVersion, row)
 
-
     async def versions(self, project_id: str) -> list[CharacterVersion]:
-        raise NotImplementedError
+        async with self._sessions() as s:
+            rows = await s.scalars(
+                select(CharacterVersionRow)
+                .join(CharacterRow, CharacterRow.id == CharacterVersionRow.character_id)
+                .where(CharacterRow.project_id == project_id)
+                .order_by(CharacterVersionRow.character_id, CharacterVersionRow.version)
+            )
+            return [_from_row(CharacterVersion, r) for r in rows]
 
     async def add_version(self, version: CharacterVersion, *, lock: bool = True) -> None:
-        raise NotImplementedError
+        async with self._sessions.begin() as s:
+            character = await s.get_one(CharacterRow, version.character_id, with_for_update=True)
+            s.add(CharacterVersionRow(**_values(version)))
+            await s.flush()
+            if lock:
+                character.locked_version_id = version.id
 
 
 class SqlScenePhotoRepository:

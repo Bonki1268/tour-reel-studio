@@ -16,10 +16,10 @@
 
 | 需求 | 驗收條件 | BDD 場景 | TDD／整合測試 | 實作位置 | 狀態 |
 |---|---|---|---|---|---|
-| R-001 | AC-001 | `S17-01` | `test_r001_*` | `backend/app/seed/run.py` | TODO |
-| R-002 | AC-001 | `S17-01` | — | `backend/app/seed/run.py` | TODO |
-| R-003 | AC-001、AC-005 | `S17-01` | `test_r003_*` | `backend/app/seed/assets.py` | TODO |
-| R-004 | AC-002 | `S17-02` | — | `backend/app/seed/run.py` | TODO |
-| R-005 | AC-003 | `S17-03` | `test_r005_*` | `backend/app/seed/firecrawl.py` | TODO |
-| R-006 | AC-004 | `S17-04` | `test_r006_*` | `backend/app/seed/assets.py` | TODO |
-| R-007 | AC-006 | `S17-01` | `test_r007_*` | `backend/app/seed/schema.py` | TODO |
+| R-001 | AC-001 | `S17-01` | `test_r001_*` | `backend/app/seed/run.py` | done |
+| R-002 | AC-001 | `S17-01` | — | `backend/app/seed/run.py` | done |
+| R-003 | AC-001、AC-005 | `S17-01` | `test_r003_*` | `backend/app/seed/assets.py` | done |
+| R-004 | AC-002 | `S17-02` | `test_r004_*` | `backend/app/seed/run.py` | done |
+| R-005 | AC-003 | `S17-03` | `test_r005_*` | `backend/app/seed/firecrawl.py` | done |
+| R-006 | AC-004 | `S17-04` | `test_r006_*` | `backend/app/seed/assets.py` | done |
+| R-007 | AC-006 | `S17-01` | `test_r007_*` | `backend/app/seed/schema.py` | done |

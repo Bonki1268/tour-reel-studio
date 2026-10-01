@@ -1,6 +1,6 @@
 {
   "$comment": "由 scripts/tdd.py 維護，請勿手動修改。spec 為各步驟對應的 spec package。",
-  "current": "S17",
+  "current": "S18",
   "steps": [
     {
       "id": "S00",
@@ -332,7 +332,14 @@
       ],
       "min_unit": 1,
       "spec": "specs/0017-demo-seed",
-      "red_at": "2026-10-01T19:37:57+08:00"
+      "red_at": "2026-10-01T19:37:57+08:00",
+      "status": "done",
+      "done_at": "2026-10-01T19:45:00+08:00",
+      "gate": {
+        "tests": 526,
+        "scenarios": 91,
+        "unit_tests": 23
+      }
     },
     {
       "id": "S18",
@@ -484,6 +491,13 @@
       "tests": 499,
       "scenarios": 87,
       "unit_tests": 20
+    },
+    {
+      "step": "S17",
+      "done_at": "2026-10-01T19:45:00+08:00",
+      "tests": 526,
+      "scenarios": 91,
+      "unit_tests": 23
     }
   ]
 }

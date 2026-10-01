@@ -44,9 +44,9 @@ class MemoryProjectRepository:
     async def get(self, project_id: str) -> tuple[Project, BrandProfile] | None:
         return _copy(self._rows.get(project_id))
 
-
     async def update_brand(self, brand: BrandProfile) -> None:
-        raise NotImplementedError
+        project, _ = self._rows[brand.project_id]
+        self._rows[brand.project_id] = (project, _copy(brand))
 
 
 class MemoryVideoRepository:
@@ -180,12 +180,16 @@ class MemoryCharacterRepository:
                 return _copy(self._versions[c.locked_version_id])
         return None
 
-
     async def versions(self, project_id: str) -> list[CharacterVersion]:
-        raise NotImplementedError
+        ids = {c.id for c in self._characters if c.project_id == project_id}
+        rows = [v for v in self._versions.values() if v.character_id in ids]
+        return _copy(sorted(rows, key=lambda v: (v.character_id, v.version)))
 
     async def add_version(self, version: CharacterVersion, *, lock: bool = True) -> None:
-        raise NotImplementedError
+        character = next(c for c in self._characters if c.id == version.character_id)
+        self._versions[version.id] = _copy(version)
+        if lock:
+            character.locked_version_id = version.id
 
 
 class MemoryScenePhotoRepository:

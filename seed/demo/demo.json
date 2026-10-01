@@ -1,0 +1,41 @@
+{
+  "_說明": "古堡 1624 咖啡館 Demo 素材（來源：S00 驗證素材）。實景照已轉正、裁成 9:16 並移除 EXIF；營業時間為虛構；現有實景照都是古堡園區景點、沒有咖啡館本身，正式 Demo 前建議補咖啡館照片。",
+  "name": "古堡 1624 咖啡館（Zeelandia Cafe）",
+  "website": null,
+  "tone": "歷史趣味、輕鬆親切",
+  "selling_points": [
+    "安平古堡園區內的全戶外露天座位",
+    "復古紅磚木作吧台與手寫黑板菜單",
+    "安平古堡拿鐵、古堡咖啡、酸梅果飲（130–150 元）"
+  ],
+  "address": "台南市安平區 安平古堡園區內",
+  "booking_url": null,
+  "colors": [
+    "#8B2E1F"
+  ],
+  "logo": null,
+  "character": {
+    "name": "鄭成功",
+    "anchor_zh": "鄭成功：明末武將形象，面容端正、目光有神，蓄八字鬍與短鬚，頭戴黑色烏紗帽，身穿深紅色明代圓領官袍，腰繫玉帶，黑色官靴。",
+    "anchor_en": "Koxinga (Zheng Chenggong), a 17th-century Ming dynasty general with a dignified face, bright eyes, a thin mustache and short goatee, wearing a black Ming official's winged hat, a deep red round-collar Ming official robe with a jade belt, and black boots",
+    "identity_board": "identity_board.png",
+    "cutout": "character_cutout.png"
+  },
+  "scenes": [
+    {
+      "file": "scene-1.jpg",
+      "description_zh": "熱蘭遮城城垣殘蹟：紅磚夾白灰的古城牆、草地與紅磚步道，晴天藍天",
+      "description_en": "the ruined wall of Fort Zeelandia, old red bricks patched with white lime plaster, a lawn and a red-brick paved walkway under a clear blue sky"
+    },
+    {
+      "file": "scene-2.jpg",
+      "description_zh": "刻有「安平古堡」的石碑與花崗岩基座，後方榕樹與黃花，右側紅色古砲",
+      "description_en": "a tall granite monument engraved with Chinese characters on a stepped stone base, banyan trees and yellow blossoms behind, red antique cannons at the side"
+    },
+    {
+      "file": "scene-3.jpg",
+      "description_zh": "仰望安平古堡白色瞭望塔，前方為紅磚牆與黑色古石牆，榕樹環繞",
+      "description_en": "low-angle view of the white Anping Fort watchtower above old red-brick and dark stone walls, surrounded by banyan trees"
+    }
+  ]
+}

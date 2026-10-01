@@ -108,6 +108,7 @@ def empty_env(env: Env) -> None:
 
 
 @when("執行種子腳本")
+@when("再次執行種子腳本")
 def run_seed(env: Env) -> None:
     env.seed()
 
