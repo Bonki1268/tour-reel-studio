@@ -19,6 +19,7 @@ from pydantic import ValidationError
 from app.config import Settings
 from app.domain.ports import Shot, ShotTake, Storage, VideoRecord
 from app.render.base import RenderError
+from app.render.outro import OutroInfo
 from app.render.timeline import Style, Timeline, timeline_from_shots, to_ass
 from app.storage.objects import ObjectNotFound
 
@@ -198,3 +199,6 @@ class FfmpegRenderer:
                 await storage.put(thumb_key, thumb.read_bytes(), "image/jpeg")
         logger.info("合成完成 video_id=%s 長度=%.2f 秒 耗時=%.1f 秒", tl.video_id, result.duration,
                     time.monotonic() - started)
+
+    async def render_outro(self, info: OutroInfo, storage: Storage, key: str) -> None:
+        raise NotImplementedError

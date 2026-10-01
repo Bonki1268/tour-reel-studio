@@ -4,6 +4,7 @@ from collections.abc import Mapping
 from typing import Any
 
 from app.domain.ports import Shot, ShotTake, Storage, VideoRecord
+from app.render.outro import OutroInfo
 from app.render.timeline import Style, timeline_from_shots
 
 
@@ -25,3 +26,6 @@ class FakeRenderer:
         await storage.put(output_key, b"", "video/mp4")
         if thumb_key is not None:
             await storage.put(thumb_key, b"", "image/jpeg")
+
+    async def render_outro(self, info: OutroInfo, storage: Storage, key: str) -> None:
+        raise NotImplementedError

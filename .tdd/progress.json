@@ -273,7 +273,8 @@
         "py"
       ],
       "min_unit": 2,
-      "spec": "specs/0014-outro-card"
+      "spec": "specs/0014-outro-card",
+      "red_at": "2026-10-01T11:28:32+08:00"
     },
     {
       "id": "S15",

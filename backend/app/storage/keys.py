@@ -58,5 +58,9 @@ def render(video_id: str, render_id: str) -> str:
     return f"videos/{_seg(video_id)}/renders/{_seg(render_id)}.mp4"
 
 
+def outro(video_id: str) -> str:
+    raise NotImplementedError
+
+
 def render_thumb(video_id: str, render_id: str) -> str:
     return f"videos/{_seg(video_id)}/renders/{_seg(render_id)}.jpg"

@@ -4,6 +4,7 @@ from collections.abc import Mapping
 from typing import Any, Protocol
 
 from app.domain.ports import Shot, ShotTake, Storage, VideoRecord
+from app.render.outro import OutroInfo
 from app.render.timeline import Style
 
 
@@ -25,3 +26,7 @@ class Renderer(Protocol):
     async def render(
         self, timeline: Mapping[str, Any], storage: Storage, output_key: str, thumb_key: str | None = None
     ) -> None: ...
+
+    async def render_outro(self, info: OutroInfo, storage: Storage, key: str) -> None:
+        """產生 3 秒片尾影片段並存入 key（spec 0014）。"""
+        ...

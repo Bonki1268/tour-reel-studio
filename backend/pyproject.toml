@@ -14,6 +14,7 @@ dependencies = [
     "boto3 (>=1.35,<2.0)",
     "anthropic (>=0.70)",
     "pillow (>=11,<12)",
+    "qrcode (>=8,<9)",
 ]
 
 [tool.poetry]
@@ -28,6 +29,8 @@ ruff = "^0.8"
 mypy = "^1.13"
 boto3-stubs = {version = "^1.35", extras = ["s3"]}
 respx = "^0.23.1"
+opencv-python-headless = "^5.0.0.93"
+numpy = ">=2,<2.3"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -53,3 +56,4 @@ select = ["E", "F", "W", "I", "B", "UP"]
 python_version = "3.11"
 strict = true
 plugins = ["pydantic.mypy"]
+
