@@ -159,7 +159,10 @@ def test_r005_from_mapping_rejects_missing_or_non_numeric(data: dict[str, object
 
 def test_r006_prompt_template_keeps_background_and_lighting() -> None:
     req = build_compose_request(
-        rough_key="r.png", mask_key="m.png", identity_board_key="b.png", keyframe_prompt="Guide at the temple gate"
+        rough_key="r.png",
+        mask_key="m.png",
+        identity_board_key="b.png",
+        keyframe_prompt="Guide at the temple gate",
     )
     prompt = req.prompt.lower()
     assert "keep the background exactly unchanged" in prompt
@@ -174,7 +177,12 @@ def test_r006_to_input_shape() -> None:
     )
     assert req == ComposeRequest("r.png", "m.png", ("b.png",), req.prompt)
     data = req.to_input()
-    assert data == {"base_image_key": "r.png", "mask_key": "m.png", "reference_keys": ["b.png"], "prompt": req.prompt}
+    assert data == {
+        "base_image_key": "r.png",
+        "mask_key": "m.png",
+        "reference_keys": ["b.png"],
+        "prompt": req.prompt,
+    }
     provider_req = ProviderRequest(model="m", input=data, provider_idempotency_key="k")
     assert provider_req.input["prompt"] == req.prompt
 

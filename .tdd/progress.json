@@ -1,6 +1,6 @@
 {
   "$comment": "由 scripts/tdd.py 維護，請勿手動修改。spec 為各步驟對應的 spec package。",
-  "current": "S11",
+  "current": "S12",
   "steps": [
     {
       "id": "S00",
@@ -220,7 +220,14 @@
       ],
       "min_unit": 3,
       "spec": "specs/0011-b1-photo-composite",
-      "red_at": "2026-10-01T10:52:52+08:00"
+      "red_at": "2026-10-01T10:52:52+08:00",
+      "status": "done",
+      "done_at": "2026-10-01T10:54:01+08:00",
+      "gate": {
+        "tests": 289,
+        "scenarios": 58,
+        "unit_tests": 26
+      }
     },
     {
       "id": "S12",
@@ -392,6 +399,13 @@
       "tests": 257,
       "scenarios": 52,
       "unit_tests": 32
+    },
+    {
+      "step": "S11",
+      "done_at": "2026-10-01T10:54:01+08:00",
+      "tests": 289,
+      "scenarios": 58,
+      "unit_tests": 26
     }
   ]
 }

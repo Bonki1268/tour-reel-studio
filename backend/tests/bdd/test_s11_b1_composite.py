@@ -1,5 +1,5 @@
 import socket
-from typing import Any
+from typing import Any, cast
 
 import pytest
 from PIL import ImageChops, ImageOps
@@ -58,7 +58,9 @@ def place_flipped(ctx: dict[str, Any], x: float, y: float, scale: float) -> None
 
 
 @when(parsers.parse("以 x={x:g}、y={y:g}、scale={scale:g} 建立精修合成請求"))
-def build_request(ctx: dict[str, Any], x: float, y: float, scale: float, monkeypatch: pytest.MonkeyPatch) -> None:
+def build_request(
+    ctx: dict[str, Any], x: float, y: float, scale: float, monkeypatch: pytest.MonkeyPatch
+) -> None:
     def no_network(*_: Any, **__: Any) -> None:
         raise AssertionError("建立精修合成請求時不可連網")
 
@@ -126,12 +128,13 @@ def flipped(ctx: dict[str, Any]) -> None:
     assert feet_center(normal.mask) == feet_center(mirrored.mask)
     box = mask_bbox(normal.mask)
     diff = ImageChops.difference(ImageOps.mirror(normal.rough.crop(box)), mirrored.rough.crop(box))
-    assert max(hi for _, hi in diff.getextrema()) <= 2
+    extrema = cast(tuple[tuple[int, int], ...], diff.getextrema())
+    assert max(hi for _, hi in extrema) <= 2
     left, top, right, bottom = box
     probe = (left + 30, (top + bottom) // 2)
-    r, _, b = normal.rough.getpixel(probe)
+    r, _, b = cast(tuple[int, int, int], normal.rough.getpixel(probe))
     assert r > b  # 原圖左半是紅色
-    r, _, b = mirrored.rough.getpixel(probe)
+    r, _, b = cast(tuple[int, int, int], mirrored.rough.getpixel(probe))
     assert b > r  # 翻轉後左半是藍色
 
 

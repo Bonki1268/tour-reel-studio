@@ -15,9 +15,9 @@
 
 | 需求 | 驗收條件 | BDD 場景 | TDD／整合測試 | 實作位置 | 狀態 |
 |---|---|---|---|---|---|
-| R-001 | AC-001、AC-002 | `S11-01` | `test_r001_*` | `backend/app/providers/composite.py` | TODO |
-| R-002 | AC-003 | `S11-02` | `test_r002_*` | `backend/app/providers/composite.py` | TODO |
-| R-003 | AC-004 | `S11-03` | — | `backend/app/providers/composite.py` | TODO |
-| R-004 | AC-005 | `S11-04` | `test_r004_*` | `backend/app/providers/composite.py` | TODO |
-| R-005 | AC-006 | `S11-05` | `test_r005_*` | `backend/app/providers/composite.py` | TODO |
-| R-006 | AC-007 | `S11-06` | `test_r006_*` | `backend/app/providers/composite.py` | TODO |
+| R-001 | AC-001、AC-002 | `S11-01` | `test_r001_*` | `backend/app/providers/composite.py` | done |
+| R-002 | AC-003 | `S11-02` | `test_r002_*` | `backend/app/providers/composite.py` | done |
+| R-003 | AC-004 | `S11-03` | — | `backend/app/providers/composite.py` | done |
+| R-004 | AC-005 | `S11-04` | `test_r004_*` | `backend/app/providers/composite.py` | done |
+| R-005 | AC-006 | `S11-05` | `test_r005_*` | `backend/app/providers/composite.py` | done |
+| R-006 | AC-007 | `S11-06` | `test_r006_*` | `backend/app/providers/composite.py` | done |

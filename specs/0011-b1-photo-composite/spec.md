@@ -1,6 +1,6 @@
 # B1 照片合成
 
-狀態：approved
+狀態：implemented
 版本：v1
 關聯開發步驟：S11
 核准者／時間：bonki
