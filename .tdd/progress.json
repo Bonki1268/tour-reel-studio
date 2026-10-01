@@ -219,7 +219,8 @@
         "py"
       ],
       "min_unit": 3,
-      "spec": "specs/0011-b1-photo-composite"
+      "spec": "specs/0011-b1-photo-composite",
+      "red_at": "2026-10-01T10:52:52+08:00"
     },
     {
       "id": "S12",
