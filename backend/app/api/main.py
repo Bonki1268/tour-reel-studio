@@ -6,7 +6,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
 from app.api.errors import HANDLED, error_response
-from app.api.routes import projects, videos
+from app.api.routes import projects, videos, webhooks
 from app.api.services import AppServices
 from app.config import Settings, load_settings
 
@@ -38,4 +38,5 @@ def create_app(settings: Settings | None = None, services: AppServices | None = 
     app.add_exception_handler(RequestValidationError, _validation)
     app.include_router(projects.router)
     app.include_router(videos.router)
+    app.include_router(webhooks.router)
     return app

@@ -10,10 +10,12 @@ from app.domain.ids import new_id
 from app.domain.ports import Character, CharacterVersion, Repositories, ScenePhoto, Shot, ShotTake
 from app.jobs.events import MemoryEventBus
 from app.jobs.orchestrator import OrchestratorDeps, QuickModeOrchestrator
+from app.providers.composite import to_png
 from app.providers.fake import FakeProvider
 from app.render.fake import FakeRenderer
 from app.storage.memory_repos import memory_repositories
 from app.storage.objects import MemoryStorage
+from tests.composite_support import make_cutout, make_photo
 from tests.generation_support import IMAGE_MODEL, KEYFRAME_PRICE, VIDEO_MODEL, VIDEO_PRICE, FakeClock
 from tests.persistence_data import sample_project
 
@@ -52,6 +54,10 @@ class OrchEnv:
         ]
         for photo in self.photos:
             await self.repos.scene_photos.add(photo)
+            await self.storage.put(photo.image_key, to_png(make_photo((108, 192))), "image/png")
+        # B1 粗合成需要的素材（S12 起編排會讀取）
+        await self.storage.put(version.cutout_key or "", to_png(make_cutout()), "image/png")
+        await self.storage.put(version.identity_board_key or "", b"identity-board-png", "image/png")
         self.project_id = project.id
         return project.id
 

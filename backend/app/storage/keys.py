@@ -42,6 +42,10 @@ def rough(video_id: str, shot_no: int, take: int) -> str:
     return f"{_take(video_id, shot_no, take)}/rough.png"
 
 
+def mask(video_id: str, shot_no: int, take: int) -> str:
+    raise NotImplementedError
+
+
 def keyframe(video_id: str, shot_no: int, take: int) -> str:
     return f"{_take(video_id, shot_no, take)}/keyframe.png"
 

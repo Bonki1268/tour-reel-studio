@@ -21,6 +21,10 @@ class Settings(BaseSettings):
     firecrawl_api_key: SecretStr | None = None
     hf_image_model: str = ""
     hf_video_model: str = ""
+    # Higgsfield adapter（S12）：webhook 簽章密鑰與對外網址都有設定時才附回呼網址
+    higgsfield_base_url: str = "https://api.higgsfield.ai"
+    higgsfield_webhook_secret: SecretStr | None = None
+    public_base_url: str = ""
     claude_model: str = ""
     claude_effort: Literal["low", "medium", "high", "xhigh", "max"] = "medium"
     claude_refusal_fallback: bool = True  # Claude 拒絕回應時由伺服器端改用其他模型（S10）

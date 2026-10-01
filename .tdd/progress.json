@@ -237,7 +237,8 @@
         "py"
       ],
       "min_unit": 3,
-      "spec": "specs/0012-higgsfield-adapter"
+      "spec": "specs/0012-higgsfield-adapter",
+      "red_at": "2026-10-01T11:02:26+08:00"
     },
     {
       "id": "S13",
