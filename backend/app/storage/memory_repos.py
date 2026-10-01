@@ -45,6 +45,10 @@ class MemoryProjectRepository:
         return _copy(self._rows.get(project_id))
 
 
+    async def update_brand(self, brand: BrandProfile) -> None:
+        raise NotImplementedError
+
+
 class MemoryVideoRepository:
     def __init__(self) -> None:
         self._rows: dict[str, VideoRecord] = {}
@@ -175,6 +179,13 @@ class MemoryCharacterRepository:
             if c.project_id == project_id and c.locked_version_id in self._versions:
                 return _copy(self._versions[c.locked_version_id])
         return None
+
+
+    async def versions(self, project_id: str) -> list[CharacterVersion]:
+        raise NotImplementedError
+
+    async def add_version(self, version: CharacterVersion, *, lock: bool = True) -> None:
+        raise NotImplementedError
 
 
 class MemoryScenePhotoRepository:

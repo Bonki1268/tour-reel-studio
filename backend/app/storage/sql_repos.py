@@ -101,6 +101,10 @@ def _video_columns(record: VideoRecord) -> dict[str, Any]:
     return values
 
 
+    async def update_brand(self, brand: BrandProfile) -> None:
+        raise NotImplementedError
+
+
 class SqlVideoRepository:
     def __init__(self, sessions: Sessions) -> None:
         self._sessions = sessions
@@ -289,6 +293,13 @@ class SqlCharacterRepository:
                 .where(CharacterRow.project_id == project_id)
             )
             return None if row is None else _from_row(CharacterVersion, row)
+
+
+    async def versions(self, project_id: str) -> list[CharacterVersion]:
+        raise NotImplementedError
+
+    async def add_version(self, version: CharacterVersion, *, lock: bool = True) -> None:
+        raise NotImplementedError
 
 
 class SqlScenePhotoRepository:

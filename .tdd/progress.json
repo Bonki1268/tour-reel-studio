@@ -331,7 +331,8 @@
         "py"
       ],
       "min_unit": 1,
-      "spec": "specs/0017-demo-seed"
+      "spec": "specs/0017-demo-seed",
+      "red_at": "2026-10-01T19:37:57+08:00"
     },
     {
       "id": "S18",

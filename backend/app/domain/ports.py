@@ -155,6 +155,7 @@ class IdempotencyRecord:
 class ProjectRepository(Protocol):
     async def add(self, project: Project, brand: BrandProfile) -> None: ...
     async def get(self, project_id: str) -> tuple[Project, BrandProfile] | None: ...
+    async def update_brand(self, brand: BrandProfile) -> None: ...  # S17
 
 
 class VideoRepository(Protocol):
@@ -202,6 +203,8 @@ class PlanRepository(Protocol):
 class CharacterRepository(Protocol):
     async def add(self, character: Character, versions: list[CharacterVersion]) -> None: ...
     async def locked_version(self, project_id: str) -> CharacterVersion | None: ...
+    async def versions(self, project_id: str) -> list[CharacterVersion]: ...  # S17：依版本號排序
+    async def add_version(self, version: CharacterVersion, *, lock: bool = True) -> None: ...  # S17
 
 
 class ScenePhotoRepository(Protocol):
